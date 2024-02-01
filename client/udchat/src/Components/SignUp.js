@@ -1,9 +1,29 @@
+import React from 'react';
 import { useState } from "react";
 
 const Signup = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const {signup, error, isLoading} = useSignup();
+
+
+  // Custom hook -> Delete this is we don't need to use it (Nico added since we had errors)
+  const useSignup = () => {
+    const [error, setError] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const signup = async (email, password) => {
+      setIsLoading(true)
+      try {
+        // Add signup logic here
+      } catch (error) {
+        setError(error.message)
+      }
+      setIsLoading(false)
+    }
+
+    return {signup, error, isLoading}
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -34,4 +54,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default Signup;
