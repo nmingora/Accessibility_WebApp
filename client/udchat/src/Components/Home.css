@@ -15,31 +15,46 @@
 }
 
 .sidebar {
-    width: 250px; /* Adjust width as needed */
+    width: 250px;
     position: fixed;
-    left: -250px; /* Adjust width as needed */
+    left: -250px;
     top: 0;
     height: 100%;
     transition: left 0.3s;
-    /* other styles */
+    background: linear-gradient(135deg, #6A4F9B 0%, #9B6FA4 100%); /* Fancy gradient */
+    box-shadow: 3px 0 15px rgba(0,0,0,0.2); /* Adding shadow for depth */
+    color: white; /* Light text color for better contrast */
+    display: flex;
+    flex-direction: column; /* Organize items vertically */
+    align-items: center; /* Center items for a neat look */
+    padding-top: 20px; /* Space at the top */
 }
+
 
 .sidebar.open {
     left: 0;
 }
 
 .close-btn {
+    margin-top: 20px;
     /* close button styles */
 }
 
-.sidebar-content {
-    padding: 20px;
+.sidebar-content button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Slightly darker on hover */
+    transform: scale(1.05); /* Slight increase in size on hover */
 }
 
 .sidebar-content button {
-    display: block;
-    margin-bottom: 10px;
-    /* Style your buttons */
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+    margin: 10px 0;
+    padding: 10px 20px;
+    width: 90%; /* Adjust based on preference */
+    border-radius: 20px; /* Rounded corners for a modern look */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .main-content {
