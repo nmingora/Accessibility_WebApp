@@ -1,0 +1,16 @@
+.NavBar{
+    background-color: blue;
+    display:flex;
+    flex-direction:row;
+}
+
+.NavOption{
+    flex:1;
+    text-align:center;
+    border-radius:1px;
+    margin: 5px;
+}
+
+.NavOption.selected{
+    background-color: yellow;
+}
