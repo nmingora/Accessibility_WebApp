@@ -1,16 +1,12 @@
 import React from 'react';
 
+const Admin = () => {
 
-function Admin() {
   return (
-
-    // admin page
     <div>
-      <h1>Admin</h1>
-      <p>Admin page content goes here</p>
+      <h2>This is the admin page, please log in to access its contents</h2>
     </div>
-
-  );
+  )
 }
 
 export default Admin;
