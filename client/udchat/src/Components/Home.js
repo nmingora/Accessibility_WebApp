@@ -5,6 +5,7 @@ import './Home.css'; // Importing the CSS file
 function Home() {
     
     // ----------------------------------------NAVIGATION FUNCTIONS----------------------------------------
+    
     const navigate = useNavigate();
     const navigateLogin = () => {
         navigate('/Login');
@@ -19,7 +20,7 @@ function Home() {
         navigate('/Parent');
     }
 
-    // ----------------------------------------SIDEBAR FUNCTIONALITY----------------------------------------
+    // ----------------------------------------SIDEBAR FUNCTIONALITY--------------------------------------
 
     const [isSidebarOpen, setSidebarOpen] = useState(false);
 
@@ -29,13 +30,13 @@ function Home() {
 
 
 
-    // ----------------------------------------NEWS AND ANNOUNCEMENTS----------------------------------
+    // ----------------------------------------NEWS AND ANNOUNCEMENTS------------------------------------
 
 
 
 
 
-    // ----------------------------------------AUTHENTICATER/LOGIN/----------------------------------------
+    // ----------------------------------------AUTHENTICATER/LOGIN/--------------------------------------
 
     return (
         <div className={`home-container ${isSidebarOpen ? 'shifted' : ''}`}>
