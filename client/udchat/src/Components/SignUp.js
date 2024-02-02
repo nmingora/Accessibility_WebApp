@@ -4,53 +4,47 @@ import { useState } from "react";
 const Signup = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const {signup, error, isLoading} = useSignup();
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
 
-  // Custom hook -> Delete this is we don't need to use it (Nico added since we had errors)
-  const useSignup = () => {
-    const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(false)
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
-    const signup = async (email, password) => {
-      setIsLoading(true)
-      try {
-        // Add signup logic here
-      } catch (error) {
-        setError(error.message)
-      }
-      setIsLoading(false)
-    }
-
-    return {signup, error, isLoading}
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    await signup(email, password)
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle signup logic (e.g., send data to a server)
+    console.log('Email:', email);
+    console.log('Password:', password);
+  };
 
   return (
-    <form className="signup" onSubmit={handleSubmit}>
+    <div>
       <h2>Sign Up</h2>
-      
-      <label>Email address:</label>
-      <input 
-        type="email" 
-        onChange={(e) => setEmail(e.target.value)} 
-        value={email} 
-      />
-      <label>Password:</label>
-      <input 
-        type="password" 
-        onChange={(e) => setPassword(e.target.value)} 
-        value={password} 
-      />
-
-      <button disabled={isLoading}>Sign up</button>
-      {error && <div className="error">{error}</div>}
-    </form>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Email:
+          <input
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+          />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+        </label>
+        <br />
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
   )
 }
 
