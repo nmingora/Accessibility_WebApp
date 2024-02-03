@@ -5,6 +5,7 @@ import './Home.css'; // Importing the CSS file
 function Home() {
     
     // ----------------------------------------NAVIGATION FUNCTIONS----------------------------------------
+    
     const navigate = useNavigate();
     const navigateLogin = () => {
         navigate('/Login');
@@ -19,7 +20,7 @@ function Home() {
         navigate('/Parent');
     }
 
-    // ----------------------------------------SIDEBAR FUNCTIONALITY----------------------------------------
+    // ----------------------------------------SIDEBAR FUNCTIONALITY--------------------------------------
 
     const [isSidebarOpen, setSidebarOpen] = useState(false);
 
@@ -29,16 +30,24 @@ function Home() {
 
 
 
-    // ----------------------------------------NEWS AND ANNOUNCEMENTS----------------------------------
+    // ----------------------------------------NEWS AND ANNOUNCEMENTS------------------------------------
 
 
 
 
 
-    // ----------------------------------------AUTHENTICATER/LOGIN/----------------------------------------
+    // ----------------------------------------AUTHENTICATER/LOGIN/--------------------------------------
 
     return (
         <div className={`home-container ${isSidebarOpen ? 'shifted' : ''}`}>
+
+            {/* Picture Header */}
+            <div className="picture-header">
+                {/* Assuming you have an image called 'logo.png' in your public folder */}
+                <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Logo" style={{width: '100%', height: '150px'}} />
+            </div>
+
+            
             {/* Menu Bar */}
             <div className="menu-bar" onClick={toggleSidebar}>
                 <div className="menu-icon">☰</div> {/* Menu icon */}

@@ -4,6 +4,7 @@ import Login from './Login.js';
 import Home from './Home.js';
 import SignUp from './SignUp.js';
 import Parent from './Parents.js';
+import Admin from './Admin.js';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/Login" element={<Login/>}/>
         <Route path="/SignUp" element={<SignUp/>} />
         <Route path="/Parent" element={<Parent/>}/>
+        <Route path="/Admin" element={<Admin/>}/>
       </Routes>
     </Router>
   );

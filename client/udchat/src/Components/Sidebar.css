@@ -1,0 +1,27 @@
+.sidebar {
+    width: 250px; /* Adjust width as needed */
+    position: fixed;
+    left: -250px; /* Adjust width as needed */
+    top: 0;
+    height: 100%;
+    transition: left 0.3s;
+    /* other styles */
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.close-btn {
+    /* close button styles */
+}
+
+.sidebar-content {
+    padding: 20px;
+}
+
+.sidebar-content button {
+    display: block;
+    margin-bottom: 10px;
+    /* Style your buttons */
+}

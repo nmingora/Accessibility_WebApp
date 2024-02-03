@@ -1,38 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { auth } from '../firebaseConfig';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
+import './Login.css'; // Assuming the CSS is in a file named Login.css
 
-const Login = () => {
-    const [username, setUsername] = useState('');
+function Login() {
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const handleUsernameChange = (e) => {
-        setUsername(e.target.value);
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+            setLoading(false);
+        });
+        return unsubscribe;
+    }, []);
+
+    const handleLogin = async () => {
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+            console.error(error.message);
+        }
     };
 
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
+    const handleSignup = async () => {
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+            console.error(error.message);
+        }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Add your login logic here
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+        } catch (error) {
+            console.error(error.message);
+        }
     };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        if (name === 'email') setEmail(value);
+        if (name === 'password') setPassword(value);
+    };
+
+    if (loading) return <div>Loading...</div>;
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
+        <div className="login-container">
+            {user ? (
                 <div>
-                    <label>Username:</label>
-                    <input type="text" value={username} onChange={handleUsernameChange} />
+                    <div>You are now logged in as {user.email}</div>
+                    <button onClick={handleLogout}>Logout</button>
                 </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" value={password} onChange={handlePasswordChange} />
+            ) : (
+                <div className="login-form">
+                    <input
+                        name="email"
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={handleChange}
+                    />
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={handleChange}
+                    />
+                    <button onClick={handleLogin}>Login</button>
+                    <button onClick={handleSignup}>Create Account</button>
                 </div>
-                <button type="submit">Login</button>
-            </form>
+            )}
         </div>
     );
-};
+}
 
 export default Login;
