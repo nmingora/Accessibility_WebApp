@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate} from 'react-router-dom';
 import './Home.css'; // Importing the CSS file
 import logoImage from '../Images/logo_noName.png'; // Importing the logo image
+import Layout from './Layout';
 
 function Home() {
     
@@ -38,6 +39,16 @@ function Home() {
 
 
     // ----------------------------------------AUTHENTICATER/LOGIN/--------------------------------------
+
+
+
+    
+
+    // *********************************************************
+
+    // NEED TO ADD MODULAR LAYOUT ANCHORS TO HOME PAGE. ALL OTHER PAGES HAVE IT ALREADY
+
+    // *********************************************************
 
     return (
         <div className={`home-container ${isSidebarOpen ? 'shifted' : ''}`}>

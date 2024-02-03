@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from "react";
-import Navbar from "./NavBar"
+import Layout from './Layout';
+
 
 const Signup = () => {
   const [email, setEmail] = useState('')
@@ -24,40 +25,37 @@ const Signup = () => {
     setSignupSuccess(true);
   };
 
-  const navOptions = {
-    Home: '/',
-    LogIn: '/Login',
-    AdminPortal: '/Admin',
-    ParentPortal: '/Parents'
-  };
+
 
   return (
-    <div>
-      <Navbar options={navOptions}/>
-      <h2>Sign Up</h2>
-      {signupSuccess && <p>Signup successful! Please check your email for confirmation!</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={handleEmailChange}
-          />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </label>
-        <br />
-        <button type="submit">Sign Up</button>
-      </form>
-    </div>
+    <Layout>
+      <div>
+        <h2>Sign Up</h2>
+        {signupSuccess && <p>Signup successful! Please check your email for confirmation!</p>}
+        <form onSubmit={handleSubmit}>
+          <label>
+            Email:
+            <input
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+            />
+          </label>
+          <br />
+          <label>
+            Password:
+            <input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+          </label>
+          <br />
+          <button type="submit">Sign Up</button>
+        </form>
+      </div>
+
+    </Layout>
   )
 }
 

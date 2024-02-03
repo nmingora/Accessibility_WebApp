@@ -1,38 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { auth } from '../firebaseConfig';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
-import './Login.css'; // Assuming the CSS is in a file named Login.css
-
-function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-            setLoading(false);
-        });
-        return unsubscribe;
-    }, []);
-
-    const handleLogin = async () => {
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-        } catch (error) {
-            console.error(error.message);
-        }
-    };
-
-    const handleSignup = async () => {
-        try {
-            await createUserWithEmailAndPassword(auth, email, password);
-        } catch (error) {
-            console.error(error.message);
-        }
-    };
-
+import React, { useState } from 'react';
+import { auth } from '../firebaseConfig'; // Adjust the import path as necessary
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth'; // Import signOut
+import "./Login.css";
+import Layout from './Layout';
+ 
+const Login = ({ onClose }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // State for error messages
+  const [loggedInUser, setLoggedInUser] = useState(null); // State to track logged-in user
+ 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setErrorMessage(''); // Reset error message before login attempt
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      setLoggedInUser(userCredential.user.email); // Set logged-in user's email
+      onClose(); // Assume onClose is to close the login modal or navigate away
+    } catch (error) {
+      setErrorMessage('Login failed. Please try again.');
+      console.error('Login error:', error);
+    }
+  };
+ 
   const handleLogout = async () => {
     try {
       await signOut(auth); // Log out the user
@@ -42,41 +32,48 @@ function Login() {
       console.error('Logout error:', error);
     }
   };
+ 
+  // If the user is logged in, show the logged-in message and logout button
+  if (loggedInUser) {
+    return (
+      <div className="login-container">
+        <h1>You are now logged in as {loggedInUser}</h1>
+        <button onClick={handleLogout}>Log Out</button> {/* Logout button */}
+      </div>
+    );
+  }
+ 
+  // Login form
+  return (
+    <Layout>
+        <div className="login-container">
+        <h1>Sign in Here</h1>
+        <p>If you're not registered yet, please apply through the link below</p>
+        <h2>Login</h2>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        <form onSubmit={handleLogin}>
+            <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            required
+            />
+            <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
+            />
+            <button type="submit">Log In</button>
+        </form>
+        </div>
 
-    // If the user is logged in, show the logged-in message and logout button
-    if (loggedInUser) {
-        return (
-            <div className="login-container">
-                {user ? (
-                    <div>
-                        <div>You are now logged in as {user.email}</div>
-                        <button onClick={handleLogout}>Logout</button>
-                    </div>
-                ) : (
-                    <div className="login-form">
-                        <input
-                            name="email"
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={handleChange}
-                        />
-                        <input
-                            name="password"
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={handleChange}
-                        />
-                        <button onClick={handleLogin}>Login</button>
-                        <button onClick={handleSignup}>Create Account</button>
-                    </div>
-                )}
-            </div>
-        );
-    }
+        </Layout>
 
-}
-
+  );
+};
+ 
 export default Login;
-
+ 
