@@ -4,13 +4,17 @@ import {useNavigate} from "react-router-dom";
 
 function NavBar({options}) {
     const [selectedOption,setSelectedOption] = useState(null);
+    const navigate = useNavigate();
 
+    if (!options || typeof options !== 'object') {
+        console.error('Options prop is missing or not an object:', options);
+        return null;
+      }
 
     const handleOptionClick = (index,val) => {
         setSelectedOption(index);
         navigate(val);
     }
-    const navigate = useNavigate();
 
   return (
     <div className="NavBar">
