@@ -43,37 +43,39 @@ function Login() {
     }
   };
 
-  // If the user is logged in, show the logged-in message and logout button
-  if (loggedInUser) {
-    return (
-        <div className="login-container">
-            {user ? (
-                <div>
-                    <div>You are now logged in as {user.email}</div>
-                    <button onClick={handleLogout}>Logout</button>
-                </div>
-            ) : (
-                <div className="login-form">
-                    <input
-                        name="email"
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={handleChange}
-                    />
-                    <input
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={handleChange}
-                    />
-                    <button onClick={handleLogin}>Login</button>
-                    <button onClick={handleSignup}>Create Account</button>
-                </div>
-            )}
-        </div>
-    );
+    // If the user is logged in, show the logged-in message and logout button
+    if (loggedInUser) {
+        return (
+            <div className="login-container">
+                {user ? (
+                    <div>
+                        <div>You are now logged in as {user.email}</div>
+                        <button onClick={handleLogout}>Logout</button>
+                    </div>
+                ) : (
+                    <div className="login-form">
+                        <input
+                            name="email"
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={handleChange}
+                        />
+                        <input
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={handleChange}
+                        />
+                        <button onClick={handleLogin}>Login</button>
+                        <button onClick={handleSignup}>Create Account</button>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
 }
 
 export default Login;
