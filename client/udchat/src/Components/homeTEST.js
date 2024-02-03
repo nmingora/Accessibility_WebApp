@@ -3,6 +3,7 @@ import Layout from './Layout'; // Adjust the import path as necessary
 
 function ExamplePage() {
   return (
+
     <Layout>
       {/* Your page-specific content goes here */}
       <section>
@@ -10,6 +11,7 @@ function ExamplePage() {
         <p>This is a specific content for the Example Page.</p>
       </section>
     </Layout>
+    
   );
 }
 
