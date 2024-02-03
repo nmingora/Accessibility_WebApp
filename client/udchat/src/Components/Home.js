@@ -68,6 +68,12 @@ function Home() {
 
             {/* Main Content */}
             <main className="main-content">
+                <h>OLLI is a registered not-for-profit caregiver driven company with four areas of focus: </h>
+                <h> Cheer Group; Cheer Works; Cheer Connections; and, Cheer Living </h>
+
+                <p>If you are interested in the CHEER Program, CHEER Works, or CHEER Connections, please contact our fearless leader, Ivey Hartman, at:</p>
+                <p>ihartmancheer@gmail.com</p>
+                <p>Find us on Facebook at Family Connections Cheer</p>
                 {/* News Section */}
                 <section className="news-section">
                     <h2>News</h2>
