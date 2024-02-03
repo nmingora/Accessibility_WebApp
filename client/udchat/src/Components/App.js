@@ -5,6 +5,7 @@ import Home from './Home.js';
 import SignUp from './SignUp.js';
 import Parent from './Parents.js';
 import Admin from './Admin.js';
+import ExamplePage from './homeTEST.js';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/SignUp" element={<SignUp/>} />
         <Route path="/Parent" element={<Parent/>}/>
         <Route path="/Admin" element={<Admin/>}/>
+        <Route path="/ExamplePage" element={<ExamplePage/>}/>
       </Routes>
     </Router>
   );
