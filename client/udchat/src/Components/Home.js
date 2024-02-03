@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate} from 'react-router-dom';
 import './Home.css'; // Importing the CSS file
+import logoImage from '../Images/logo_noName.png'; // Importing the logo image
 
 function Home() {
     
@@ -44,10 +45,11 @@ function Home() {
             {/* Picture Header */}
             <div className="picture-header">
                 {/* Assuming you have an image called 'logo.png' in your public folder */}
-                <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Logo" style={{width: '100%', height: '150px'}} />
+                <img src={logoImage} alt="Logo" style={{width: '100%', height: '150px'}} />
+
             </div>
 
-            
+
             {/* Menu Bar */}
             <div className="menu-bar" onClick={toggleSidebar}>
                 <div className="menu-icon">☰</div> {/* Menu icon */}
