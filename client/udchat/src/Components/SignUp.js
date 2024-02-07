@@ -25,8 +25,6 @@ const Signup = () => {
     setSignupSuccess(true);
   };
 
-
-
   return (
     <Layout>
       <div>
@@ -54,7 +52,6 @@ const Signup = () => {
           <button type="submit">Sign Up</button>
         </form>
       </div>
-
     </Layout>
   )
 }
