@@ -4,20 +4,23 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 const router = express.Router();
 
+// Import database modules
 const mysql = require('mysql');
+const dbConfig = require('./googleConfig.js');
+// Create a connection to the database
+const connection = mysql.createConnection(dbConfig);
+// Open the MySQL connection
+connection.connect(error => {
+    if (error) throw error;
+    console.log('Successfully connected to the database.');
+})
+
+
 
 //setup middleware to do logging
 app.use((req, res, next) => { //for all routes
     console.log(req.method, req.url)
     next(); //keep going
-});
-
-//create MySQL Connection
-const connection = mysql.createConnection({
-    host: '34.130.94.94',
-    user: 'more.gauri.prashant@gmail.com',
-    password: 'shaima',
-    database: 'uptown'
 });
 
 //connect to MySQL
