@@ -1,14 +1,32 @@
-const express = require("express");
-const path = require("path");
+const express = require('express');
+const path = require('path');
 const PORT = process.env.PORT || 3001;
 const app = express();
 const router = express.Router();
 
+const mysql = require('mysql');
+
 //setup middleware to do logging
-app.use((req, res, next, err) => { //for all routes
+app.use((req, res, next) => { //for all routes
+    console.log(req.method, req.url)
     next(); //keep going
-    console.error(err.stack); //handle errors
-    res.status(500).send('Something went wrong!');
+});
+
+//create MySQL Connection
+const connection = mysql.createConnection({
+    host: '34.130.94.94',
+    user: 'more.gauri.prashant@gmail.com',
+    password: 'shaima',
+    database: 'uptown'
+});
+
+//connect to MySQL
+connection.connect((err) => {
+    if (err) {
+        console.error('Error connecting to MySQL:', err);
+    } else {
+        console.log('Connected to MySQL database.');
+    }
 });
 
 //setup serving front-end code
