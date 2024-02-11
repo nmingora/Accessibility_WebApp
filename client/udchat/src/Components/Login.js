@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { auth } from '../firebaseConfig'; // Adjust the import path as necessary
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth'; // Import signOut
 import "./Login.css";
-
+import Layout from './Layout';
+ 
 const Login = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // State for error messages
   const [loggedInUser, setLoggedInUser] = useState(null); // State to track logged-in user
-
+ 
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage(''); // Reset error message before login attempt
@@ -21,7 +22,7 @@ const Login = ({ onClose }) => {
       console.error('Login error:', error);
     }
   };
-
+ 
   const handleLogout = async () => {
     try {
       await signOut(auth); // Log out the user
@@ -31,7 +32,7 @@ const Login = ({ onClose }) => {
       console.error('Logout error:', error);
     }
   };
-
+ 
   // If the user is logged in, show the logged-in message and logout button
   if (loggedInUser) {
     return (
@@ -41,34 +42,38 @@ const Login = ({ onClose }) => {
       </div>
     );
   }
-
+ 
   // Login form
   return (
-    <div className="login-container">
-      <h1>Sign in Here</h1>
-      <p>If you're not registered yet, please apply through the link below</p>
-      <h2>Login</h2>
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-        />
-        <button type="submit">Log In</button>
-      </form>
-    </div>
+    <Layout>
+        <div className="login-container">
+        <h1>Sign in Here</h1>
+        <p>If you're not registered yet, please apply through the link below</p>
+        <h2>Login</h2>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        <form onSubmit={handleLogin}>
+            <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            required
+            />
+            <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
+            />
+            <button type="submit">Log In</button>
+        </form>
+        </div>
+
+        </Layout>
+
   );
 };
-
+ 
 export default Login;
-
+ 

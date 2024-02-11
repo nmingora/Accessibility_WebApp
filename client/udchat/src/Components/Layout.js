@@ -5,6 +5,7 @@ import logoImage from '../Images/logo_noName.png';
 
 function Layout({ children }) {
     const navigate = useNavigate();
+    const navigateHome = () => navigate('/');
     const navigateLogin = () => navigate('/Login');
     const navigateSignUp = () => navigate('/SignUp');
     const navigateAdminPortal = () => navigate('/Admin');
@@ -24,6 +25,7 @@ function Layout({ children }) {
             <div className={isSidebarOpen ? "sidebar open" : "sidebar"}>
                 <button className="close-btn" onClick={toggleSidebar}>✖</button>
                 <div className="sidebar-content">
+                    <button onClick={navigateHome}>Home</button>
                     <button onClick={navigateLogin}>Login</button>
                     <button onClick={navigateSignUp}>Sign up</button>
                     <button onClick={navigateAdminPortal}>Admin Portal</button>

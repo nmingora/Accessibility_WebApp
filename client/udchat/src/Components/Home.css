@@ -40,7 +40,6 @@
     padding-top: 20px; /* Space at the top */
 }
 
-
 .sidebar.open {
     left: 0;
 }
@@ -70,7 +69,6 @@
 .main-content {
     margin: 0 50px; /* Add margin to left and right */
     padding: 20px;
-
     /* Additional styling */
 }
 
@@ -86,4 +84,11 @@
     margin-left: 0px;
 }
 
+/* Centering text for <h> and <p> and making <h> text larger */
+h, p {
+  text-align: center;
+}
 
+h {
+  font-size: larger; /* Makes <h> text larger than the default */
+}

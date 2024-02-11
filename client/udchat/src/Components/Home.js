@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate} from 'react-router-dom';
 import './Home.css'; // Importing the CSS file
 import logoImage from '../Images/logo_noName.png'; // Importing the logo image
+import Layout from './Layout';
 
 function Home() {
     
@@ -39,6 +40,16 @@ function Home() {
 
     // ----------------------------------------AUTHENTICATER/LOGIN/--------------------------------------
 
+
+
+    
+
+    // *********************************************************
+
+    // NEED TO ADD MODULAR LAYOUT ANCHORS TO HOME PAGE. ALL OTHER PAGES HAVE IT ALREADY
+
+    // *********************************************************
+
     return (
         <div className={`home-container ${isSidebarOpen ? 'shifted' : ''}`}>
 
@@ -68,6 +79,12 @@ function Home() {
 
             {/* Main Content */}
             <main className="main-content">
+                <h>OLLI is a registered not-for-profit caregiver driven company with four areas of focus: </h>
+                <h> Cheer Group; Cheer Works; Cheer Connections; and, Cheer Living </h>
+
+                <p>If you are interested in the CHEER Program, CHEER Works, or CHEER Connections, please contact our fearless leader, Ivey Hartman, at:</p>
+                <p>ihartmancheer@gmail.com</p>
+                <p>Find us on Facebook at Family Connections Cheer</p>
                 {/* News Section */}
                 <section className="news-section">
                     <h2>News</h2>
