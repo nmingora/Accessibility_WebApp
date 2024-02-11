@@ -18,10 +18,18 @@ connection.connect(error => {
 
 
 //setup middleware to do logging
-app.use((req, res, next, err) => { //for all routes
+app.use((req, res, next) => { //for all routes
+    console.log(req.method, req.url)
     next(); //keep going
-    console.error(err.stack); //handle errors
-    res.status(500).send('Something went wrong!');
+});
+
+//connect to MySQL
+connection.connect((err) => {
+    if (err) {
+        console.error('Error connecting to MySQL:', err);
+    } else {
+        console.log('Connected to MySQL database.');
+    }
 });
 
 //setup serving front-end code
@@ -45,20 +53,5 @@ app.listen(PORT, () => {
 
 
 
-// TESTING ENVIRONMENT - DATABASE CONNECTION AND CONFIG
 
-// Endpoint to insert a a new user into the database easily
-// This is NOT recommended for production or real applications.
-// Example ONLY to understand HTTP methods.
-
-app.get('/addUserUnsafe', (req, res) => {
-    const { userid, name, email } = req.query;
-    const sql = 'INSERT INTO users (userid, name, email) VALUES (?, ?, ?)';
-    pool.query(sql, [userid, name, email], (error, results) => {
-        if (error) {
-            return res.status(500).send('Error adding user');
-        }
-        res.send(`User added with ID: ${results.insertId}`);
-    });
-});
 
