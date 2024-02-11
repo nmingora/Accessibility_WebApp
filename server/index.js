@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3005;
 const app = express();
 const router = express.Router();
 
@@ -41,3 +41,24 @@ router.route('/')
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
+
+
+
+
+// TESTING ENVIRONMENT - DATABASE CONNECTION AND CONFIG
+
+// Endpoint to insert a a new user into the database easily
+// This is NOT recommended for production or real applications.
+// Example ONLY to understand HTTP methods.
+
+app.get('/addUserUnsafe', (req, res) => {
+    const { userid, name, email } = req.query;
+    const sql = 'INSERT INTO users (userid, name, email) VALUES (?, ?, ?)';
+    pool.query(sql, [userid, name, email], (error, results) => {
+        if (error) {
+            return res.status(500).send('Error adding user');
+        }
+        res.send(`User added with ID: ${results.insertId}`);
+    });
+});
+
