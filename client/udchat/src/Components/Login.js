@@ -45,49 +45,29 @@ const Login = ({ onClose }) => {
 
   // Login form
   return (
+    <Layout>
     <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#FFFFFF' }}>
       
-      {/* Header */}
-      <div style={{ position: 'relative', height: '10%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        
-        {/* UPTOWN */}
-        <div style={{ flex: '0 0 auto', fontFamily: 'Newsreader', fontStyle: 'normal', fontWeight: 500, fontSize: '2.5em', lineHeight: '100%', letterSpacing: '-0.01em', color: '#000000', padding: '10px', marginLeft: '20px' }}>UPTOWN</div>
-        
-        {/* Navigation Links */}
-        <div style={{ flex: '1', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginRight: '20px' }}>
-            <a href="#" style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: 400, fontSize: '1em', lineHeight: '130%', color: '#000000', marginRight: '20px' }}>Log In</a>
-            <a href="#" style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: 400, fontSize: '1em', lineHeight: '130%', color: '#000000', marginRight: '20px' }}>Parent Portal</a>
-            <a href="#" style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: 400, fontSize: '1em', lineHeight: '130%', color: '#000000', marginRight: '20px' }}>Admin Portal</a>
-            <a href="#" style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: 400, fontSize: '1em', lineHeight: '130%', color: '#000000', marginRight: '20px' }}>My Profile</a>
-          </div>
-        
-        {/* Cart button (Sign Up) */}
-        <div style={{ flex: '0 0 auto', height: '100%', background: '#426B1F', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '20px' }}>
-          <a href="#" style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: 600, fontSize: '1.1em', lineHeight: '130%', color: '#FFFFFF' }}>Sign Up</a>
-        </div>
-        
-      </div>
-      
       {/* Log In */}
-      <div style={{ position: 'absolute', width: '505px', height: '63px', left: '20%', transform: 'translateX(-50%)', top: '136px', fontFamily: 'Jacques Francois', fontStyle: 'normal', fontWeight: '400', fontSize: '48px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#426B1F' }}>
+      <div style={{ position: 'absolute', width: '505px', height: '63px', left: '15%', transform: 'translateX(-50%)', top: '136px', fontFamily: 'Jacques Francois', fontStyle: 'normal', fontWeight: '400', fontSize: '48px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#426B1F' }}>
         Log In
       </div>
 
       {/* Username */}
-      <div style={{ position: 'absolute', width: '125px', height: '37px', left: '40px', top: '242px', fontFamily: 'Jacques Francois', fontStyle: 'normal', fontWeight: '400', fontSize: '24px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#000000' }}>
+      <div style={{ position: 'absolute', width: '125px', height: '37px', left: '10px', top: '242px', fontFamily: 'Jacques Francois', fontStyle: 'normal', fontWeight: '400', fontSize: '24px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#000000' }}>
         Username:
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} style={{ marginLeft: '10px' }} />
       </div>
 
       {/* Password */}
-      <div style={{ position: 'absolute', width: '125px', height: '43px', left: '40px', top: '295px', fontFamily: 'Jacques Francois', fontStyle: 'normal', fontWeight: '400', fontSize: '24px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#000000' }}>
+      <div style={{ position: 'absolute', width: '125px', height: '43px', left: '10px', top: '295px', fontFamily: 'Jacques Francois', fontStyle: 'normal', fontWeight: '400', fontSize: '24px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#000000' }}>
         Password:
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ marginLeft: '10px' }} />
       </div>
 
       {/* Yellow Cart button with Student */}
       <button style={{ position: 'absolute', width: '94px', height: '30px', left: '40px', top: '381px', background: '#C5BE1E', borderRadius: '8px' }}>
-        <div style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: '600', fontSize: '16px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#FFFFFF' }}>
+        <div style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: '600', fontSize: '16px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#FFFFFF'}}>
           Student
         </div>
       </button>
@@ -108,7 +88,7 @@ const Login = ({ onClose }) => {
       
     {/* Login button */}
     <button style={{ position: 'absolute', width: '94px', height: '30px', left: '380px', top: '450px', background: '#426B1F', borderRadius: '8px' }} onClick={handleLogin}>
-    <div style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: '600', fontSize: '16px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#FFFFFF' }}>
+    <div style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: '600', fontSize: '16px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#FFFFFF', display: 'flex', justifyContent: 'center',alignItems: 'center'}}>
       Login
     </div>
   </button>
@@ -122,7 +102,7 @@ const Login = ({ onClose }) => {
   
 </div>
 
-
+</Layout>
   );
 };
 
