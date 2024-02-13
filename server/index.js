@@ -21,15 +21,6 @@ app.use((req, res, next) => { //for all routes
     next(); //keep going
 });
 
-//connect to MySQL
-connection.connect((err) => {
-    if (err) {
-        console.error('Error connecting to MySQL:', err);
-    } else {
-        console.log('Connected to MySQL database.');
-    }
-});
-
 //setup serving front-end code
 app.use(express.static(path.join(__dirname, '..', 'client', 'build', 'static')));
 // app.use('/', express.static('static'));
@@ -63,8 +54,8 @@ app.post('/signup', (req, res) => {
         } else {
             res.json({message: 'User signed up successfully.'});
         }
-    })
-})
+    });
+});
 
 //get list of all users who have signed up
 router.route('/')
