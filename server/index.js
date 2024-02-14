@@ -85,11 +85,6 @@ app.post('/signup', (req, res) => {
 });
 
 
-
-
-
-
-
 // SENSITIVE DATA ENDPOINT -> THIS NEEDS TO BE SECURED VIA USER AUTHENTICATION !!!!!!!!!!!!!!!!!!!!!!!!
 // ADMIN: Endpoint to retrieve all applications from the database
 
