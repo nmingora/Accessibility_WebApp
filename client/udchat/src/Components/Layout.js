@@ -11,6 +11,8 @@ function Layout({ children }) {
     const navigateAdminPortal = () => navigate('/Admin');
     const navigateParentPortal = () => navigate('/Parent');
     const navigateMyProfile = () => navigate('/MyProfile');
+    const navigateNews = () => navigate('/News');
+
 
     return (
         <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#FFFFFF' }}>
