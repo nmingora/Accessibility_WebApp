@@ -47,7 +47,7 @@ app.post('/signup', (req, res) => {
     const {email, password} = req.body;
 
     const sql = 'INSERT INTO signedUpUser (email, passwords) VALUES (?, ?)';
-    connection.query(sql, [email, password], (error, results) => {
+    connection.query(sql, [email, password], (error) => {
         if(error) {
             console.error('Error signing up user: ', error);
             res.status(500).json({error: 'An error occured while signing up user.'});
