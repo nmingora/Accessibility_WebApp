@@ -8,6 +8,8 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const [passwordMatchError, setPasswordMatchError] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState('');
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -25,12 +27,10 @@ const Signup = () => {
     e.preventDefault();
     try {
       // Send sign-up data to the backend server
-      const response = await fetch('/api/signup', {
+      const response = await fetch('/api/SignUp', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ email, password })
       });
 
       if (!response.ok) {
@@ -39,12 +39,22 @@ const Signup = () => {
 
       console.log('User signed up successfully');
       setSignupSuccess(true);
+      setPasswordMatchError(false);
+      setConfirmationMessage('Sign up successful!'); // Set confirmation message
+
+      // Clear email, password, and confirmation password fields
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
     } catch (error) {
       console.error('Error signing up user:', error);
     }
+
+    if (password !== confirmPassword) {
+      setPasswordMatchError(true);
+      return;
+    } 
   };
-
-
 
   return (
     <Layout>
@@ -53,8 +63,8 @@ const Signup = () => {
           Sign Up
         </div>
 
-        <div style={{ position: 'absolute', width: '125px', height: '37px', left: '40px', top: '243px', fontFamily: 'Jacques Francois', fontStyle: 'normal', fontWeight: '400', fontSize: '24px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#000000' }}>
-          Create Username:
+        <div style={{ position: 'absolute', width: '125px', height: '37px', left: '75px', top: '243px', fontFamily: 'Jacques Francois', fontStyle: 'normal', fontWeight: '400', fontSize: '24px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#000000' }}>
+          Email:
           <input type="text" value={email} onChange={handleEmailChange} style={{ marginLeft: '10px' }} />
         </div>
 
@@ -62,7 +72,6 @@ const Signup = () => {
           Create Password:
           <input type="password" value={password} onChange={handlePasswordChange} style={{ marginLeft: '10px' }} />
         </div>
-
 
         {/* Student button */}
         <button style={{ position: 'absolute', width: '94px', height: '30px', right: '1700px', top: '484px', background: '#C5BE1E', borderRadius: '8px', display: 'flex', justifyContent: 'center', alignItems: 'center', border: 'none', outline: 'none', cursor: 'pointer' }}>
@@ -88,6 +97,20 @@ const Signup = () => {
           Confirm Password:
           <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} style={{ marginLeft: '10px' }} />
         </div>
+
+        {/* Password match error message */}
+        {passwordMatchError && (
+          <div style={{ position: 'absolute', left: '40px', top: '440px', color: 'red' }}>
+            Passwords do not match
+          </div>
+        )}
+
+        {/* Confirmation message */}
+        {confirmationMessage && (
+          <div style={{ position: 'absolute', left: '40px', top: '440px', color: 'green' }}>
+            Your sign up has been sent and is now pending! Please await for Admin approval.
+          </div>
+        )}
 
         {/* Sign up button */}
         <button onClick={handleSubmit} style={{ position: 'absolute', width: '130px', height: '47px', left: '40px', top: '450px', background: '#426B1F', borderRadius: '8px', display: 'flex', justifyContent: 'center', alignItems: 'center', border: 'none', outline: 'none', cursor: 'pointer' }}>

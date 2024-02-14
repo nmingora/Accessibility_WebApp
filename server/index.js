@@ -46,20 +46,20 @@ app.listen(PORT, () => {
 
 
 
-//users endpoint
-app.post('/api/users', (req, res) => {
-    const {userid, name, email, create_time} = req.body;
+//users endpoint - tester
+// app.post('/api/users', (req, res) => {
+//     const {userid, name, email, create_time} = req.body;
 
-    const sql = 'INSERT INTO users (userid, name, email, create_time) VALUES (?, ?, ?)';
-    connection.query(sql, [userid, name, email, create_time], (err, results) => {
-        if(err) {
-            console.error('Error adding user:', error);
-            res.status(500).json({ error: 'An error occurred while adding user.' });
-        } else {
-            res.json({ message: 'User added successfully.' });
-        }
-    })
-})
+//     const sql = 'INSERT INTO users (userid, name, email, create_time) VALUES (?, ?, ?)';
+//     connection.query(sql, [userid, name, email, create_time], (err, results) => {
+//         if(err) {
+//             console.error('Error adding user:', error);
+//             res.status(500).json({ error: 'An error occurred while adding user.' });
+//         } else {
+//             res.json({ message: 'User added successfully.' });
+//         }
+//     })
+// })
 
 
 //signup endpoint
