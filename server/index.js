@@ -4,8 +4,9 @@ const PORT = process.env.PORT || 3005;
 const app = express();
 const router = express.Router();
 
+//--------------------------- Google Cloud SQL Connection ---------------------------//
 // Import database modules
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 const dbConfig = require('./googleConfig.js');
 // Create a connection to the database
 const connection = mysql.createConnection(dbConfig);
@@ -15,11 +16,18 @@ connection.connect(error => {
     console.log('Successfully connected to the database.');
 })
 
+const pool = mysql.createPool(dbConfig);
+
+// --------------------------- Middleware for Debugging ------------------------------//
+
 //setup middleware to do logging
 app.use((req, res, next) => { //for all routes
     console.log(req.method, req.url)
     next(); //keep going
 });
+
+
+// --------------------------- Base Route and Routes --------------------------------------------//
 
 //setup serving front-end code
 app.use(express.static(path.join(__dirname, '..', 'client', 'build', 'static')));
@@ -27,6 +35,16 @@ app.use(express.static(path.join(__dirname, '..', 'client', 'build', 'static')))
 
 //install router at /api/uptown
 app.use('/api/uptown', router);
+
+
+app.listen(PORT, () => {
+    console.log(`Server listening on ${PORT}`);
+  });
+
+
+// --------------------------- Express Endpoints -------------------------------------//
+
+
 
 //users endpoint
 app.post('/api/users', (req, res) => {
@@ -43,6 +61,8 @@ app.post('/api/users', (req, res) => {
     })
 })
 
+
+//signup endpoint
 app.post('/signup', (req, res) => {
     const {email, password} = req.body;
 
@@ -57,19 +77,37 @@ app.post('/signup', (req, res) => {
     });
 });
 
-//get list of all users who have signed up
-router.route('/')
-    .get((res, req) => {
-        //implement after database is set up
-        res.send('Hello World!');
-    })
 
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+
+
+
+
+
+// SENSITIVE DATA ENDPOINT -> THIS NEEDS TO BE SECURED VIA USER AUTHENTICATION !!!!!!!!!!!!!!!!!!!!!!!!
+// ADMIN: Endpoint to retrieve all applications from the database
+
+router.get('/admin/applications', async (req, res) => {
+    try {
+        const applications = await getAllApplications();
+        res.json(applications);
+    }
+    catch (error) {
+        console.error('Failed to fetch applications:', error);
+        res.status(500).send('Error fetching applications');
+    }
+
 });
 
 
 
 
+// -------------------------------- Backend Functions ------------------------------------------//
+
+
+// function to get all the applications from the database
+async function getAllApplications() {
+    const [results] = await pool.query('SELECT * FROM applications')
+    return results;
+}
 
 
