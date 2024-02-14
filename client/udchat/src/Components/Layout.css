@@ -1,97 +1,71 @@
-/* Layout and Transition Styles */
-.home-container {
-    transition: margin-left 0.3s;
-}
-
-.shifted {
-    margin-left: 250px; /* Adjust based on the sidebar width */
-}
-
-/* Menu Bar Styles */
-.menu-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    width: 100%; /* Ensure it spans the full width */
-    background: transparent; /* Transparent background, can adjust as needed */
-}
-
-.menu-icon {
-    font-size: 30px;
-    cursor: pointer;
-    color: rgb(106, 79, 155); /* Purple color for the icon */
-    padding: 20px;
-}
-
-/* Sidebar Styles */
-.sidebar {
-    width: 250px;
-    position: fixed;
-    left: -250px; /* Start off-screen */
-    top: 150px; /* Offset for the picture header */
-    height: calc(100% - 150px); /* Adjust height based on the header */
-    transition: left 0.3s;
-    background: linear-gradient(135deg, #6A4F9B 0%, #9B6FA4 100%);
-    box-shadow: 3px 0 15px rgba(0,0,0,0.2);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 20px;
-}
-
-.sidebar.open {
-    left: 0; /* Slide in */
-}
-
-.close-btn {
-    /* Close button styles */
-    cursor: pointer;
-    color: white; /* Ensure visibility against the sidebar background */
-    font-size: 24px; /* Adjust size as needed */
-    border: none;
-    background: none;
-    position: absolute;
-    right: 20px;
-    top: 20px;
-}
-
-/* Sidebar Button Styles */
-.sidebar-content button {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    margin: 10px 0;
-    padding: 10px 20px;
-    width: 90%;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.sidebar-content button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: scale(1.05);
-}
-
-/* Main Content Styles */
-.main-content {
-    margin: 0 50px; /* Margins to left and right */
-    padding-top: 20px; /* Padding at the top */
-}
-
-/* Picture Header for Logo */
-.picture-header {
+/* styles.css */
+.container {
+    position: relative;
     width: 100%;
-    height: 150px; /* Fixed height for logo */
-    /* Replace the background-color with a background-image for the logo */
-    background-size: contain; /* Ensure the logo fits without being cropped */
-    background-position: center; /* Center the logo */
-    background-repeat: no-repeat; /* Do not repeat the logo */
-}
+    min-height: 100vh;
+    background: #FFFFFF; /* Set the background color to white */
+  }
+  
+  .header {
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    flex: 0 0 auto;
+    font-family: Newsreader;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2.5em;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #000000;
+    padding: 10px;
+    margin-left: 20px;
+  }
+  
+  .nav-links {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 100px;
+  }
+  
+  .nav-links a {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1em;
+    line-height: 130%;
+    color: #000000;
+    margin-right: 20px;
+  }
+  
+  .cartButtonStyle {
+    position: absolute;
+    width: 100px;
+    height: 40px;
+    right: 10px;
+    top: 10px;
+    background: #426B1F;
+    border-radius: 8px;
+    display: flex;
+    align-Items: center;
+    justify-Content: center;
+  }
 
-/* Adjust .home-container margin when sidebar is not shifted */
-.home-container:not(.shifted) {
-    margin-left: 0px;
-}
+  .buttonTextStyle{
+    font-Family: Inter;
+    font-Style: normal;
+    font-Weight: 600;
+    font-Size: 1em;
+    line-Height: 130%;
+    color: #FFFFFF;
+    padding: 10px 20px;
+  }
+  
+  
+  

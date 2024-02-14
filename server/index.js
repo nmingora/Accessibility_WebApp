@@ -11,12 +11,19 @@ const dbConfig = require('./googleConfig.js');
 // Create a connection to the database
 const connection = mysql.createConnection(dbConfig);
 // Open the MySQL connection
-connection.connect(error => {
-    if (error) throw error;
-    console.log('Successfully connected to the database.');
-})
+async function initializeDatabase() {
+    try{
+        const connection = mysql.createConnection(dbconfig);
+        console.log('Successfully connected to the database.');
+        return connection;
+    }
+    catch (error) {
+        console.error('Failed to connect to the database', error);
+        throw error;
+    }
+}
 
-const pool = mysql.createPool(dbConfig);
+
 
 // --------------------------- Middleware for Debugging ------------------------------//
 
@@ -101,8 +108,8 @@ router.get('/admin/applications', async (req, res) => {
 
 // function to get all the applications from the database
 async function getAllApplications() {
-    const [results] = await pool.query('SELECT * FROM applications')
+    const connection = await initializeDatabase();
+    const [results] = await connection.query('SELECT * FROM applications')
     return results;
 }
-
 

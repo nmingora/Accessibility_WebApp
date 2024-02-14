@@ -46,63 +46,27 @@ const Login = ({ onClose }) => {
   // Login form
   return (
     <Layout>
-    <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: '#FFFFFF' }}>
-      
-      {/* Log In */}
-      <div style={{ position: 'absolute', width: '505px', height: '63px', left: '15%', transform: 'translateX(-50%)', top: '136px', fontFamily: 'Jacques Francois', fontStyle: 'normal', fontWeight: '400', fontSize: '48px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#426B1F' }}>
-        Log In
-      </div>
-
-      {/* Username */}
-      <div style={{ position: 'absolute', width: '125px', height: '37px', left: '10px', top: '242px', fontFamily: 'Jacques Francois', fontStyle: 'normal', fontWeight: '400', fontSize: '24px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#000000' }}>
-        Username:
-        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} style={{ marginLeft: '10px' }} />
-      </div>
-
-      {/* Password */}
-      <div style={{ position: 'absolute', width: '125px', height: '43px', left: '10px', top: '295px', fontFamily: 'Jacques Francois', fontStyle: 'normal', fontWeight: '400', fontSize: '24px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#000000' }}>
-        Password:
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ marginLeft: '10px' }} />
-      </div>
-
-      {/* Yellow Cart button with Student */}
-      <button style={{ position: 'absolute', width: '94px', height: '30px', left: '40px', top: '381px', background: '#C5BE1E', borderRadius: '8px' }}>
-        <div style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: '600', fontSize: '16px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#FFFFFF'}}>
-          Student
+      <div className="login-container">
+        <div className="login-title">Log In</div>
+        <div className="input-container username-container">
+          Username:
+          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
-      </button>
-
-      {/* Pink Cart button with Admin */}
-      <button style={{ position: 'absolute', width: '94px', height: '30px', left: '160px', top: '381px', background: '#0500FD', borderRadius: '8px' }}>
-        <div style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: '600', fontSize: '16px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#FFFFFF' }}>
-          Admin
+        <div className="input-container password-container">
+          Password:
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
-      </button>
-
-      {/* Blue Cart button with Parent */}
-      <button style={{ position: 'absolute', width: '94px', height: '30px', left: '280px', top: '381px', background: '#FA00FF', borderRadius: '8px' }}>
-        <div style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: '600', fontSize: '16px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#FFFFFF' }}>
-          Parent
-        </div>
-      </button>
-      
-    {/* Login button */}
-    <button style={{ position: 'absolute', width: '94px', height: '30px', left: '380px', top: '450px', background: '#426B1F', borderRadius: '8px' }} onClick={handleLogin}>
-    <div style={{ fontFamily: 'Inter', fontStyle: 'normal', fontWeight: '600', fontSize: '16px', lineHeight: '130%', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#FFFFFF', display: 'flex', justifyContent: 'center',alignItems: 'center'}}>
-      Login
-    </div>
-  </button>
-  
-  {/* Error message */}
-  {errorMessage && (
-    <div style={{ position: 'absolute', top: '500px', left: '20%', transform: 'translateX(-50%)', color: 'red' }}>
-      {errorMessage}
-    </div>
-  )}
-  
-</div>
-
-</Layout>
+        <button className="user-type-button student-button">Student</button>
+        <button className="user-type-button admin-button">Admin</button>
+        <button className="user-type-button parent-button">Parent</button>
+        <button className="login-button" onClick={handleLogin}>Login</button>
+        {errorMessage && (
+          <div className="error-message">
+            {errorMessage}
+          </div>
+        )}
+      </div>
+    </Layout>
   );
 };
 
