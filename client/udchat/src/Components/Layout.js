@@ -4,13 +4,15 @@ import './Layout.css'; // Import the CSS file
 import logoImage from '../Images/logo_noName.png';
 
 function Layout({ children }) {
-  const navigate = useNavigate();
-  const navigateHome = () => navigate('/');
-  const navigateLogin = () => navigate('/Login');
-  const navigateSignUp = () => navigate('/SignUp');
-  const navigateAdminPortal = () => navigate('/Admin');
-  const navigateParentPortal = () => navigate('/Parent');
-  const navigateMyProfile = () => navigate('/MyProfile');
+    const navigate = useNavigate();
+    const navigateHome = () => navigate('/');
+    const navigateLogin = () => navigate('/Login');
+    const navigateSignUp = () => navigate('/SignUp');
+    const navigateAdminPortal = () => navigate('/Admin');
+    const navigateParentPortal = () => navigate('/Parent');
+    const navigateMyProfile = () => navigate('/MyProfile');
+    const navigateNews = () => navigate('/News');
+
 
   return (
     <div className="container">
