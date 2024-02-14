@@ -3,13 +3,15 @@ import React, { useEffect, useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
 import 'pdfjs-dist/legacy/build/pdf.worker';
 
+
+
 const CustomPdfViewer = ({ fileUrl }) => {
   const [pagesRendered, setPagesRendered] = useState([]);
 
   useEffect(() => {
     const fetchPdf = async () => {
       if (fileUrl) {
-        const pdfjsWorker = require('pdfjs-dist/legacy/build/pdf.worker.entry');
+        const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry');
         pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
         try {
