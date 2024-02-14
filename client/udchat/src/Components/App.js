@@ -6,7 +6,7 @@ import SignUp from './SignUp.js';
 import Parent from './Parents.js';
 import Admin from './Admin.js';
 import MyProfile from './MyProfile.js';
-
+import News from './News.js'
 function App() {
   return (
     <Router>
@@ -17,6 +17,7 @@ function App() {
         <Route path="/Parent" element={<Parent/>}/>
         <Route path="/Admin" element={<Admin/>}/>
         <Route path="/MyProfile" element={<MyProfile/>}/>
+        <Route path="/News" element={<News/>}/>
       </Routes>
     </Router>
   );

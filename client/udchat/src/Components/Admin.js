@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { auth } from '../firebaseConfig'; // Adjust the import path as necessary
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth'; // Import signOut
 import Layout from './Layout';
+import { useNavigate } from 'react-router-dom';
  
 const AdminLogin = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // State for error messages
   const [loggedInUser, setLoggedInUser] = useState(null); // State to track logged-in user
- 
+  const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage(''); // Reset error message before login attempt
@@ -20,6 +22,10 @@ const AdminLogin = ({ onClose }) => {
       setErrorMessage('Login failed. Please try again.');
       console.error('Login error:', error);
     }
+  };
+  
+  const goToNews = () => {
+    navigate('/News'); // Adjust this to your desired route
   };
  
   const handleLogout = async () => {
@@ -37,10 +43,16 @@ const AdminLogin = ({ onClose }) => {
     return (
       <div className="login-container">
         <h1>You are now logged in as {loggedInUser}</h1>
+        <button type="button" onClick={goToNews}>Update Newsletter</button>
+
         <button onClick={handleLogout}>Log Out</button> {/* Logout button */}
       </div>
     );
   }
+
+  
+  
+  
  
   // Login form
   return (
