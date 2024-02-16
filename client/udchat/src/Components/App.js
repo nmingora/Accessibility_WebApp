@@ -6,18 +6,26 @@ import SignUp from './SignUp.js';
 import Parent from './Parents.js';
 import Admin from './Admin.js';
 import MyProfile from './MyProfile.js';
-import News from './News.js'
+import News from './News.js';
+import AdminProcessApps from './AdminProcessApps.js';
+
+
+
+
+
+
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/Login" element={<Login/>}/>
-        <Route path="/SignUp" element={<SignUp/>} />
+        <Route path="/signup" element={<SignUp/>} />
         <Route path="/Parent" element={<Parent/>}/>
         <Route path="/Admin" element={<Admin/>}/>
         <Route path="/MyProfile" element={<MyProfile/>}/>
         <Route path="/News" element={<News/>}/>
+        <Route path="/AdminProcessApps" element={<AdminProcessApps/>}/>
       </Routes>
     </Router>
   );

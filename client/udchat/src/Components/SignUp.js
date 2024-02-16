@@ -28,7 +28,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       // Send sign-up data to the backend server
-      const response = await fetch('/api/SignUp', {
+      const response = await fetch('/api/uptown/signup', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ email, password })

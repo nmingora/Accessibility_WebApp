@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate} from 'react-router-dom';
 import './Home.css'; // Importing the CSS file
 import logoImage from '../Images/logo_noName.png'; // Importing the logo image
 import Layout from './Layout';
+import CustomPdfViewer from './CustomPdfViewer';
 
 function Home() {
   
@@ -25,6 +26,8 @@ function Home() {
         navigate('/MyProfile');
     }
   
+
+   
     // ----------------------------------------SIDEBAR FUNCTIONALITY--------------------------------------
   
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -36,6 +39,22 @@ function Home() {
     // ----------------------------------------NEWS AND ANNOUNCEMENTS------------------------------------
   
   
+  
+
+  const [viewPdf, setViewPdf] = useState(null);
+
+  // Fetch the PDF URL from localStorage when the component mounts
+  useEffect(() => {
+    const savedPdf = localStorage.getItem('savedPdf');
+    if (savedPdf) {
+      setViewPdf(savedPdf);
+    }
+  }, []);
+
+
+
+
+
   
     // ----------------------------------------AUTHENTICATER/LOGIN/--------------------------------------
   
@@ -55,7 +74,11 @@ function Home() {
         <div className="section-title">About Us</div>
         <div className="section-content">Welcome to Uptown! Join our interactive and intuitive server, where you have the ability to chat with friends, check news updates, keep up-to-date with events and way more!</div>
         <div className="section-title">Newsletter</div>
-        <div className="rectangle"></div>
+        {viewPdf ? (
+          <CustomPdfViewer fileUrl={viewPdf} />
+        ) : (
+          <div className="rectangle">Newsletter not available</div>
+        )}
         <div className="section-title">Updates</div>
         <div className="section-content">No updates at this time</div>
       </div>
