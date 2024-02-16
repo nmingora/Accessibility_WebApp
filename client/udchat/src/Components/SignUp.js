@@ -59,6 +59,55 @@ const Signup = () => {
 
   return (
     <Layout>
+      <form onSubmit={handleSubmit} className="formContainer">
+        <div>
+          <label className="signUpText">Sign Up</label>
+        </div>
+        <div className="inputContainer">
+          <label>First Name:</label>
+          <input type="text" className="firstName" placeholder="First Name" />
+        </div>
+        <div className="inputContainer">
+          <label>Last Name:</label>
+          <input type="text" className="lastName" placeholder="Last Name" />
+        </div>
+        <div className="inputContainer">
+          <label>DOB:</label>
+          <input type="date" className="dob" placeholder="DOB" />
+        </div>
+        <div className="inputContainer">
+          <label>Create Username:</label>
+          <input type="text" className="createUsername" placeholder="Create Username" />
+        </div>
+        <div className="inputContainer">
+          <label>Create Password:</label>
+          <input type="password" className="createPassword" placeholder="Create Password" />
+        </div>
+        <div className="inputContainer">
+          <label>Confirm Password:</label>
+          <input type="password" className="confirmPassword" placeholder="Confirm Password" />
+        </div>
+        <div className="inputContainer">
+          <label>Email:</label>
+          <input type="email" className="email" onChange={handleEmailChange} value={email} placeholder="Email" />
+        </div>
+        <div className="inputContainer">
+          <label>Phone Number:</label>
+          <input type="tel" className="phoneNumber" placeholder="Phone Number" />
+        </div>
+        <div className="inputContainer">
+          <label>Address:</label>
+          <input type="text" className="address" placeholder="Address" />
+        </div>
+        <div className="inputContainer">
+          <label>Notes:</label>
+          <textarea className="notes" placeholder="Notes"></textarea>
+        </div>
+        <div>
+          <button type="submit" className="cartButton">Sign Up</button>
+        </div>
+      </form>
+      
     
 
     </Layout>

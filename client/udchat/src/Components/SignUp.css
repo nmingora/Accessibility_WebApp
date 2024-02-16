@@ -1,0 +1,82 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center the form vertically */
+  height: 100vh; /* Set the height to fill the entire viewport */
+  margin-left: 20px; /* Adjust left margin */
+  margin-right: 20px; /* Adjust right margin */
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%; /* Ensure the input container spans the full width */
+}
+
+.inputContainer label {
+  margin-right: 10px;
+  width: 100px; /* Adjust label width as needed */
+  text-align: right; /* Align label text to the right */
+}
+
+/* Optional: Adjust the width of the input fields */
+.inputContainer input,
+.inputContainer textarea {
+  width: 600px; /* Adjust width as needed */
+}
+.inputContainer textarea.notes {
+  width: 600px; /* Adjust width as needed */
+  resize: both; /* Allow both horizontal and vertical resizing */
+  min-width: 200px; /* Set minimum width */
+  min-height: 100px; /* Set minimum height */
+}
+
+
+
+.signUpText{
+  position: absolute;
+  width: 285px;
+  height: 77px;
+  right: 500px; /* Center horizontally */
+  top: 114px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 130%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #426B1F;
+}
+
+
+.cartButton {
+  position: absolute;
+  width: 126px;
+  height: 48px;
+  right: 640px;
+  top: 905px;
+  background: #426B1F;
+  border-radius: 8px;
+}
+
+
+.signUp {
+  position: absolute;
+  width: 61px;
+  height: 21px;
+  left: calc(50% - 61px/2 + 0.5px);
+  top: calc(50% - 21px/2);
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 130%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #FFFFFF;
+}
