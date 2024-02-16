@@ -73,6 +73,11 @@ function Home() {
         <div className="home-page-container">
         <div className="section-title">About Us</div>
         <div className="section-content">Welcome to Uptown! Join our interactive and intuitive server, where you have the ability to chat with friends, check news updates, keep up-to-date with events and way more!</div>
+        <div className="section-title">Contact Us!</div>
+        <p>Please contact our fearless leader, Ivey Hartman, at: <a href="mailto:ihartmancheer@gmail.com">ihartmancheer@gmail.com</a></p>
+        <p>Find us on Facebook at <a href="https://www.facebook.com/FamilyConnectionsCheer">Family Connections Cheer</a></p>
+
+        
         <div className="section-title">Newsletter</div>
         {viewPdf ? (
           <CustomPdfViewer fileUrl={viewPdf} />
@@ -90,3 +95,4 @@ function Home() {
   
   export default Home;
   
+
