@@ -9,11 +9,11 @@ header {
   }
 
 .adminToolBar {
-    display: flex;
+    display: absolute;
     align-items: center; /* Align items vertically */
     gap: 10px; /* Space between each element */
     padding: 10px; /* Padding around the toolbar content */
-    margin-left: 0px;
+    margin-left: 40px;
     margin-top: 100px;
   }
   
@@ -37,4 +37,32 @@ header {
     border-color: #007bff; /* Blue border on focus */
     outline: none; /* Remove default focus outline */
   }
+
+  .applicationView {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds space between each application's details */
+    padding: 20px; /* Adds some padding around the entire application view container */
+  }
+  
+  .applicationView > div {
+    display: flex;
+    flex-direction: row; /* Aligns the application details in a row */
+    justify-content: space-between; /* Spaces out the application details evenly */
+    align-items: center; /* Aligns items vertically in the center */
+    padding: 10px;
+    border-bottom: 1px solid #ccc; /* Adds a subtle line between each application */
+  }
+  
+  .applicationView p {
+    margin: 0 10px; /* Adds a bit of margin around each piece of data */
+    flex: 1; /* Allows each <p> to take equal width */
+    text-align: left; /* Ensures text is aligned to the left */
+    color: black; /* Ensures text color is black */
+    font-family: 'Arial', sans-serif; /* Sets a nice, readable font */
+    font-size: 16px; /* Sets the font size to 16px for readability */
+    line-height: 1.5; /* Increases line height for better readability */
+  }
+  
+  
 

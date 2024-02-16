@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors');
 const path = require("path");
 const PORT = process.env.PORT || 3005;
 const app = express();
@@ -13,7 +14,7 @@ const connection = mysql.createConnection(dbConfig);
 // Open the MySQL connection
 async function initializeDatabase() {
     try{
-        const connection = mysql.createConnection(dbconfig);
+        const connection = mysql.createConnection(dbConfig);
         console.log('Successfully connected to the database.');
         return connection;
     }
@@ -32,6 +33,8 @@ app.use((req, res, next) => { //for all routes
     console.log(req.method, req.url)
     next(); //keep going
 });
+
+app.use(cors());
 
 
 // --------------------------- Base Route and Routes --------------------------------------------//
@@ -109,7 +112,7 @@ router.get('/admin/applications', async (req, res) => {
 // function to get all the applications from the database
 async function getAllApplications() {
     const connection = await initializeDatabase();
-    const [results] = await connection.query('SELECT * FROM applications')
+    const [results] = await connection.query('SELECT * FROM Application')
     return results;
 }
 

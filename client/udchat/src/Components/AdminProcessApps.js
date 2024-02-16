@@ -12,13 +12,30 @@ function AdminProcessApps() {
     }
 
 
+    // ----------------------------- DISPLAY FUNCTIONALITY -----------------------------------
 
-    // ---------------------------- SEARCHING & DISPLAYING INFORMATION ----------------------
+    const[applications, setApplications] = useState([]);
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3005/api/uptown/admin/applications');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setApplications(data);
+      } catch (error) {
+        console.error("There was a problem with the fetch operation: ", error);
+      }
+    }
+
+
+
+    // ---------------------------- SEARCHING TERMS ------------------------------------------
 
     const searchNameField = useRef(null);
     const searchEmailField = useRef(null);
     const searchDependentName = useRef(null);
-
 
 
 
@@ -96,6 +113,9 @@ function AdminProcessApps() {
     }
 
 
+    console.log(applications)
+
+    // --------------------------- UI VIEW AND WEB APP ------------------------------------------
 
   return (
     <Layout>
@@ -103,12 +123,14 @@ function AdminProcessApps() {
         <div className="adminToolBar">
 
           {/* Buttons */}
-          <button>SEARCH</button>
+          <button onClick={fetchData}>SEARCH</button>
+
 
           {/* Textbox */}
           <input type="text" placeholder="Enter name for search" ref={searchNameField}/>
           <input type='text' placeholder='email' ref={searchEmailField}/>
           <input type='text' placeholder="Dependent's Name" ref={searchDependentName}/>
+
 
           {/** Sorting Visibility */}
           <select onChange = {handleVisibilityChange} value={visibilityOption} placeholder="Sort Visibility">
@@ -118,8 +140,7 @@ function AdminProcessApps() {
             <option value="all">Any Status</option>
           </select>
 
-          
-
+      
           {/** Sort by Value */}
           <select onChange={handleSortTermChange} value={sortTerm} placeholder="Sort By">
             <option value='name'>Name</option>
@@ -128,6 +149,7 @@ function AdminProcessApps() {
             <option value='dependentName'>Dependent's Name</option>
           </select>
 
+
           {/** Sorting Direction */}
           <select onChange={handleSortingDirChange} value={sortDirection}>
             <option value='ascending'>Ascending</option>
@@ -135,10 +157,17 @@ function AdminProcessApps() {
           </select>
         </div>
 
+
+        {/** VIEW THE APPLICATIONS HERE */}
         <div className='applicationView'>
-
-
-
+          {applications.map((application) => (
+            <div key={application.id}>
+              <p>First Name: {application.fName}</p>
+              <p>Last Name: {application.lName}</p>
+              <p>Email: {application.email}</p>  
+              <p>Status: {application.status}</p>            
+            </div>
+          ))}
         </div>
     </Layout>
 
