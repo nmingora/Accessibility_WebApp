@@ -60,17 +60,17 @@ const Signup = () => {
   }
 
   const validateInputs = () => {
-    validPasswords = password === confirmPassword;
-    validEmail = email.includes("@")&&(email.includes(".com")||email.includes(".ca"));
-    validPhoneNumber = /^[0-9]{10}&/.test(phoneNumber);
+    const validPasswords = password === confirmPassword;
+    const validEmail = email.includes("@")&&(email.includes(".com")||email.includes(".ca"));
+    const validPhoneNumber = /^[0-9]{10}&/.test(phoneNumber);
 
-    return validPasswords&&validEmail&validPhone;
+    return validPasswords&&validEmail&validPhoneNumber;
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if(validateInputs()){
-      const applicationData = [fName,lName,username,password,phoneNumber,dob,address,notes];
+      const applicationData = [firstName,lastName,createUsername,password,phoneNumber,dob,address,notes];
       try{
         const response = await fetch("/api/uptown/signup",
         {
@@ -81,7 +81,7 @@ const Signup = () => {
         );
         
         const message = await response.json().message;
-        setComfirmationMessage(message);
+        setConfirmationMessage(message);
 
       }catch(err){
         console.log("Error: ",err)
@@ -95,7 +95,7 @@ const Signup = () => {
       {confirmationMessage && <div className="confirmationMessage">{confirmationMessage}</div>}
 
       {/* Display error message if password and confirm password do not match */}
-      {passwordMatchError && <div className="error">Passwords do not match</div>}
+      {confirmPassword && <div className="error">Passwords do not match</div>}
 
       <form onSubmit={handleSubmit} className="formContainer">
         <div>
