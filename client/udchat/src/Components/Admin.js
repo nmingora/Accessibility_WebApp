@@ -3,6 +3,7 @@ import { auth } from '../firebaseConfig'; // Adjust the import path as necessary
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth'; // Import signOut
 import Layout from './Layout';
 import { useNavigate } from 'react-router-dom';
+import './Admin.css';
  
 const AdminLogin = ({ onClose }) => {
   const [email, setEmail] = useState('');

@@ -72,7 +72,7 @@ const Signup = () => {
     if(validateInputs()){
       const applicationData = [firstName,lastName,createUsername,password,phoneNumber,dob,address,notes];
       try{
-        const response = await fetch("/api/uptown/apply",
+        const response = await fetch("http://localhost:3005/api/uptown/apply",
         {
           method:"Put",
           headers:{'content-Type':'application/json'},
