@@ -71,10 +71,10 @@ app.listen(PORT, () => {
 
 //signup endpoint
 app.post('/signup', (req, res) => {
-    const {email, password} = req.body;
+    const {fName, lName, birthDate, userName, password, email, phoneNumber, address, notes} = req.body;
 
     const sql = 'INSERT INTO signedUpUser (fName, lName, birthDate, userName, password, email, phoneNumber, address, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    connection.query(sql, [email, password], (error) => {
+    connection.query(sql, [fName, lName, birthDate, userName, password, email, phoneNumber, address, notes], (error) => {
         if(error) {
             console.error('Error signing up user: ', error);
             res.status(500).json({error: 'An error occured while signing up user.'});
