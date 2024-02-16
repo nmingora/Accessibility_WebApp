@@ -72,8 +72,8 @@ const Signup = () => {
           lastName,
           dob,
           createUsername,
-          email,
           password,
+          email,
           phoneNumber,
           address,
           notes
