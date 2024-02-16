@@ -11,6 +11,12 @@ const AdminLogin = ({ onClose }) => {
   const [loggedInUser, setLoggedInUser] = useState(null); // State to track logged-in user
   const navigate = useNavigate();
 
+
+  const navigateToApplications = () => {
+    navigate('/AdminProcessApps');
+  }
+
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage(''); // Reset error message before login attempt
@@ -23,10 +29,17 @@ const AdminLogin = ({ onClose }) => {
       console.error('Login error:', error);
     }
   };
+
   
   const goToNews = () => {
     navigate('/News'); // Adjust this to your desired route
   };
+
+
+
+
+
+  
  
   const handleLogout = async () => {
     try {
@@ -44,6 +57,8 @@ const AdminLogin = ({ onClose }) => {
       <div className="login-container">
         <h1>You are now logged in as {loggedInUser}</h1>
         <button type="button" onClick={goToNews}>Update Newsletter</button>
+        <button type ="button" onClick={navigateToApplications}>Process Applications</button>
+
 
         <button onClick={handleLogout}>Log Out</button> {/* Logout button */}
       </div>

@@ -1,0 +1,40 @@
+header {
+    color: #2c3e50; /* Sets the text color */
+    font-size: 24px; /* Sets the font size */
+    font-weight: bold; /* Makes the font bold */
+    text-align: center; /* Centers the text */
+    padding: 20px 0; /* Adds padding above and below the text */
+    background-color: #ecf0f1; /* Light background color for the header */
+    width: 100%; /* Ensure the header extends full width */
+  }
+
+.adminToolBar {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 10px; /* Space between each element */
+    padding: 10px; /* Padding around the toolbar content */
+    margin-left: 0px;
+    margin-top: 100px;
+  }
+  
+  .adminToolBar button {
+    background-color: green; /* Green background */
+    color: white; /* White text */
+    border: none; /* Remove default border */
+    padding: 10px 15px; /* Padding inside the button */
+    border-radius: 5px; /* Rounded edges */
+    cursor: pointer; /* Pointer cursor on hover */
+  }
+  
+  .adminToolBar input[type="text"], .adminToolBar select {
+    padding: 5px 10px; /* Padding inside inputs and selects */
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 5px; /* Slightly rounded edges */
+  }
+  
+  /* Focus state for inputs and selects */
+  .adminToolBar input[type="text"]:focus, .adminToolBar select:focus {
+    border-color: #007bff; /* Blue border on focus */
+    outline: none; /* Remove default focus outline */
+  }
+

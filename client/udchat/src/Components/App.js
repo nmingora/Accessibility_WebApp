@@ -6,7 +6,14 @@ import SignUp from './SignUp.js';
 import Parent from './Parents.js';
 import Admin from './Admin.js';
 import MyProfile from './MyProfile.js';
-import News from './News.js'
+import News from './News.js';
+import AdminProcessApps from './AdminProcessApps.js';
+
+
+
+
+
+
 function App() {
   return (
     <Router>
@@ -18,6 +25,7 @@ function App() {
         <Route path="/Admin" element={<Admin/>}/>
         <Route path="/MyProfile" element={<MyProfile/>}/>
         <Route path="/News" element={<News/>}/>
+        <Route path="/AdminProcessApps" element={<AdminProcessApps/>}/>
       </Routes>
     </Router>
   );
