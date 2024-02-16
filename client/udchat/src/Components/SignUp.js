@@ -9,7 +9,6 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signupSuccess, setSignupSuccess] = useState(false);
-  const [passwordMatchError, setPasswordMatchError] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState('');
 
   const [firstName, setFirstName] = useState('');
@@ -60,60 +59,40 @@ const Signup = () => {
     setConfirmPassword(e.target.value);
   }
 
+  const validateInputs = () => {
+    validPasswords = password === confirmPassword;
+    validEmail = email.includes("@")&&(email.includes(".com")||email.includes(".ca"));
+    validPhoneNumber = /^[0-9]{10}&/.test(phoneNumber);
+
+    return validPasswords&&validEmail&validPhone;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // Send sign-up data to the backend server
-      const response = await fetch('/api/uptown/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          dob,
-          createUsername,
-          password,
-          email,
-          phoneNumber,
-          address,
-          notes
-        })
-      });
+    if(validateInputs()){
+      const applicationData = [fName,lName,username,password,phoneNumber,dob,address,notes];
+      try{
+        const response = await fetch("/api/uptown/signup",
+        {
+          method:"Put",
+          headers:{'content-Type':'application/json'},
+          body: JSON.stringify(applicationData)
+        }
+        );
+        
+        const message = await response.json().message;
+        setComfirmationMessage(message);
 
-      if (!response.ok) {
-        throw new Error('Failed to sign up');
+      }catch(err){
+        console.log("Error: ",err)
       }
-
-      console.log('User signed up successfully');
-      setSignupSuccess(true);
-      setPasswordMatchError(false);
-      setConfirmationMessage('Sign up successful!'); // Set confirmation message
-
-      // Clear email, password, and confirmation password fields
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      setFirstName('');
-      setLastName('');
-      setDob('');
-      setCreateUsername('');
-      setPhoneNumber('');
-      setAddress('');
-      setNotes('');
-    } catch (error) {
-      console.error('Error signing up user:', error);
-    }
-
-    if (password !== confirmPassword) {
-      setPasswordMatchError(true);
-      return;
     }
   };
 
   return (
     <Layout>
       {/* Display confirmation message if sign up was successful */}
-      {signupSuccess && <div className="confirmationMessage">{confirmationMessage}</div>}
+      {confirmationMessage && <div className="confirmationMessage">{confirmationMessage}</div>}
 
       {/* Display error message if password and confirm password do not match */}
       {passwordMatchError && <div className="error">Passwords do not match</div>}
