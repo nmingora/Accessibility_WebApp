@@ -1,64 +1,84 @@
-h1 {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 2.5rem; /* 40px */
-    font-weight: 300; /* Lighter font weight for a modern look */
-    color: #3d3b3b; /* Deep gray for text */
-    text-align: center;
-    margin-bottom: 1rem; /* 16px */
-    letter-spacing: -1px; /* Slightly tighter letter spacing */
-    line-height: 1.2; /* Adjust line height for better readability */
-    text-transform: uppercase; /* Optional: Adds formality */
-    text-shadow: 1px 1px 0px #eee; /* Subtle shadow for depth - can be adjusted or removed */
-  }
-  
+/* Main body and overall layout */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-.login-container {
-    max-width: 400px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    text-align: center;
-  }
-  
-  .login-container h1, .login-container h2 {
-    color: #333;
-  }
-  
-  .login-container p {
-    color: #666;
-  }
-  
+/* Styling for both login and logged-in containers */
+.login-container, .logged-in-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Adjust start for top alignment */
+  max-width: 600px;
+  margin: 40px auto; /* Centering in the viewport with top margin */
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
 
-  .login-container input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box; /* Ensures padding doesn't add to the width */
-  }
-  
-  .login-container button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s ease-in-out;
-  }
-  
-  .login-container button:hover {
-    background-color: #0056b3;
-  }
+/* Headings within the container */
+.login-container h1, .logged-in-container h1 {
+  font-size: 2rem;
+  color: #426b1f;
+  margin: 0.5rem 0;
+}
 
-  body {
-    font-family: 'Roboto', sans-serif;
-  }
-  
-  
+/* Paragraphs for additional information */
+.login-container p, .logged-in-container p {
+  color: #666;
+  font-size: 1rem;
+}
+
+/* Input fields styling for login form */
+.login-container input {
+  width: calc(100% - 20px); /* Accounting for padding */
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 20px; /* Rounded edges for inputs */
+  box-sizing: border-box;
+}
+
+/* Button styling */
+.login-container button, .logged-in-container button {
+  padding: 10px 20px;
+  margin: 10px 5px; /* Spacing around buttons */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px; /* More pronounced rounded corners */
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.login-container button:hover, .logged-in-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Specific styling for the logged-in message */
+.logged-in-message {
+  font-size: 1.25rem;
+  color: #426B1F;
+  margin-bottom: 1.5rem;
+  padding: 10px;
+  border-bottom: 2px solid #eee; /* Visual separation from buttons */
+  width: 100%;
+}
+
+/* Error message styling for consistency */
+.error-message {
+  color: #ff0000;
+  background-color: #ffecec;
+  border: 1px solid #ff0000;
+  padding: 10px;
+  margin: 20px 0;
+  border-radius: 5px;
+  width: calc(100% - 40px); /* Adjusted to fit within container padding */
+}

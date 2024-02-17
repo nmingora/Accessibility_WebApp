@@ -55,16 +55,17 @@ const AdminLogin = ({ onClose }) => {
   // If the user is logged in, show the logged-in message and logout button
   if (loggedInUser) {
     return (
-      <div className="login-container">
-        <h1>You are now logged in as {loggedInUser}</h1>
+      <div className="logged-in-container">
+        <div className="logged-in-message">
+          You are now logged in as {loggedInUser}
+        </div>
         <button type="button" onClick={goToNews}>Update Newsletter</button>
-        <button type ="button" onClick={navigateToApplications}>Process Applications</button>
-
-
-        <button onClick={handleLogout}>Log Out</button> {/* Logout button */}
+        <button type="button" onClick={navigateToApplications}>Process Applications</button>
+        <button onClick={handleLogout}>Log Out</button>
       </div>
     );
   }
+  
 
   
   
