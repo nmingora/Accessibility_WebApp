@@ -30,6 +30,7 @@ const News = () => {
         localStorage.setItem('savedPdf', e.target.result); // Save the PDF data to localStorage
         setPDFFile(e.target.result);
         setViewPdf(e.target.result);
+        alert(`This PDF is uploaded: ${selectedFile.name}`); // Add this line to show the alert
       };
     } else {
       console.log("Please select a PDF file.");
@@ -71,7 +72,7 @@ const News = () => {
       {showAlert && <CoolAlert onClose={() => setShowAlert(false)} />}
 
       <h2>Preview Newsletter</h2>
-      <p>The pdf below will now be displayed on the home screen.</p>
+      
       <div className="pdf-container">
         {viewPdf && <CustomPdfViewer fileUrl={viewPdf} />}
         {!viewPdf && <>No PDF selected</>}
