@@ -1,117 +1,71 @@
 
-
 .login-container {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    background: #ffffff;
-  }
-  
-  .login-title {
-    position: absolute;
-    width: 505px;
-    height: 63px;
-    left: 30%;
-    transform: translateX(-50%);
-    top: 136px;
-    font-family: 'Jacques Francois';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 48px;
-    line-height: 130%;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: #426b1f;
-  }
-  
-  .input-container {
-    position: absolute;
-    font-family: 'Jacques Francois';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 130%;
-    display: flex;
-    align-items: center;
-    color: #000000;
-  }
-  
-  .input-container input {
-    margin-left: 10px;
-  }
-  
-  .username-container {
-    width: 125px;
-    height: 37px;
-    left: 10px;
-    top: 242px;
-  }
-  
-  .password-container {
-    width: 125px;
-    height: 43px;
-    left: 10px;
-    top: 295px;
-  }
-  
-  .login-button {
-    position: absolute;
-    width: 94px;
-    height: 30px;
-    left: 380px;
-    top: 450px;
-    background: #426b1f;
-    border-radius: 8px;
-    color: white; /* Set text color to white */
-    font-family: 'Jacques Francois'; /* Set font family */
-  }
-  
-  
-  .user-type-button {
-    width: 94px;
-    height: 30px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 130%;
-    text-align: center;
-    color: #ffffff;
-  }
-  
-  .student-button {
-    position: absolute;
-    left: 40px;
-    top: 381px;
-    background: #c5be1e;
-  }
-  
-  .admin-button {
-    position: absolute;
-    left: 160px;
-    top: 381px;
-    background: #0500fd;
-  }
-  
-  .parent-button {
-    position: absolute;
-    left: 280px;
-    top: 381px;
-    background: #fa00ff;
-  }
-  
-  .error-message {
-    position: absolute;
-    top: 500px;
-    left: 20%;
-    transform: translateX(-50%);
-    color: red;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+  padding: 20px; /* Add padding for smaller screens */
+}
 
-  
+.login-title {
+  font-family: 'Arial', sans-serif; /* Fallback to a web-safe font */
+  font-size: 48px;
+  color: #426b1f;
+  margin-bottom: 40px; /* Space between title and form */
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Take full width of the parent container */
+  max-width: 400px; /* Maximum width */
+  margin-bottom: 20px;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0; /* Space between inputs */
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-button, .user-type-button {
+  padding: 10px 15px;
+  border-radius: 8px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  width: auto; /* Allow button width to grow with text */
+  margin: 10px; /* Space around buttons */
+}
+
+.login-button {
+  background: #426b1f;
+}
+
+.student-button, .admin-button, .parent-button {
+  background: #c5be1e; /* Student */
+  margin: 10px; /* Space around buttons */
+}
+
+.admin-button {
+  background: #0500fd; /* Admin */
+}
+
+.parent-button {
+  background: #fa00ff; /* Parent */
+}
+
+.error-message {
+  color: red;
+  text-align: center; /* Center the text */
+  width: 100%;
+  max-width: 400px; /* Match the input container width */
+}

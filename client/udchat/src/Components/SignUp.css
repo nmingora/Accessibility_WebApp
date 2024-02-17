@@ -2,81 +2,58 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Center the form vertically */
-  height: 100vh; /* Set the height to fill the entire viewport */
-  margin-left: 20px; /* Adjust left margin */
-  margin-right: 20px; /* Adjust right margin */
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
 }
 
 .inputContainer {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
-  width: 100%; /* Ensure the input container spans the full width */
+  width: 90%;
+  max-width: 400px; /* Reduced max-width for better control */
+  margin: 10px 0; /* Reduced margin for compact spacing */
 }
 
 .inputContainer label {
-  margin-right: 10px;
-  width: 100px; /* Adjust label width as needed */
-  text-align: right; /* Align label text to the right */
+  align-self: flex-start;
+  margin-bottom: 5px;
 }
 
-/* Optional: Adjust the width of the input fields */
 .inputContainer input,
 .inputContainer textarea {
-  width: 600px; /* Adjust width as needed */
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 25px; /* More rounded edges */
+  resize: none;
 }
+
 .inputContainer textarea.notes {
-  width: 600px; /* Adjust width as needed */
-  resize: both; /* Allow both horizontal and vertical resizing */
-  min-width: 200px; /* Set minimum width */
-  min-height: 100px; /* Set minimum height */
+  min-height: 80px; /* Adjusted for consistency */
 }
 
-
-
-.signUpText{
-  position: absolute;
-  width: 285px;
-  height: 77px;
-  right: 500px; /* Center horizontally */
-  top: 114px;
-  font-family: 'Inter';
-  font-style: normal;
+.signUpText {
+  font-family: Arial, sans-serif;
   font-weight: 600;
-  font-size: 48px;
-  line-height: 130%;
-  display: flex;
-  align-items: center;
-  text-align: center;
+  font-size: 36px; /* Adjusted for a more compact header */
   color: #426B1F;
+  text-align: center;
+  margin: 15px 0; /* Adjusted margin */
 }
-
 
 .cartButton {
-  position: absolute;
-  width: 126px;
-  height: 48px;
-  right: 640px;
-  top: 905px;
+  padding: 10px 20px; /* Adjusted padding for a more proportionate button */
   background: #426B1F;
-  border-radius: 8px;
+  color: white;
+  border: none;
+  border-radius: 25px; /* Increased for more rounded edges */
+  cursor: pointer;
+  font-size: 16px; /* Adjusted font size for button text */
+  transition: background-color 0.2s;
 }
 
-
-.signUp {
-  position: absolute;
-  width: 61px;
-  height: 21px;
-  left: calc(50% - 61px/2 + 0.5px);
-  top: calc(50% - 21px/2);
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 130%;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  color: #FFFFFF;
+.cartButton:hover {
+  background-color: #365a17;
 }
