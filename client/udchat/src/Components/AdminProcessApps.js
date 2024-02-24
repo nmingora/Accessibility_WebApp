@@ -7,18 +7,23 @@ import './AdminProcessApps.css'
 function AdminProcessApps() {
     const navigate = useNavigate();
     
-    const goToNews = () => {
-      navigate("/News");
+    const goAdminHone = () => {
+      navigate("/Admin");
     }
 
+    // install the api fetch to base URL 
+    const BASE_URL = 'http://localhost:3005';
 
-    // ----------------------------- DISPLAY FUNCTIONALITY -----------------------------------
 
+    
+    // ----------------------------- DATA RETRIEVAL FUNCTIONALITY -----------------------------------
+
+    // whenn called setApplications(data) will take an array and pass it to the applications variable. NICE!
     const[applications, setApplications] = useState([]);
 
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3005/api/uptown/admin/applications');
+        const response = await fetch(`${BASE_URL}/api/uptown/admin/applications`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -37,11 +42,8 @@ function AdminProcessApps() {
     const searchEmailField = useRef(null);
     const searchDependentName = useRef(null);
 
-
-
-
+    
     // -----------------------------    SORTING VISIBILITY    ----------------------------------
-
 
     const [visibilityOption, setVisibilityOption] = useState('');
 
@@ -76,6 +78,7 @@ function AdminProcessApps() {
 
 
     // ------------------------------ SORTING BY VALUE ----------------------------------------
+
     const [sortTerm, setSortTerm] = useState('');
 
     const handleSortTermChange = (event) => {
@@ -93,8 +96,7 @@ function AdminProcessApps() {
   
       setSortTerm();
     }
-    
-
+  
 
     // ------------------------------ SORTING DIRECTION --------------------------------------
     const [sortDirection, setSortDirection] = useState('');
@@ -111,6 +113,35 @@ function AdminProcessApps() {
       setSortDirection();
     
     }
+
+    // ------------------------------ ACCEPT APPLICATION --------------------------------------
+
+
+    const acceptApplication = async (id) => {
+      // send request to the back-end to accept application
+      // 1. send async request with applicaiton id -> back-end make sql query to return person by their id -> change status to approved with sql -> create user
+      // Maybe make a function to setStatus(status) in the index.js?
+      // 2. back-end change the status of the application with sql to 'accepted'
+      // 3. back-end create new parent user in the same function
+      // 4. call back the application data and refresh the applicaitons sheet using the const function from above
+      // 4. (continued) aka setApplications (DOES THIS REFRESH THE DATA OR DO I NEED TO REFRESH THE HTML EACH TIME??? HOW TO DO?)
+
+      
+      try {
+        const response = await fetch(`${BASE_URL}/api/applications/${id}`);
+
+        // refresh the database
+        fetchData();
+      }
+      catch (error) {
+        console.error(error);
+      }
+
+
+    }
+
+
+
 
 
     console.log(applications)
@@ -165,7 +196,8 @@ function AdminProcessApps() {
               <p>First Name: {application.fName}</p>
               <p>Last Name: {application.lName}</p>
               <p>Email: {application.email}</p>  
-              <p>Status: {application.status}</p>            
+              <p>Status: {application.status}</p>  
+              <button onClick={acceptApplication(application.id)}>Accept</button>          
             </div>
           ))}
         </div>
