@@ -25,6 +25,9 @@ function Home() {
     const navigateMyProfile = () => {
         navigate('/MyProfile');
     }
+    const navigateStudentPortal = () => {
+      navigate('/Student');
+    }
   
 
    

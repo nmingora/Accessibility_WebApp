@@ -10,6 +10,7 @@ function Layout({ children }) {
     const navigateSignUp = () => navigate('/SignUp');
     const navigateAdminPortal = () => navigate('/Admin');
     const navigateParentPortal = () => navigate('/Parent');
+    const navigateStudentPortal = () => navigate('/Student');
     const navigateMyProfile = () => navigate('/MyProfile');
     const navigateNews = () => navigate('/News');
 
@@ -27,6 +28,7 @@ function Layout({ children }) {
           <a href="#" onClick={navigateLogin}>Log In</a>
           <a href="#" onClick={navigateParentPortal}>Parent Portal</a>
           <a href="#" onClick={navigateAdminPortal}>Admin Portal</a>
+          <a href="#" onClick={navigateStudentPortal}>Student Portal</a>
           <a href="#" onClick={navigateMyProfile}>My Profile</a>
         </div>
 
