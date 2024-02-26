@@ -12,7 +12,7 @@ const Parent = ({ onClose }) => {
   const navigate = useNavigate();
 
   const navigateToParentPortal = () => {
-    navigate('/ParentPortal');
+    navigate('/Parent');
   };
 
   const goForumPosts = () => {
@@ -54,6 +54,7 @@ const Parent = ({ onClose }) => {
             required
           />
           <button type="submit">Log In</button>
+          <button type="button" onClick={goForumPosts}>Update Newsletter</button>
         </form>
       </div>
     </Layout>
