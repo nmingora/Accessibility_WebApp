@@ -107,10 +107,11 @@ const ForumPosts = () => {
 
 
   return (
-    <div className="container">
-      <div className="postsList">
+    <div className="forumPosts-container">
+    <div className="forumPosts-postsList">
+   
         <div>
-        <h2>Community Forum</h2>
+        <h2 className="forumPosts-title">Community Forum</h2>
         </div>
         <div>
             <p></p>
@@ -124,14 +125,14 @@ const ForumPosts = () => {
         
         
         
-        <ul>
+        <ul className="forumPosts-ul">
           {posts.map(post => {
             if (!post.postType) { // This is a top-level post
               return (
-                <li key={post.postID} className="post">
+                <li key={post.postID} className="forumPosts-post">
                   {/* Post content */}
-                  <h2>{post.postHeader}</h2>
-                  <small>Posted by: {post.userEmail}</small>
+                  <h2 className="forumPosts-h2">{post.postHeader}</h2>
+                  <small className="forumPosts-small">Posted by: {post.userEmail}</small>
                   <div></div>
                   <small>Posted on: {post.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
                   <p>{post.postParagraph}</p>
@@ -148,11 +149,11 @@ const ForumPosts = () => {
 
                   {/* Render responses here */}
                   {posts.filter(response => response.parentPostID === post.postID).map(response => (
-                    <div key={response.postID} className="response">
+                     <div key={response.postID} className="forumPosts-response">
                       {/* Response content */}
                       <small>Response to: {post.postHeader}</small>
                       <div></div>
-                      <strong> {response.postHeader}</strong>
+                      <form className="forumPosts-createPostForm" onSubmit={handleSubmit}></form>
                       <div></div>
                       <small>Posted by: {response.userEmail}</small>
                       <div></div>
@@ -172,15 +173,6 @@ const ForumPosts = () => {
       
         
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
 
          

@@ -1,61 +1,57 @@
-/* ForumPosts.css */
-.container {
+/* Prefix every class with "forumPosts-" to ensure specificity */
+.forumPosts-container {
     padding: 20px;
-    background-color: #f0f0f0; /* Light grey background for the title */
+    background-color: #f0f0f0; /* Light grey background */
   }
   
-  .title {
+  .forumPosts-title {
     color: #606060; /* Darker grey for the title text */
     margin-bottom: 20px;
   }
   
-  .post {
+  .forumPosts-post {
     background-color: white;
     border: 1px solid #ccc; /* Light grey outline */
     padding: 10px;
     margin-bottom: 10px;
-    border-radius: 5px; /* Optional: adds rounded corners */
+    border-radius: 5px; /* Rounded corners */
   }
   
-  ul {
+  .forumPosts-ul {
     list-style-type: none;
     padding: 0;
   }
-  h2{
-    color:black
-
+  
+  .forumPosts-h2,
+  .forumPosts-h1,
+  .forumPosts-small,
+  .forumPosts-strong {
+    color: black;
   }
-
-  h1{
-    color: black
-    
-  }
-  small{
-    color:black
-  }
-
-  .container {
+  
+  .forumPosts-container {
     display: flex;
     justify-content: space-between;
   }
   
-  .postsList {
+  .forumPosts-postsList {
     flex: 1;
     margin-right: 20px;
   }
   
-  .createPostForm {
+  .forumPosts-createPostForm {
     flex: 1;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
   
-  .formField {
+  .forumPosts-formField {
     margin-bottom: 20px;
   }
   
-  .formField input, .formField textarea {
+  .forumPosts-formField input,
+  .forumPosts-formField textarea {
     width: 100%;
     padding: 8px;
     margin: 8px 0;
@@ -65,7 +61,7 @@
     box-sizing: border-box;
   }
   
-  .submitButton {
+  .forumPosts-submitButton {
     width: 100%;
     background-color: #4CAF50;
     color: white;
@@ -76,20 +72,14 @@
     cursor: pointer;
   }
   
-  .submitButton:hover {
+  .forumPosts-submitButton:hover {
     background-color: #45a049;
   }
   
- 
-    .response {
-        font-size: 0.9em;
-        padding-left: 20px;
-        color: black;
-        margin-top: 10px;
-        font-size: smaller;
-      }
-      
-  
-  strong{
-    color: black
+  .forumPosts-response {
+    font-size: 0.9em;
+    padding-left: 20px;
+    color: black;
+    margin-top: 10px;
   }
+  
