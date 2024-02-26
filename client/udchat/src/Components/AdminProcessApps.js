@@ -7,7 +7,7 @@ import './AdminProcessApps.css'
 function AdminProcessApps() {
     const navigate = useNavigate();
     
-    const goAdminHone = () => {
+    const goAdminHome = () => {
       navigate("/Admin");
     }
 
@@ -26,10 +26,12 @@ function AdminProcessApps() {
         const response = await fetch(`${BASE_URL}/api/uptown/admin/applications`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
-        }
+          }
         const data = await response.json();
-        setApplications(data);
+        console.log("Raw data:",data)
+        console.log('Global data: ', applications)
       } catch (error) {
+        alert('there was an error retrieving the applications');
         console.error("There was a problem with the fetch operation: ", error);
       }
     }
@@ -98,7 +100,7 @@ function AdminProcessApps() {
     }
   
 
-    // ------------------------------ SORTING DIRECTION --------------------------------------
+    // ------------------------------ SORTING DIRECTION -------------------------------------- * NEED TO COMPLETE******
     const [sortDirection, setSortDirection] = useState('');
 
     const handleSortingDirChange = (event) => {
@@ -110,13 +112,13 @@ function AdminProcessApps() {
 
       }
 
-      setSortDirection();
+      //setSortDirection();
     
     }
 
     // ------------------------------ ACCEPT APPLICATION --------------------------------------
 
-
+  
     const acceptApplication = async (id) => {
       // send request to the back-end to accept application
       // 1. send async request with applicaiton id -> back-end make sql query to return person by their id -> change status to approved with sql -> create user
@@ -126,24 +128,48 @@ function AdminProcessApps() {
       // 4. call back the application data and refresh the applicaitons sheet using the const function from above
       // 4. (continued) aka setApplications (DOES THIS REFRESH THE DATA OR DO I NEED TO REFRESH THE HTML EACH TIME??? HOW TO DO?)
 
+      console.log(id);
       
       try {
-        const response = await fetch(`${BASE_URL}/api/applications/${id}`);
+        const response = await fetch(`${BASE_URL}/api/uptown/accept-application`, {
+          // Could argue PUT but creating an account is more important than simply updating Application table -> Therefore POST is more appropriate. 
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({id}),
+        });
+        // check to see if the response is error-free
+        if(!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-        // refresh the database
-        fetchData();
+        // store the responseData in the async return
+        const responseData = await response.json();
+        console.log('Success', responseData);
+        
+        // refresh the screen
+        
       }
       catch (error) {
+        alert('There was an error accepting the application');
         console.error(error);
       }
 
 
     }
 
+    // Hide the accept button if the status is logged as Accepted already. 
+    // not sure how to do this
+
+
+
+    // function to make the button glow on hold to fill up the bar -> May have to use a cool fun library to do this. NICE!
 
 
 
 
+    // test to view the applications being sent to the UI. Kind cool. 
     console.log(applications)
 
     // --------------------------- UI VIEW AND WEB APP ------------------------------------------
@@ -192,12 +218,12 @@ function AdminProcessApps() {
         {/** VIEW THE APPLICATIONS HERE */}
         <div className='applicationView'>
           {applications.map((application) => (
-            <div key={application.id}>
+            <div key={application.appID}>
               <p>First Name: {application.fName}</p>
               <p>Last Name: {application.lName}</p>
               <p>Email: {application.email}</p>  
               <p>Status: {application.status}</p>  
-              <button onClick={acceptApplication(application.id)}>Accept</button>          
+              <button onClick={() => acceptApplication(application.appID)}>Accept</button>          
             </div>
           ))}
         </div>
