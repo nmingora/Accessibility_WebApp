@@ -11,6 +11,7 @@ import News from './News.js';
 import AdminProcessApps from './AdminProcessApps.js';
 import ForumPosts from './ForumPosts';
 import StudentName from './StudentName.js';
+import StudentPortal from './StudentPortal.js';
 
 
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/MyProfile" element={<MyProfile/>}/>
         <Route path="/News" element={<News/>}/>
         <Route path="/StudentPassword" element={<StudentPassword/>}/>
+        <Route path="/StudentPortal" element={<StudentPortal />}/>
         <Route path="/AdminProcessApps" element={<AdminProcessApps/>}/>
         <Route path="/ForumPosts" element={<ForumPosts/>}/>
       </Routes>

@@ -9,10 +9,10 @@ import image1 from '../Components/icons/image1.jpeg';
 import image2 from '../Components/icons/image2.jpeg';
 import image3 from '../Components/icons/image3.jpeg';
 import image4 from '../Components/icons/image4.jpeg';
-import image17 from '../Components/icons/image17.jpeg';
+import image5 from '../Components/icons/image17.jpeg';
 import image6 from '../Components/icons/image6.jpeg';
 import image7 from '../Components/icons/image7.jpeg';
-import image16 from '../Components/icons/image16.jpeg';
+import image8 from '../Components/icons/image16.jpeg';
 import image9 from '../Components/icons/image9.jpeg';
 import image10 from '../Components/icons/image10.jpeg';
 import image11 from '../Components/icons/image11.jpeg';
@@ -43,6 +43,29 @@ const StudentLogin = ({ onClose }) => {
     const handleSubmit = () => {
         //Send selectedImages array to backend for validation/authentication
         console.log('Selected Images:', selectedImages);
+
+        // Mock user patterns (replace with actual patterns from database)
+        const userPatterns = {
+            'student1': [1, 2, 3, 4],
+            'student2': [5, 6, 7, 8],
+            // Add more users and their patterns as needed
+        };
+
+        // Mock current user (replace with actual user)
+        const currentUser = 'student1';
+
+        // Check if selected images match the user's pattern
+        const isMatch = JSON.stringify(selectedImages) === JSON.stringify(userPatterns[currentUser]);
+
+        if (isMatch) {
+            console.log('Authentication successful!');
+            // Redirect user to student portal or perform further actions
+            navigateToStudentPortal();
+        } else {
+            console.log('Authentication failed. Please try again.');
+            // Clear selected images and allow user to retry
+            setSelectedImages([]);
+        }
     };
 
     return (
@@ -88,7 +111,7 @@ const StudentLogin = ({ onClose }) => {
                         onClick={() => handleImageSelect(4)}
                     />
                     <img
-                        src={image17}
+                        src={image5}
                         alt="Image 5"
                         className={selectedImages.includes(17) ? 'selected' : ''}
                         onClick={() => handleImageSelect(17)}
@@ -106,7 +129,7 @@ const StudentLogin = ({ onClose }) => {
                         onClick={() => handleImageSelect(7)}
                     />
                     <img
-                        src={image16}
+                        src={image8}
                         alt="Image 8"
                         className={selectedImages.includes(16) ? 'selected' : ''}
                         onClick={() => handleImageSelect(16)}
