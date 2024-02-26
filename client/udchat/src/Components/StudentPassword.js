@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from 'react';
 import Layout from './Layout';
-import './Student.css'; // Import the CSS for student login
+import './StudentPassword.css'; // Import the CSS for student login
 import { useNavigate } from 'react-router-dom';
 
 //import the images
@@ -19,8 +19,6 @@ import image11 from '../Components/icons/image11.jpeg';
 import image12 from '../Components/icons/image12.jpeg';
 import image13 from '../Components/icons/image13.jpeg';
 import image14 from '../Components/icons/image14.jpeg';
-import image15 from '../Components/icons/image15.jpeg';
-
 
 const StudentLogin = ({ onClose }) => {
 
@@ -149,13 +147,6 @@ const StudentLogin = ({ onClose }) => {
                         className={selectedImages.includes(14) ? 'selected' : ''}
                         onClick={() => handleImageSelect(14)}
                     />
-                    <img
-                        src={image15}
-                        alt="Image 15"
-                        className={selectedImages.includes(15) ? 'selected' : ''}
-                        onClick={() => handleImageSelect(15)}
-                    />
-
                 </div>
                 <h2>------------</h2>
                 <button onClick={handleSubmit}>Submit</button>

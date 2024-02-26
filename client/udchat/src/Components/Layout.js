@@ -10,7 +10,7 @@ function Layout({ children }) {
     const navigateSignUp = () => navigate('/SignUp');
     const navigateAdminPortal = () => navigate('/Admin');
     const navigateParentPortal = () => navigate('/Parent');
-    const navigateStudentPortal = () => navigate('/Student');
+    const navigateStudentPortal = () => navigate('/StudentName');
     const navigateMyProfile = () => navigate('/MyProfile');
     const navigateNews = () => navigate('/News');
     const navigateForumPosts =() => navigate('/ForumPosts');

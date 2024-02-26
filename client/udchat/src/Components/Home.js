@@ -26,7 +26,7 @@ function Home() {
         navigate('/MyProfile');
     }
     const navigateStudentPortal = () => {
-      navigate('/Student');
+      navigate('/StudentName');
     }
   
 
