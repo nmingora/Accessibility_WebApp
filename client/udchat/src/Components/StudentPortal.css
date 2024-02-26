@@ -41,3 +41,24 @@
     background-color: #0056b3;
   }
   
+  /* Game link styles */
+  .game-link {
+    margin-top: 30px;
+  }
+  
+  .game-link a {
+    text-decoration: none;
+    color: #333; /* Adjust link color */
+    display: inline-block;
+  }
+  
+  .game-link img {
+    width: 100px; /* Adjust image width as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 10px;
+  }
+  
+  .game-link p {
+    font-size: 1.2rem; /* Adjust font size */
+  }
+  

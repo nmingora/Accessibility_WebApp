@@ -12,11 +12,7 @@ import AdminProcessApps from './AdminProcessApps.js';
 import ForumPosts from './ForumPosts';
 import StudentName from './StudentName.js';
 import StudentPortal from './StudentPortal.js';
-
-
-
-
-
+import StudentGame from './StudentGame1.js';
 
 function App() {
   return (
@@ -32,6 +28,7 @@ function App() {
         <Route path="/News" element={<News/>}/>
         <Route path="/StudentPassword" element={<StudentPassword/>}/>
         <Route path="/StudentPortal" element={<StudentPortal />}/>
+        <Route path="/StudentGame1" element={<StudentGame />}/>
         <Route path="/AdminProcessApps" element={<AdminProcessApps/>}/>
         <Route path="/ForumPosts" element={<ForumPosts/>}/>
       </Routes>

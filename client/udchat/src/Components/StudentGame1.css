@@ -1,0 +1,71 @@
+/* StudentGame1.css */
+
+/* Matching game container */
+.matching-game {
+    text-align: center;
+    margin: 50px auto;
+  }
+  
+  /* Heading styles */
+  .matching-game h1 {
+    color: #666;
+  }
+  
+  /* Card grid styles */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  /* Card styles */
+  .card {
+    width: 100px;
+    height: 100px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  /* Flipped card */
+  .card.flipped {
+    transform: scale(1.1);
+  }
+  
+  /* Emoji content */
+  .card span {
+    font-size: 48px;
+  }
+  
+  /* Matched card */
+  .card.matched {
+    opacity: 0.5;
+  }
+  
+  /* Game status message */
+  .matching-game p {
+    margin-top: 20px;
+    font-size: 1rem;
+  }
+  
+  /* Reset button styles */
+  .matching-game button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .matching-game button:hover {
+    background-color: #0056b3;
+  }
+  
