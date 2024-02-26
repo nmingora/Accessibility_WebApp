@@ -1,12 +1,4 @@
-header {
-    color: #2c3e50; /* Sets the text color */
-    font-size: 24px; /* Sets the font size */
-    font-weight: bold; /* Makes the font bold */
-    text-align: center; /* Centers the text */
-    padding: 20px 0; /* Adds padding above and below the text */
-    background-color: #ecf0f1; /* Light background color for the header */
-    width: 100%; /* Ensure the header extends full width */
-  }
+
 
 .adminToolBar {
     display: absolute;
