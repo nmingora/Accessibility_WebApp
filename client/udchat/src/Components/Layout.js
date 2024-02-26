@@ -12,6 +12,7 @@ function Layout({ children }) {
     const navigateParentPortal = () => navigate('/Parent');
     const navigateMyProfile = () => navigate('/MyProfile');
     const navigateNews = () => navigate('/News');
+    const navigateForumPosts =() => navigate('/ForumPosts');
 
 
   return (

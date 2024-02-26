@@ -8,6 +8,7 @@ import Admin from './Admin.js';
 import MyProfile from './MyProfile.js';
 import News from './News.js';
 import AdminProcessApps from './AdminProcessApps.js';
+import ForumPosts from './ForumPosts';
 
 
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/MyProfile" element={<MyProfile/>}/>
         <Route path="/News" element={<News/>}/>
         <Route path="/AdminProcessApps" element={<AdminProcessApps/>}/>
+        <Route path="/ForumPosts" element={<ForumPosts/>}/>
       </Routes>
     </Router>
   );
