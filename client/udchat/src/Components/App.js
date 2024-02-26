@@ -5,6 +5,7 @@ import Home from './Home.js';
 import SignUp from './SignUp.js';
 import Parent from './Parents.js';
 import Admin from './Admin.js';
+import Student from './Student.js'
 import MyProfile from './MyProfile.js';
 import News from './News.js';
 import AdminProcessApps from './AdminProcessApps.js';
@@ -24,6 +25,7 @@ function App() {
         <Route path="/signup" element={<SignUp/>} />
         <Route path="/Parent" element={<Parent/>}/>
         <Route path="/Admin" element={<Admin/>}/>
+        <Route path="/Student" element={<Student/>}/>
         <Route path="/MyProfile" element={<MyProfile/>}/>
         <Route path="/News" element={<News/>}/>
         <Route path="/AdminProcessApps" element={<AdminProcessApps/>}/>
