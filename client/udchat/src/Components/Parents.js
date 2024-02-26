@@ -15,6 +15,10 @@ const Parent = ({ onClose }) => {
     navigate('/ParentPortal');
   };
 
+  const goForumPosts = () => {
+    navigate("/ForumPosts");
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage('');

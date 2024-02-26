@@ -35,6 +35,7 @@ app.use((req, res, next) => { //for all routes
 });
 
 app.use(cors());
+app.use(express.json());
 
 
 // --------------------------- Base Route and Routes --------------------------------------------//
@@ -43,7 +44,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '..', 'client', 'build', 'static')));
 // app.use('/', express.static('static'));
 
-//install router at /api/uptown
+//install router at /api/uptown <-----> ROUTER ROUTER ROUTER ROUTER
 app.use('/api/uptown', router);
 
 
@@ -134,6 +135,23 @@ router.get('/admin/applications', async (req, res) => {
 });
 
 
+// ENDPOINT TO RETRIEVE THE USER ID OF THE PARENT WHO'S PROFILE WAS APPROVED BY THE ADMIN
+
+router.post('/accept-application', async (req, res) => {
+    try {
+        const {id} = req.body;
+
+        // call function to update the status of the application
+        await setApplicationStatus(id, 'approved');
+        // call function to create the parent's account
+        await createParent(id);
+
+
+
+    } catch (error) {
+        console.error('Failed to retrieve application ID: ', error);
+    }
+});
 
 
 // -------------------------------- Backend Functions ------------------------------------------//
@@ -145,4 +163,75 @@ async function getAllApplications() {
     const [results] = await connection.query('SELECT * FROM Application')
     return results;
 }
+
+
+// function to create the parent account when given the user id
+async function createParent(id) {
+    // Initialize database connection
+    const connection = await initializeDatabase();
+
+    let accountData; // Define outside of any one specific try/catch block to be accessible throughout function
+
+    // Retrieve all the attribute values for the application which concern Parent account creation -> so much data!
+    try {
+        const retrieveQuery = 'SELECT username, pass, fName, lName, email, DOB, contact, addr FROM Application WHERE appID = ?';
+        const values = [id];
+        const [rows] = await connection.query(retrieveQuery, values);
+        // if rows is greater than 0, means it should return 1 row
+        if(rows.length > 0 ) {
+            accountData = rows[0];
+        } else {
+            console.log('There is no data to be found for the given ID');
+            // escape when the data isn't found
+            return;
+        }
+    } catch (error) {
+        console.error("Failed to retrieve the application information, here's why: ", error);
+    }
+
+    // Now to INSERT the new data into the Parent table with the correct tables
+    try {
+        const insertQuery = 'INSERT INTO Parent (username, pass, fName, lName, email, DOB, contact, addr) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        values = [accountData.username,accountData.pass, accountData.fName, accountData.lName, accountData.email, accountData.DOB, accountData.contact, accountData.addr]
+        const insertResult = await connection.query(insertQuery, values);
+        
+        console.log("Insertion result",insertResult);
+    } catch (error) {
+        console.error("Failed to INSERT the new Parent object into the Parent table, here's why: ", error);
+    } finally {
+        await connection.end(); 
+    }
+
+}
+
+
+// function to set the applicaiton status of a newly created user account
+async function setApplicationStatus(id, status) {
+    const connection = await initializeDatabase();
+
+    // sql to set the value of the application with
+    try {
+        const query = `UPDATE Application SET status = ? WHERE appID = ?`;
+        const values = [status, id];
+        const result = await connection.query(query, values);
+        console.log(result);
+    }
+    catch (error) {
+        console.error('Changing the application status in the db query failed, here`s why: ', error);
+    }
+
+    // Close the database connection here to prevent unnecesary transmission traffic -> Not sure if that makes sense but it seems like good practice
+    try {
+       connection.end(); 
+    } 
+    catch (error) {
+        console.error("Database failed to close the connection, here's why: ", error);
+    }
+    
+}
+
+
+
+
+
 

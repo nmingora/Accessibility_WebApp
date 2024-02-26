@@ -13,6 +13,7 @@ function Layout({ children }) {
     const navigateStudentPortal = () => navigate('/Student');
     const navigateMyProfile = () => navigate('/MyProfile');
     const navigateNews = () => navigate('/News');
+    const navigateForumPosts =() => navigate('/ForumPosts');
 
 
   return (
