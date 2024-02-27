@@ -109,6 +109,7 @@ const ForumPosts = () => {
   return (
     <div className="forumPosts-container">
     <div className="forumPosts-postsList">
+      <p>this is the forum posts page. Run node indexMongo.js to start Mongodb server to load forums</p>
    
         <div>
         <h2 className="forumPosts-title">Community Forum</h2>

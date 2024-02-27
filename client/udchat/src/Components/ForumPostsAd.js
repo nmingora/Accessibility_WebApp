@@ -122,6 +122,7 @@ const ForumPostsAd = () => {
         <div>
         <h2 className="forumPosts-title">Community Forum</h2>
         <h2 className="forumPosts-title">Admin Terminal</h2>
+        <p>this is the forum posts page. Run node indexMongo.js to start Mongodb server to load forums</p>
         
         </div>
         <div>
