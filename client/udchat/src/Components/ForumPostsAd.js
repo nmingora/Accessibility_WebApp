@@ -88,6 +88,43 @@ const ForumPostsAd = () => {
   };
 
 
+  
+  const deletePost = async (postId) => {
+    // Confirmation dialog
+    const isConfirmed = window.confirm("Are you sure you want to delete this post? Deleting a post is permanent.");
+    if (!isConfirmed) {
+      return; // Stop the function if the user clicks 'Cancel'
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:5004/api/posts/${postId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      // Successfully deleted post
+      console.log("Post deleted successfully");
+      fetchPosts(); // Refresh the list of posts
+    } catch (error) {
+      console.error("Could not delete post: ", error);
+    }
+  };
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
 
 
 
@@ -141,6 +178,8 @@ const ForumPostsAd = () => {
           {posts.map(post => {
             if (!post.postType) { // This is a top-level post
               return (
+
+                //this is for the PARENT POSTS!!!
                 <li key={post.postID} className="forumPosts-post">
                   {/* Post content */}
                   <h2 className="forumPosts-h2">{post.postHeader}</h2>
@@ -148,10 +187,13 @@ const ForumPostsAd = () => {
                   <div></div>
                   <small>Posted on: {post.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
                   <p>{post.postParagraph}</p>
+                  <button onClick={() => deletePost(post._id)} style={{color: 'red'}}>Delete</button>
+
+
                   
                   
             
-                  
+              
                   {!post.postType && (
                     <button 
                       style={{ backgroundColor: respondingToPostID === post.postID ? 'green' : 'initial' }} 
@@ -159,14 +201,15 @@ const ForumPostsAd = () => {
                       Respond
                     </button>
                   )}
-                
-
-                  {/* Render responses here */}
+            
+                  {/* this is for the RESPONSE POSTS!!! */}
+                  
                   {posts.filter(response => response.parentPostID === post.postID).map(response => (
                      <div key={response.postID} className="forumPosts-response">
-                      {/* Response content */}
+                      
                       
                       <div></div>
+                      
                       
                       <small>Response to: {post.postHeader}</small>
                       <div></div>
@@ -175,6 +218,9 @@ const ForumPostsAd = () => {
                       <small>Posted on: {response.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
                       
                       <p>{response.postParagraph}</p>
+                      <button onClick={() => deletePost(response._id)} style={{color: 'red'}}>Delete</button>
+
+
         
 
                     
