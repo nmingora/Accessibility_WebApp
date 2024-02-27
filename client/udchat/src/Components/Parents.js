@@ -54,7 +54,7 @@ const Parent = ({ onClose }) => {
             required
           />
           <button type="submit">Log In</button>
-          <button type="button" onClick={goForumPosts}>Update Newsletter</button>
+          <button type="button" onClick={goForumPosts}>Community Form = temp</button>
         </form>
       </div>
     </Layout>
