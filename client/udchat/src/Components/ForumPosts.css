@@ -2,11 +2,22 @@
 .forumPosts-container {
     padding: 20px;
     background-color: #f0f0f0; /* Light grey background */
+    
   }
   
   .forumPosts-title {
-    color: #606060; /* Darker grey for the title text */
-    margin-bottom: 20px;
+    color: #5823f5; /* Darker grey for the title text */
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 64px
+  }
+
+  .ForumMaka{
+    color: #5823f5; /* Darker grey for the title text */
+    margin-bottom: 10px; 
+    font-weight: bold;
+    font-size: 44px
+
   }
   
   .forumPosts-post {
@@ -59,12 +70,33 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    min-width: 400px; /* The minimum width of the input field */
+    min-height: 400px; /* The minimum height of the input field */
   }
+
+  .formField textarea {
+    font-size: 16px; /* Adjust the font size as needed */
+    padding: 10px;  /* Adds space inside the textarea, making it taller */
+    min-width: 400px; /* The minimum width of the textarea */
+    min-height: 300px; /* The minimum height of the textarea */
+    box-sizing: border-box; /* Ensures padding doesn't add to the total dimensions */
+    resize: vertical; /* Allows vertical resizing; remove if no resizing is desired */
+  }
+  
+
+  .formField input[type="text"] {
+    font-size: 16px; /* Adjust the font size as needed */
+    padding: 10px;  /* Adds space inside the input, making it taller */
+    min-width: 400px; /* The minimum width of the input field */
+    min-height: 40px; /* The minimum height of the input field */
+    box-sizing: border-box; /* Makes sure padding doesn't add to the width */
+  }
+  
   
   .forumPosts-submitButton {
     width: 100%;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #c498de;
+    color: rgb(161, 139, 246);
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
@@ -73,7 +105,7 @@
   }
   
   .forumPosts-submitButton:hover {
-    background-color: #45a049;
+    background-color: #d2b2f8;
   }
   
   .forumPosts-response {

@@ -197,7 +197,7 @@ const ForumPostsAd = () => {
 
       </div>
       <form className="createPostForm" onSubmit={handleSubmit}>
-        <h2>Create New Post</h2>
+        <h2  className="ForumMaka">Create New Post</h2>
         <div className="formField">
           <input
             type="text"
