@@ -3,7 +3,7 @@ import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
 import Login from './Login.js';
 import Home from './Home.js';
 import SignUp from './SignUp.js';
-import Parent from './Parents.js';
+import Parent from './Parent.js';
 import Admin from './Admin.js';
 import StudentPassword from './StudentPassword.js'
 import MyProfile from './MyProfile.js';
