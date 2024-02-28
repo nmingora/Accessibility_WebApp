@@ -126,6 +126,8 @@ router.post("/SignUp", async (req, res) => {
     } catch (err) {
         console.log(err);
         res.sendStatus(500).json({ "message": "(500) Unexpected error occured during submission" })
+    } finally {
+        connection.end();
     }
 });
 
