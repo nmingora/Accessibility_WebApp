@@ -1,8 +1,4 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useState } from 'react';
-import Layout from './Layout';
-import './StudentPassword.css'; // Import the CSS for student login
-import { useNavigate } from 'react-router-dom';
 
 //import the images
 import image1 from '../Components/icons/image1.jpeg';
@@ -20,52 +16,50 @@ import image12 from '../Components/icons/image12.jpeg';
 import image13 from '../Components/icons/image13.jpeg';
 import image14 from '../Components/icons/image14.jpeg';
 
-const StudentLogin = ({ onClose }) => {
+import React, { useState } from 'react';
+import Layout from './Layout';
+import './StudentPassword.css'; // Import the CSS for student login
+import { useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword, signout } from 'firebase/auth';
+import { auth } from '../firebaseConfig'; // Import Firebase authentication instance
 
+const StudentLogin = () => {
     const navigate = useNavigate();
-
     const navigateToStudentPortal = () => {
         navigate('/StudentPortal');
-    }
+    };
 
     const [selectedImages, setSelectedImages] = useState([]);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    //Function to handle image selection
-    const handleImageSelect = (imageID) => {
-        //Toggle image selection
-        if (selectedImages.includes(imageID)) {
-            setSelectedImages(selectedImages.filter(id => id !== imageID));
-        } else {
-            setSelectedImages([...selectedImages, imageID]);
+    const handleSignIn = async () => {
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            console.log('Signed in as:', user.email);
+            navigateToStudentPortal();
+        } catch (error) {
+            setError(error.message);
         }
     };
 
+    const handleImageSelect = (imageID) => {
+        // Toggle image selection
+        setSelectedImages((prevSelectedImages) => {
+            if (prevSelectedImages.includes(imageID)) {
+                return prevSelectedImages.filter((id) => id !== imageID);
+            } else {
+                return [...prevSelectedImages, imageID];
+            }
+        });
+    };
+
     const handleSubmit = () => {
-        //Send selectedImages array to backend for validation/authentication
-        console.log('Selected Images:', selectedImages);
-
-        // Mock user patterns (replace with actual patterns from database)
-        const userPatterns = {
-            'student1': [1, 2, 3, 4],
-            'student2': [5, 6, 7, 8],
-            // Add more users and their patterns as needed
-        };
-
-        // Mock current user (replace with actual user)
-        const currentUser = 'student1';
-
-        // Check if selected images match the user's pattern
-        const isMatch = JSON.stringify(selectedImages) === JSON.stringify(userPatterns[currentUser]);
-
-        if (isMatch) {
-            console.log('Authentication successful!');
-            // Redirect user to student portal or perform further actions
-            navigateToStudentPortal();
-        } else {
-            console.log('Authentication failed. Please try again.');
-            // Clear selected images and allow user to retry
-            setSelectedImages([]);
-        }
+        // Implement password validation here (compare selectedImages with stored passwords)
+        // For demonstration, let's just sign in the user directly
+        handleSignIn();
     };
 
     return (

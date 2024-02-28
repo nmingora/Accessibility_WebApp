@@ -43,6 +43,23 @@
   margin: 15px 0; /* Adjusted margin */
 }
 
+.error {
+  background-color: #f8d7da; /* Light red */
+  color: #721c24; /* Dark red */
+  border: 1px solid #f5c6cb; /* Red border */
+  padding: 10px; /* Padding around the text */
+  margin-bottom: 10px; /* Margin at the bottom to separate from other elements */
+}
+
+.confirmationMessage {
+  background-color: #d4edda; /* Light green */
+  color: #155724; /* Dark green */
+  border: 1px solid #c3e6cb; /* Green border */
+  padding: 10px; /* Padding around the text */
+  margin-bottom: 10px; /* Margin at the bottom to separate from other elements */
+}
+
+
 .cartButton {
   padding: 10px 20px; /* Adjusted padding for a more proportionate button */
   background: #426B1F;

@@ -1,9 +1,40 @@
+
 const express = require("express");
 const cors = require('cors');
 const path = require("path");
 const PORT = process.env.PORT || 3005;
 const app = express();
 const router = express.Router();
+const bodyParser = require('body-parser');
+
+//-----------------------Nodemailer------------------//
+//for parents to make account for campers
+const nodemailer = require('nodemailer');
+
+// Create a Nodemailer transporter
+const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: process.env.EMAIL_ADDRESS, // gmail email address
+        pass: process.env.EMAIL_PASSWORD, // gmail password
+    },
+});
+
+// Send email function
+const sendEmail = async (to, subject, text) => {
+    try {
+        // Send mail with defined transport object
+        await transporter.sendMail({
+            from: process.env.EMAIL_ADDRESS, // Sender address
+            to, // List of recipients
+            subject, // Subject line
+            text, // Plain text body
+        });
+        console.log('Email sent successfully');
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+};
 
 //--------------------------- Google Cloud SQL Connection ---------------------------//
 // Import database modules
@@ -13,7 +44,7 @@ const dbConfig = require('./googleConfig.js');
 const connection = mysql.createConnection(dbConfig);
 // Open the MySQL connection
 async function initializeDatabase() {
-    try{
+    try {
         const connection = mysql.createConnection(dbConfig);
         console.log('Successfully connected to the database.');
         return connection;
@@ -23,8 +54,6 @@ async function initializeDatabase() {
         throw error;
     }
 }
-
-
 
 // --------------------------- Middleware for Debugging ------------------------------//
 
@@ -36,6 +65,7 @@ app.use((req, res, next) => { //for all routes
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
 
 
 // --------------------------- Base Route and Routes --------------------------------------------//
@@ -50,7 +80,7 @@ app.use('/api/uptown', router);
 
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
-  });
+});
 
 
 // --------------------------- Express Endpoints -------------------------------------//
@@ -74,47 +104,28 @@ app.listen(PORT, () => {
 
 
 //signup endpoint
-app.put("/apply",(req,res)=>{
-    try{
-        const {fName,lName,username,password,phoneNumber,dob,address,notes} = req.body;
-        const insertData = [fName,lName,username,password,phoneNumber,dob,address,notes,'NULL',new Date(),'Pending'];
-        validApplication = false;
+router.post("/SignUp", async (req, res) => {
+    const connection = await initializeDatabase();
+    try {
+        
+        const { fName, lName, username, pass, email, contact, DOB, addr, notes } = req.body;
+        console.log(req.body)
+        const insertData = [fName, lName, username, pass, email, contact, DOB, addr, notes, 1, 'Pending', new Date()];
 
-        //if phone number has been taken by existing user
-        const takenField = `SELECT SUM(count) AS total_count FROM(SELECT COUNT(*) AS count FROM User WHERE username='${username}' UNION SELECT COUNT(*) AS count FROM User WHERE email='${email}' UNION SELECT COUNT(*) AS count FROM User WHERE contact='${phoneNumber}') AS subquery;`
+        console.log('heree2') //debug
 
-        //if multiple submissions (same email & contact) in 1 week
-        const pendingSubmissions = `SELECT COUNT(*) AS count FROM Application WHERE email='${email}' AND contact='${phoneNumber}' AND appStatus='Pending';`
-
-        //if previously denied submissions in 1 month
-        const deniedSubmissions = `SELECT COUNT(*) AS count FROM Application WHERE email='${email}' AND contact='${phoneNumber}' AND appStatus='Denied' AND applicationDate >= DATE_SUB(CURRENT_DATE(),INTERVAL 1 MONTH);`
-
-        connection.query(takenField,function(err,takenResult){
-            if(err) throw err;
-            if(takenResult[0].total_count!==0){
-                res.sendStatus(401).json({"message":"(401) Unauthorized Application: username, email, and/or phone number already taken"});
+        const sql = 'INSERT INTO Application (fName,lName,username,pass,email,contact,DOB,addr,notes,reviewingAdmin, status, dateApplied) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        connection.query(sql, insertData, (err, result) => {
+            if (err) {
+                console.error('Error adding user:', error);
+                res.status(500).json({ error: 'An error occurred while adding user.' });
+            } else {
+                res.json({ message: 'Application successfully submitted! An admin will contact you.' });
             }
         });
-        connection.query(pendingSubmissions,function(err,pendingResult){
-            if(err) throw err;
-            if(pendingResult[0].count!==0){
-                res.sendStatus(401).json({"message":"(401) Unauthorized Application: Multiple pending submissions, please wait response"})
-            }
-        });
-        connection.query(deniedSubmissions,function(err,deniedResult){
-            if(err) throw err;
-            if(deniedResult[0].count!==0){
-                res.sendStatus(401).json({"message":"(401) Unauthorized Application: Previously denied, please wait 1 month before resubmission"})
-            }
-        })
-
-        connection.query("INSERT INTO Application (fName,lName,username,pass,email,contact,DOB,addr,notes,reviewingAdmin,applicationDate,appStatus) VALUES ?",insertData,function(err,result){
-            if(err) throw err;
-            res.sendStatus(202).json({"message":"Application successfully submitted! An admin will contact you"})
-        });
-    }catch(err){
+    } catch (err) {
         console.log(err);
-        res.sendStatus(500).json({"message":"(500) Unexpected error occured during submission"})
+        res.sendStatus(500).json({ "message": "(500) Unexpected error occured during submission" })
     }
 });
 
@@ -139,7 +150,7 @@ router.get('/admin/applications', async (req, res) => {
 
 router.post('/accept-application', async (req, res) => {
     try {
-        const {id} = req.body;
+        const { id } = req.body;
 
         // call function to update the status of the application
         await setApplicationStatus(id, 'approved');
@@ -151,6 +162,29 @@ router.post('/accept-application', async (req, res) => {
     } catch (error) {
         console.error('Failed to retrieve application ID: ', error);
     }
+});
+
+// Route to handle child account setup
+router.post('/setup-child-account', (req, res) => {
+    const { parentEmail, childName, childPassword } = req.body;
+    const parentQuery = `SELECT * FROM Parents WHERE email = ?`;
+    pool.query(parentQuery, [parentEmail], (parentError, parentResults) => {
+        if (parentError) {
+            console.error('Error finding parent:', parentError);
+            return res.status(500).send('Internal server error');
+        }
+        if (parentResults.length === 0) {
+            return res.status(404).send('Parent not found');
+        }
+        const studentQuery = `INSERT INTO Camper (name, password) VALUES (?, ?)`;
+        pool.query(studentQuery, [childName, childPassword], (studentError, studentResults) => {
+            if (studentError) {
+                console.error('Error setting up child account:', studentError);
+                return res.status(500).send('Internal server error');
+            }
+            res.status(201).send('Child account setup completed successfully');
+        });
+    });
 });
 
 
@@ -178,7 +212,7 @@ async function createParent(id) {
         const values = [id];
         const [rows] = await connection.query(retrieveQuery, values);
         // if rows is greater than 0, means it should return 1 row
-        if(rows.length > 0 ) {
+        if (rows.length > 0) {
             accountData = rows[0];
         } else {
             console.log('There is no data to be found for the given ID');
@@ -192,14 +226,14 @@ async function createParent(id) {
     // Now to INSERT the new data into the Parent table with the correct tables
     try {
         const insertQuery = 'INSERT INTO Parent (username, pass, fName, lName, email, DOB, contact, addr) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        values = [accountData.username,accountData.pass, accountData.fName, accountData.lName, accountData.email, accountData.DOB, accountData.contact, accountData.addr]
+        values = [accountData.username, accountData.pass, accountData.fName, accountData.lName, accountData.email, accountData.DOB, accountData.contact, accountData.addr]
         const insertResult = await connection.query(insertQuery, values);
-        
-        console.log("Insertion result",insertResult);
+
+        console.log("Insertion result", insertResult);
     } catch (error) {
         console.error("Failed to INSERT the new Parent object into the Parent table, here's why: ", error);
     } finally {
-        await connection.end(); 
+        await connection.end();
     }
 
 }
@@ -222,15 +256,59 @@ async function setApplicationStatus(id, status) {
 
     // Close the database connection here to prevent unnecesary transmission traffic -> Not sure if that makes sense but it seems like good practice
     try {
-       connection.end(); 
-    } 
+        connection.end();
+    }
     catch (error) {
         console.error("Database failed to close the connection, here's why: ", error);
     }
-    
+
 }
 
+//signup endpoint
 
+// const { fName, lName, username, password, email, phoneNumber, dob, address, notes } = req.body;
+//         const insertData = [fName, lName, username, password, email, phoneNumber, dob, address, notes, 'NULL', new Date(), 'Pending'];
+//         validApplication = false;
+
+//         console.log('heree2') //debug
+
+//         const sql = 'INSERT INTO Application (fName,lName,username,pass,email,contact,DOB,addr,notes,reviewingAdmin,applicationDate,appStatus)'
+//         connection.query(sql, insertData, (err, result) => {
+//             if (err) {
+//                 console.error('Error adding user:', error);
+//                 res.status(500).json({ error: 'An error occurred while adding user.' });
+//             } else {
+//                 res.json({ message: 'Application successfully submitted! An admin will contact you.' });
+//             }
+//         });
+
+//         //if phone number has been taken by existing user
+//         const takenField = `SELECT SUM(count) AS total_count FROM(SELECT COUNT(*) AS count FROM User WHERE username='${username}' UNION SELECT COUNT(*) AS count FROM User WHERE email='${email}' UNION SELECT COUNT(*) AS count FROM User WHERE contact='${phoneNumber}') AS subquery;`
+
+//         //if multiple submissions (same email & contact) in 1 week
+//         const pendingSubmissions = `SELECT COUNT(*) AS count FROM Application WHERE email='${email}' AND contact='${phoneNumber}' AND appStatus='Pending';`
+
+//         //if previously denied submissions in 1 month
+//         const deniedSubmissions = `SELECT COUNT(*) AS count FROM Application WHERE email='${email}' AND contact='${phoneNumber}' AND appStatus='Denied' AND applicationDate >= DATE_SUB(CURRENT_DATE(),INTERVAL 1 MONTH);`
+
+//         connection.query(takenField, function (err, takenResult) {
+//             if (err) throw err;
+//             if (takenResult[0].total_count !== 0) {
+//                 res.sendStatus(401).json({ "message": "(401) Unauthorized Application: username, email, and/or phone number already taken" });
+//             }
+//         });
+//         connection.query(pendingSubmissions, function (err, pendingResult) {
+//             if (err) throw err;
+//             if (pendingResult[0].count !== 0) {
+//                 res.sendStatus(401).json({ "message": "(401) Unauthorized Application: Multiple pending submissions, please wait response" })
+//             }
+//         });
+//         connection.query(deniedSubmissions, function (err, deniedResult) {
+//             if (err) throw err;
+//             if (deniedResult[0].count !== 0) {
+//                 res.sendStatus(401).json({ "message": "(401) Unauthorized Application: Previously denied, please wait 1 month before resubmission" })
+//             }
+//         })
 
 
 

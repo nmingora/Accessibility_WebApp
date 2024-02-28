@@ -6,17 +6,17 @@ import "./SignUp.css";
 
 const Signup = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [pass, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState('');
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [dob, setDob] = useState('');
-  const [createUsername, setCreateUsername] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [address, setAddress] = useState('');
+  const [fName, setFirstName] = useState('');
+  const [lName, setLastName] = useState('');
+  const [DOB, setDob] = useState('');
+  const [username, setCreateUsername] = useState('');
+  const [contact, setPhoneNumber] = useState('');
+  const [addr, setAddress] = useState('');
   const [notes, setNotes] = useState('');
 
   const handleFirstNameChange = (e) => {
@@ -60,34 +60,54 @@ const Signup = () => {
   }
 
   const validateInputs = () => {
-    const validPasswords = password === confirmPassword;
+    const validPasswords = pass === confirmPassword;
     const validEmail = email.includes("@")&&(email.includes(".com")||email.includes(".ca"));
-    const validPhoneNumber = /^[0-9]{10}&/.test(phoneNumber);
+   // const validPhoneNumber = /^[0-9]{10}&/.test(phoneNumber);
 
-    return validPasswords&&validEmail&validPhoneNumber;
+    console.log(validEmail, validPasswords);
+
+    return validPasswords&&validEmail;
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(validateInputs()){
-      const applicationData = [firstName,lastName,createUsername,password,phoneNumber,dob,address,notes];
-      try{
-        const response = await fetch("http://localhost:3005/api/uptown/apply",
-        {
-          method:"Put",
-          headers:{'content-Type':'application/json'},
+    if (validateInputs()) {
+      const applicationData = {
+        fName,
+        lName,
+        username,
+        pass,
+        email,
+        contact,
+        DOB,
+        addr,
+        notes
+      };
+      try {
+        const response = await fetch("http://localhost:3005/api/uptown/SignUp", {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(applicationData)
-        }
-        );
-        
-        const message = await response.json().message;
-        setConfirmationMessage(message);
+        });
 
-      }catch(err){
-        console.log("Error: ",err)
+        console.log(applicationData);
+  
+        if (response.ok) {
+          const data = await response.json();
+          if (data.message) {
+            setConfirmationMessage(data.message);
+          } else {
+            console.log("Response does not contain a message");
+          }
+        } else {
+          console.error("Server returned an error:", response.status, response.statusText);
+        }
+      } catch (err) {
+        console.error("Error:", err);
       }
     }
   };
+  
 
   return (
     <Layout>
@@ -95,7 +115,7 @@ const Signup = () => {
       {confirmationMessage && <div className="confirmationMessage">{confirmationMessage}</div>}
 
       {/* Display error message if password and confirm password do not match */}
-      {confirmPassword && <div className="error">Passwords do not match</div>}
+      {confirmPassword && !pass && <div className="error">Passwords do not match</div>}
 
       <form onSubmit={handleSubmit} className="formContainer">
         <div>
@@ -103,23 +123,23 @@ const Signup = () => {
         </div>
         <div className="inputContainer">
           <label>First Name:</label>
-          <input type="text" className="firstName" value={firstName} onChange={handleFirstNameChange} placeholder="First Name" />
+          <input type="text" className="firstName" value={fName} onChange={handleFirstNameChange} placeholder="First Name" />
         </div>
         <div className="inputContainer">
           <label>Last Name:</label>
-          <input type="text" className="lastName" value={lastName} onChange={handleLastNameChange} placeholder="Last Name" />
+          <input type="text" className="lastName" value={lName} onChange={handleLastNameChange} placeholder="Last Name" />
         </div>
         <div className="inputContainer">
           <label>DOB:</label>
-          <input type="date" className="dob" value={dob} onChange={handleDobChange} placeholder="DOB" />
+          <input type="date" className="dob" value={DOB} onChange={handleDobChange} placeholder="DOB" />
         </div>
         <div className="inputContainer">
           <label>Create Username:</label>
-          <input type="text" className="createUsername" value={createUsername} onChange={handleCreateUsernameChange} placeholder="Create Username" />
+          <input type="text" className="createUsername" value={username} onChange={handleCreateUsernameChange} placeholder="Create Username" />
         </div>
         <div className="inputContainer">
           <label>Create Password:</label>
-          <input type="password" className="createPassword" value={password} onChange={handlePasswordChange} placeholder="Create Password" />
+          <input type="password" className="createPassword" value={pass} onChange={handlePasswordChange} placeholder="Create Password" />
         </div>
         <div className="inputContainer">
           <label>Confirm Password:</label>
@@ -131,11 +151,11 @@ const Signup = () => {
         </div>
         <div className="inputContainer">
           <label>Phone Number:</label>
-          <input type="tel" className="phoneNumber" value={phoneNumber} onChange={handlePhoneNumberChange} placeholder="Phone Number" />
+          <input type="tel" className="phoneNumber" value={contact} onChange={handlePhoneNumberChange} placeholder="Phone Number" />
         </div>
         <div className="inputContainer">
           <label>Address:</label>
-          <input type="text" className="address" value={address} onChange={handleAddressChange} placeholder="Address" />
+          <input type="text" className="address" value={addr} onChange={handleAddressChange} placeholder="Address" />
         </div>
         <div className="inputContainer">
           <label>Notes:</label>
