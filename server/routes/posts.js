@@ -52,13 +52,17 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const { postHeader, postParagraph, parentPostID, postType } = req.body;
+    const { postHeader, postParagraph, parentPostID, postType, userEmail } = req.body;
+
+    // Determine the userEmail based on the request, defaulting to "publicUser@tempdefault.com" if not provided or not "siteAdmin"
+    const effectiveUserEmail = userEmail === "siteAdmin" ? "siteAdmin" : "publicUser@tempdefault.com";
+
     const newPost = new Post({
       postID: generatePostID(),
-      userEmail: "publicUser@tempdefault.com",
+      userEmail: effectiveUserEmail, // Use the determined userEmail
       postHeader,
       postParagraph,
-      postType, // Added postType
+      postType,
       parentPostID: parentPostID || null,
     });
 

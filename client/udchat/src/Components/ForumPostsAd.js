@@ -55,6 +55,7 @@ const ForumPostsAd = () => {
   
 
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -70,7 +71,7 @@ const ForumPostsAd = () => {
         body: JSON.stringify({ 
           postHeader,
           postParagraph,
-          // Include parentPostID only if isResponse is true
+          userEmail: "siteAdmin", // Set userEmail to "siteAdmin" for posts from this page
           parentPostID: isResponse ? respondingToPostID : undefined,
           postType: isResponse // This will be true for responses, false otherwise
         }),
@@ -86,6 +87,34 @@ const ForumPostsAd = () => {
       console.error("Could not create post: ", error);
     }
   };
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   
@@ -213,6 +242,7 @@ const ForumPostsAd = () => {
                       
                       <small>Response to: {post.postHeader}</small>
                       <div></div>
+                      <h2 className="forumPosts-h2">{response.postHeader}</h2>
                       <small>Posted by: {response.userEmail}</small>
                       <div></div>
                       <small>Posted on: {response.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
