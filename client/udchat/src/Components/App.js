@@ -5,15 +5,15 @@ import Home from './Home.js';
 import SignUp from './SignUp.js';
 import Parent from './Parents.js';
 import Admin from './Admin.js';
-import Student from './Student.js'
+import StudentPassword from './StudentPassword.js'
 import MyProfile from './MyProfile.js';
 import News from './News.js';
 import AdminProcessApps from './AdminProcessApps.js';
 import ForumPosts from './ForumPosts';
-
-
-
-
+import StudentName from './StudentName.js';
+import StudentPortal from './StudentPortal.js';
+import StudentGame from './StudentGame1.js';
+import ForumPostsAd from './ForumPostsAd.js';
 
 
 function App() {
@@ -25,11 +25,16 @@ function App() {
         <Route path="/signup" element={<SignUp/>} />
         <Route path="/Parent" element={<Parent/>}/>
         <Route path="/Admin" element={<Admin/>}/>
-        <Route path="/Student" element={<Student/>}/>
+        <Route path="/StudentName" element={<StudentName/>}/>
         <Route path="/MyProfile" element={<MyProfile/>}/>
         <Route path="/News" element={<News/>}/>
+        <Route path="/StudentPassword" element={<StudentPassword/>}/>
+        <Route path="/StudentPortal" element={<StudentPortal />}/>
+        <Route path="/StudentGame1" element={<StudentGame />}/>
         <Route path="/AdminProcessApps" element={<AdminProcessApps/>}/>
         <Route path="/ForumPosts" element={<ForumPosts/>}/>
+        <Route path="/ForumPostsAd" element={<ForumPostsAd/>}/>
+        
       </Routes>
     </Router>
   );

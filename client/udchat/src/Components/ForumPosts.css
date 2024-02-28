@@ -1,1 +1,117 @@
-/* ForumPosts.css */
+/* Prefix every class with "forumPosts-" to ensure specificity */
+.forumPosts-container {
+    padding: 20px;
+    background-color: #f0f0f0; /* Light grey background */
+    
+  }
+  
+  .forumPosts-title {
+    color: #5823f5; /* Darker grey for the title text */
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 64px
+  }
+
+  .ForumMaka{
+    color: #5823f5; /* Darker grey for the title text */
+    margin-bottom: 10px; 
+    font-weight: bold;
+    font-size: 44px
+
+  }
+  
+  .forumPosts-post {
+    background-color: white;
+    border: 1px solid #ccc; /* Light grey outline */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px; /* Rounded corners */
+  }
+  
+  .forumPosts-ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .forumPosts-h2,
+  .forumPosts-h1,
+  .forumPosts-small,
+  .forumPosts-strong {
+    color: black;
+  }
+  
+  .forumPosts-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .forumPosts-postsList {
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .forumPosts-createPostForm {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .forumPosts-formField {
+    margin-bottom: 20px;
+  }
+  
+  .forumPosts-formField input,
+  .forumPosts-formField textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    min-width: 400px; /* The minimum width of the input field */
+    min-height: 400px; /* The minimum height of the input field */
+  }
+
+  .formField textarea {
+    font-size: 16px; /* Adjust the font size as needed */
+    padding: 10px;  /* Adds space inside the textarea, making it taller */
+    min-width: 400px; /* The minimum width of the textarea */
+    min-height: 300px; /* The minimum height of the textarea */
+    box-sizing: border-box; /* Ensures padding doesn't add to the total dimensions */
+    resize: vertical; /* Allows vertical resizing; remove if no resizing is desired */
+  }
+  
+
+  .formField input[type="text"] {
+    font-size: 16px; /* Adjust the font size as needed */
+    padding: 10px;  /* Adds space inside the input, making it taller */
+    min-width: 400px; /* The minimum width of the input field */
+    min-height: 40px; /* The minimum height of the input field */
+    box-sizing: border-box; /* Makes sure padding doesn't add to the width */
+  }
+  
+  
+  .forumPosts-submitButton {
+    width: 100%;
+    background-color: #c498de;
+    color: rgb(161, 139, 246);
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .forumPosts-submitButton:hover {
+    background-color: #d2b2f8;
+  }
+  
+  .forumPosts-response {
+    font-size: 0.9em;
+    padding-left: 20px;
+    color: black;
+    margin-top: 10px;
+  }
+  

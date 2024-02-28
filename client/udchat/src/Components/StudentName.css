@@ -1,0 +1,28 @@
+.student-login-container {
+    text-align: center;
+  }
+  
+  h2 {
+    color: #666;
+    font-size: 1rem;
+  }
+  
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Responsive grid */
+    grid-gap: 10px;
+  }
+  
+  .image-grid img {
+    width: 100px; /* Adjust image width as needed */
+    height: 100px; /* Adjust image height as needed */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .image-grid img.selected {
+    transform: scale(1.1); /* Enlarge selected images */
+  }
+  
+  
