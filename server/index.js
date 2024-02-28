@@ -166,6 +166,17 @@ router.post('/accept-application', async (req, res) => {
     }
 });
 
+// ENDPOINT TO RETRIEVE THE USER ID OF THE PARENT WHOS PROFILE WAS REJECTED BY THE ADMIN
+router.put('/reject-application', async (req, res) => {
+    try {
+        const {id} = req.body;
+
+        await setApplicationStatus(id, 'rejected');
+    } catch (error) {
+        console.error("Failed to retrieve the rejected application's id, here's why: ", error);
+    }
+});
+
 // Route to handle child account setup
 router.post('/setup-child-account', (req, res) => {
     const { parentEmail, childName, childPassword } = req.body;

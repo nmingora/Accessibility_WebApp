@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from './Layout'
 import './AdminProcessApps.css'
@@ -15,11 +15,14 @@ function AdminProcessApps() {
     const BASE_URL = 'http://localhost:3005';
 
 
+
     
     // ----------------------------- DATA RETRIEVAL FUNCTIONALITY -----------------------------------
 
     // whenn called setApplications(data) will take an array and pass it to the applications variable. NICE!
     const[applications, setApplications] = useState([]);
+
+    
 
     const fetchData = async () => {
       try {
@@ -28,12 +31,13 @@ function AdminProcessApps() {
           throw new Error('Network response was not ok');
           }
         const data = await response.json();
+        setApplications(data);
         console.log("Raw data:",data)
-        console.log('Global data: ', applications)
       } catch (error) {
         alert('there was an error retrieving the applications');
         console.error("There was a problem with the fetch operation: ", error);
       }
+
     }
 
 
@@ -148,29 +152,103 @@ function AdminProcessApps() {
         const responseData = await response.json();
         console.log('Success', responseData);
         
-        // refresh the screen
+        // refresh the screen (NOT WORKING FOR SOME REASON)
+        await fetchData();
         
       }
       catch (error) {
         alert('There was an error accepting the application');
         console.error(error);
-      }
-
+      } 
 
     }
+
+    // ------------------------------ REJECT APPLICATION --------------------------------------
+    const rejectApplication = async (id) => {
+      console.log("application id accepted by reject function: ",id );
+
+      try {
+        const response = await fetch(`${BASE_URL}/api/uptown/reject-application`, {
+          // use PUT since this is more of an update rather than a complete replication
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({id}),
+        });
+        // refresh the screen?
+        fetchData();
+
+        if(!response.ok) {
+          const responseData = await response.json();
+          throw new Error(`HTTP error! status: ${responseData}`)
+        }
+
+      } catch (error) {
+        alert("There was an error rejecting the application - see console for details");
+        console.error("There was an error rejecting the application: ", error);
+      } 
+    }
+
+
+
 
     // Hide the accept button if the status is logged as Accepted already. 
     // not sure how to do this
 
 
 
-    // function to make the button glow on hold to fill up the bar -> May have to use a cool fun library to do this. NICE!
 
+    //------------------------------ GLOWING BUTTONS --------------------------------------
+
+    // ref to store the timer
+    const buttonPressTimer = useRef(null);
+
+  
+
+    // Function to initiate the button press action and call the accept application function 
+    const handleMouseDown = (appID, e) => {
+      const button = e.currentTarget;
+      button.classList.add("is-pressed"); // Initial press effect
+      buttonPressTimer.current = setTimeout(() => {
+        // Logic to accept the application
+        acceptApplication(appID);
+        // Add explosion effect
+        button.classList.add("explosion-effect");
+        setTimeout(() => {
+          button.classList.remove("is-pressed", "explosion-effect"); // Clean up
+        }, 500); // Ensure this matches the duration of the explosion animation
+      }, 3000); // Duration of the initial fill
+    };
+
+    // function to initiate the button press action and call the accept application function
+    // Function to initiate the button press action and call the accept application function 
+    const handleMouseDownReject = (appID, e) => {
+      const button = e.currentTarget;
+      button.classList.add("is-pressed"); // Initial press effect
+      buttonPressTimer.current = setTimeout(() => {
+        // Logic to accept the application
+        rejectApplication(appID);
+        // Add explosion effect
+        button.classList.add("explosion-effect");
+        setTimeout(() => {
+          button.classList.remove("is-pressed", "explosion-effect"); // Clean up
+        }, 500); // Ensure this matches the duration of the explosion animation
+      }, 2000); // Duration of the initial fill
+    };
+    
+    
+    
+    const handleMouseUp = (e) => {
+      clearTimeout(buttonPressTimer.current);
+      e.currentTarget.classList.remove("is-pressed");
+    };
+    
 
 
 
     // test to view the applications being sent to the UI. Kind cool. 
-    console.log(applications)
+    console.log('Global data: ', applications)
 
     // --------------------------- UI VIEW AND WEB APP ------------------------------------------
 
@@ -179,54 +257,84 @@ function AdminProcessApps() {
       <header>Welcome to the Admin Page</header>
         <div className="adminToolBar">
 
-          {/* Buttons */}
-          <button onClick={fetchData}>SEARCH</button>
+          <div className="searchTerms">
+
+            <button onClick={fetchData}>SEARCH</button>
+
+            {/* Textbox */}
+            <input type="text" placeholder="Enter name for search" ref={searchNameField}/>
+            <input type='text' placeholder='email' ref={searchEmailField}/>
+            <input type='text' placeholder="Dependent's Name" ref={searchDependentName}/>
+
+          </div>
 
 
-          {/* Textbox */}
-          <input type="text" placeholder="Enter name for search" ref={searchNameField}/>
-          <input type='text' placeholder='email' ref={searchEmailField}/>
-          <input type='text' placeholder="Dependent's Name" ref={searchDependentName}/>
+          <div className="divider"></div>
 
 
-          {/** Sorting Visibility */}
-          <select onChange = {handleVisibilityChange} value={visibilityOption} placeholder="Sort Visibility">
-            <option value="pending">Pending</option>
-            <option value="approved">Approved</option>
-            <option value="denied">Denied</option>
-            <option value="all">Any Status</option>
-          </select>
 
-      
-          {/** Sort by Value */}
-          <select onChange={handleSortTermChange} value={sortTerm} placeholder="Sort By">
-            <option value='name'>Name</option>
-            <option value='email'>Email</option>
-            <option value='date'>Date</option>
-            <option value='dependentName'>Dependent's Name</option>
-          </select>
+          <div className="sortTerms">
+
+            {/** Sorting Visibility */}
+            <select onChange = {handleVisibilityChange} value={visibilityOption} placeholder="Sort Visibility">
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="denied">Denied</option>
+              <option value="all">Any Status</option>
+            </select>
+        
+            {/** Sort by Value */}
+            <select onChange={handleSortTermChange} value={sortTerm} placeholder="Sort By">
+              <option value='name'>Name</option>
+              <option value='email'>Email</option>
+              <option value='date'>Date</option>
+              <option value='dependentName'>Dependent's Name</option>
+            </select>
+
+            {/** Sorting Direction */}
+            <select onChange={handleSortingDirChange} value={sortDirection}>
+              <option value='ascending'>Ascending</option>
+              <option value='descending'>Descending</option>
+            </select>
+
+          </div>
 
 
-          {/** Sorting Direction */}
-          <select onChange={handleSortingDirChange} value={sortDirection}>
-            <option value='ascending'>Ascending</option>
-            <option value='descending'>Descending</option>
-          </select>
         </div>
+                  
 
 
         {/** VIEW THE APPLICATIONS HERE */}
         <div className='applicationView'>
-          {applications.map((application) => (
-            <div key={application.appID}>
-              <p>First Name: {application.fName}</p>
-              <p>Last Name: {application.lName}</p>
-              <p>Email: {application.email}</p>  
-              <p>Status: {application.status}</p>  
-              <button onClick={() => acceptApplication(application.appID)}>Accept</button>          
-            </div>
-          ))}
-        </div>
+        {applications.map((application) => (
+          <div key={application.appID}>
+            <p>First Name: {application.fName}</p>
+            <p>Last Name: {application.lName}</p>
+            <p>Email: {application.email}</p>  
+            <p>Status: {application.status}</p> 
+            <div className="buttonContainer">
+              <button
+                className="acceptButton"
+                onMouseDown={(e) => handleMouseDown(application.appID, e)}  
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp} // Cancel on mouse leave    
+              >
+                Accept
+              </button>
+              <button
+                className="rejectButton"
+                onMouseDown={(e) => handleMouseDownReject(application.appID, e)}  
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp} // Cancel on mouse leave    
+              >
+                Reject
+              </button>
+            </div>  
+          </div>
+        ))}
+      </div>
+
+        
     </Layout>
 
   );

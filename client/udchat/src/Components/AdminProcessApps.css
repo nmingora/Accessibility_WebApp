@@ -1,34 +1,50 @@
 
-
 .adminToolBar {
-    display: absolute;
-    align-items: center; /* Align items vertically */
-    gap: 10px; /* Space between each element */
-    padding: 10px; /* Padding around the toolbar content */
-    margin-left: 40px;
-    margin-top: 100px;
-  }
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Align items vertically */
+  gap: 20px; /* Space between search and sort terms */
+  padding: 10px; /* Padding around the toolbar content */
+  margin-left: 40px;
+  margin-top: 100px;
+}
+
+/* Style for the divider */
+.divider {
+  height: 100%;
+  width: 2px;
+  background-color: #ccc;
+}
+
+.adminToolBar button {
+  background-color: rgb(69, 117, 20); /* Green background */
+  color: white; /* White text */
+  border: none; /* Remove default border */
+  padding: 10px 15px; /* Padding inside the button */
+  border-radius: 5px; /* Rounded edges */
+  cursor: pointer; /* Pointer cursor on hover */
   
-  .adminToolBar button {
-    background-color: green; /* Green background */
-    color: white; /* White text */
-    border: none; /* Remove default border */
-    padding: 10px 15px; /* Padding inside the button */
-    border-radius: 5px; /* Rounded edges */
-    cursor: pointer; /* Pointer cursor on hover */
-  }
-  
-  .adminToolBar input[type="text"], .adminToolBar select {
-    padding: 5px 10px; /* Padding inside inputs and selects */
-    border: 1px solid #ccc; /* Light grey border */
-    border-radius: 5px; /* Slightly rounded edges */
-  }
-  
-  /* Focus state for inputs and selects */
-  .adminToolBar input[type="text"]:focus, .adminToolBar select:focus {
-    border-color: #007bff; /* Blue border on focus */
-    outline: none; /* Remove default focus outline */
-  }
+}
+
+.adminToolBar input[type="text"], .adminToolBar select {
+  padding: 5px 10px; /* Padding inside inputs and selects */
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 5px; /* Slightly rounded edges */
+  margin-bottom: 10px; /* Space between inputs/selects */
+}
+
+/* Focus state for inputs and selects */
+.adminToolBar input[type="text"]:focus, .adminToolBar select:focus {
+  border-color: #007bff; /* Blue border on focus */
+  outline: none; /* Remove default focus outline */
+}
+
+/* Additional styles for layout of search and sort terms */
+.searchTerms, .sortTerms {
+  display: flex;
+  flex-direction: column;
+}
+
+
 
   .applicationView {
     display: flex;
@@ -55,6 +71,81 @@
     font-size: 16px; /* Sets the font size to 16px for readability */
     line-height: 1.5; /* Increases line height for better readability */
   }
+
+  
+
+  /* Shared button styles */
+.applicationView button {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 2px solid;
+  background-color: #fff;
+  color: #000; /* Default color, will be overridden */
+  cursor: pointer;
+  padding: 8px 16px;
+  margin: 5px;
+  transition: color 0.3s ease;
+}
+
+/* Shared fill effect for both buttons */
+.applicationView button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  transition: width 3s linear;
+  border-radius: 18px;
+}
+
+.applicationView button:active::before {
+  width: 100%; /* Full width when active, simulating the fill */
+}
+
+@keyframes explosion {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(3); /* Adjust for the desired explosion size */
+    opacity: 0;
+  }
+}
+
+.explosion-effect {
+  animation: explosion 0.5s ease-out forwards; /* Adjust timing as needed */
+}
+
+/* Accept button specific styles */
+.applicationView .acceptButton {
+  border-color: #4CAF50;
+  color: #4CAF50;
+}
+
+.applicationView .acceptButton::before {
+  background-color: #4CAF50; /* Green background for accept */
+}
+
+/* Reject button specific styles */
+.applicationView .rejectButton {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.applicationView .rejectButton::before {
+  background-color: #f44336; /* Red background for reject */
+}
+
+/* Button container to ensure proper alignment and spacing */
+.applicationView .buttonContainer {
+  display: flex;
+  gap: 10px; /* Adjust the gap between buttons as needed */
+}
+
+  
   
   
 
