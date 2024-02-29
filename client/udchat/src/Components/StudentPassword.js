@@ -56,11 +56,40 @@ const StudentLogin = () => {
         });
     };
 
-    const handleSubmit = () => {
-        // Implement password validation here (compare selectedImages with stored passwords)
-        // For demonstration, let's just sign in the user directly
-        handleSignIn();
-    };
+    const handleSubmit = async () => {
+        try {
+            // Send selectedImages array to backend for validation/authentication
+            console.log('Selected Images:', selectedImages);
+    
+            // Mock user patterns (replace with actual patterns from database)
+            const userPatterns = {
+                'student1': [1, 2, 3, 4],
+                'student2': [5, 6, 7, 8],
+                // Add more users and their patterns as needed
+            };
+    
+            // Mock current user (replace with actual user)
+            const currentUser = 'student1';
+    
+            // Check if selected images match the user's pattern
+            const isMatch = JSON.stringify(selectedImages) === JSON.stringify(userPatterns[currentUser]);
+    
+            if (isMatch) {
+                console.log('Authentication successful!');
+                // Redirect user to student portal or perform further actions
+                navigateToStudentPortal();
+            } else {
+                console.log('Authentication failed. Please try again.');
+                // Clear selected images and allow user to retry
+                setSelectedImages([]);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            // Handle any errors that occur during authentication/validation
+            setError('An error occurred. Please try again.');
+            setSelectedImages([]);
+        }
+    };    
 
     return (
         <Layout>
@@ -71,15 +100,15 @@ const StudentLogin = () => {
                     {/* Display images and handle click events */}
 
                     {/* {Array.from({ length: 15 }, (_, index) => (
-          // eslint-disable-next-line jsx-a11y/img-redundant-alt
-          <img
-            key={index}
-            src={`/Components/icons/image${index + 1}.jpeg`} // Adjust path accordingly
-            alt={`image${index + 1}`}
-            className={selectedImages.includes(index + 1) ? 'selected' : ''}
-            onClick={() => handleImageSelect(index + 1)}
-          />
-        ))} */}
+                    // eslint-disable-next-line jsx-a11y/img-redundant-alt
+                    <img
+                        key={index}
+                        src={`/Components/icons/image${index + 1}.jpeg`} // Adjust path accordingly
+                        alt={`image${index + 1}`}
+                        className={selectedImages.includes(index + 1) ? 'selected' : ''}
+                        onClick={() => handleImageSelect(index + 1)}
+                    />
+                    ))} */}
                     <img
                         src={image1}
                         alt="Image 1"
