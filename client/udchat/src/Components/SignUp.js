@@ -92,15 +92,20 @@ const Signup = () => {
 
         console.log(applicationData);
   
-        if (response.ok) {
-          const data = await response.json();
-          if (data.message) {
-            setConfirmationMessage(data.message);
-          } else {
-            console.log("Response does not contain a message");
-          }
-        } else {
+        if (!response.ok) {
           console.error("Server returned an error:", response.status, response.statusText);
+          // if (data.message) {
+          //   setSignupSuccess(true);
+          //   setConfirmationMessage("Sign up successful! Please await confirmation from.");
+          // } else {
+          //   console.log("Response does not contain a message");
+          // }
+        } else {
+          setSignupSuccess(true);
+          setConfirmationMessage("Sign up successful! Please await confirmation from.");
+          //const data = await response.json();
+          console.log("h1")
+          alert("Sign up successful! Please await confirmation from.");
         }
       } catch (err) {
         console.error("Error:", err);
@@ -112,7 +117,7 @@ const Signup = () => {
   return (
     <Layout>
       {/* Display confirmation message if sign up was successful */}
-      {confirmationMessage && <div className="confirmationMessage">{confirmationMessage}</div>}
+      {signupSuccess && <div className="confirmationMessage">{alert("Sign up successful! Please await confirmation from.")}</div>}
 
       {/* Display error message if password and confirm password do not match */}
       {confirmPassword && !pass && <div className="error">Passwords do not match</div>}
