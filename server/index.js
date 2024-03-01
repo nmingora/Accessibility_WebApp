@@ -201,6 +201,31 @@ router.post('/setup-child-account', (req, res) => {
 });
 
 
+//------------------------------Retrieve Parent Username and password_____________________________________
+router.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        const user = await findUserByUsername(username);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Assuming passwords are stored in plain text (which is not recommended for production)
+        if (user.pass !== password) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // Login successful
+        res.json({ message: 'You are logged in', fName: user.fName, lName: user.lName });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).send('Error during login');
+    }
+});
+
+
 // -------------------------------- Backend Functions ------------------------------------------//
 
 
@@ -276,6 +301,33 @@ async function setApplicationStatus(id, status) {
     }
 
 }
+
+
+//login checka, checks username with pass
+
+async function findUserByUsername(username) {
+    const connection = await initializeDatabase();
+
+    try {
+        const query = 'SELECT * FROM Parent WHERE username = ?';
+        const [rows] = await connection.execute(query, [username]);
+
+        if (rows.length > 0) {
+            return rows[0]; // Return the first matching user
+        } else {
+            return null; // No user found
+        }
+    } catch (error) {
+        console.error('Query error:', error);
+        throw error;
+    } finally {
+        if (connection) {
+            await connection.end();
+        }
+    }
+}
+
+
 
 //signup endpoint
 
