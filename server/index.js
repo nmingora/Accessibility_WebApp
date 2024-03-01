@@ -7,34 +7,6 @@ const app = express();
 const router = express.Router();
 const bodyParser = require('body-parser');
 
-//-----------------------Nodemailer------------------//
-//for parents to make account for campers
-const nodemailer = require('nodemailer');
-
-// Create a Nodemailer transporter
-const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: process.env.EMAIL_ADDRESS, // gmail email address
-        pass: process.env.EMAIL_PASSWORD, // gmail password
-    },
-});
-
-// Send email function
-const sendEmail = async (to, subject, text) => {
-    try {
-        // Send mail with defined transport object
-        await transporter.sendMail({
-            from: process.env.EMAIL_ADDRESS, // Sender address
-            to, // List of recipients
-            subject, // Subject line
-            text, // Plain text body
-        });
-        console.log('Email sent successfully');
-    } catch (error) {
-        console.error('Error sending email:', error);
-    }
-};
 
 //--------------------------- Google Cloud SQL Connection ---------------------------//
 // Import database modules
@@ -71,8 +43,13 @@ app.use(bodyParser.json());
 // --------------------------- Base Route and Routes --------------------------------------------//
 
 //setup serving front-end code
-app.use(express.static(path.join(__dirname, '..', 'client', 'build', 'static')));
-// app.use('/', express.static('static'));
+app.use(express.static(path.join(__dirname, '..', 'client', 'udchat', 'build')));
+
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'client', 'udchat', 'build', 'index.html'));
+  });
+  
 
 //install router at /api/uptown <-----> ROUTER ROUTER ROUTER ROUTER
 app.use('/api/uptown', router);
@@ -83,24 +60,45 @@ app.listen(PORT, () => {
 });
 
 
+
+
+//------------------------------Nodemailer----------------------------//
+
+//for parents to make account for campers
+const nodemailer = require('nodemailer');
+
+// Create a Nodemailer transporter
+const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: process.env.EMAIL_ADDRESS, // gmail email address
+        pass: process.env.EMAIL_PASSWORD, // gmail password
+    },
+});
+
+// Send email function
+const sendEmail = async (to, subject, text) => {
+    try {
+        // Send mail with defined transport object
+        await transporter.sendMail({
+            from: process.env.EMAIL_ADDRESS, // Sender address
+            to, // List of recipients
+            subject, // Subject line
+            text, // Plain text body
+        });
+        console.log('Email sent successfully');
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+};
+
+
+
+
+
+
 // --------------------------- Express Endpoints -------------------------------------//
 
-
-
-//users endpoint - tester
-// app.post('/api/users', (req, res) => {
-//     const {userid, name, email, create_time} = req.body;
-
-//     const sql = 'INSERT INTO users (userid, name, email, create_time) VALUES (?, ?, ?)';
-//     connection.query(sql, [userid, name, email, create_time], (err, results) => {
-//         if(err) {
-//             console.error('Error adding user:', error);
-//             res.status(500).json({ error: 'An error occurred while adding user.' });
-//         } else {
-//             res.json({ message: 'User added successfully.' });
-//         }
-//     })
-// })
 
 
 //signup endpoint
