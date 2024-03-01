@@ -179,7 +179,7 @@ router.put('/reject-application', async (req, res) => {
 router.post('/setup-child-account', (req, res) => {
     const { parentEmail, childName, childPassword } = req.body;
     const parentQuery = `SELECT * FROM Parents WHERE email = ?`;
-    pool.query(parentQuery, [parentEmail], (parentError, parentResults) => {
+    pool.execute(parentQuery, [parentEmail], (parentError, parentResults) => {
         if (parentError) {
             console.error('Error finding parent:', parentError);
             return res.status(500).send('Internal server error');
