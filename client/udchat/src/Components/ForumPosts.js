@@ -10,6 +10,7 @@ const ForumPosts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5); // You can adjust this number if you want to show more/less posts per page
   const [respondingToPostID, setRespondingToPostID] = useState(null);
+  const [userEmail, setUserEmail] = useState('');
 
   const navigate = useNavigate();
     const toParent = () => {
@@ -21,6 +22,12 @@ const ForumPosts = () => {
         // or turn off if the same postID is clicked again
         setRespondingToPostID(prev => prev === parentPostID ? null : parentPostID);
     };
+
+    
+  
+    
+    
+  
       
     
     
@@ -29,11 +36,21 @@ const ForumPosts = () => {
         return parentPost ? parentPost.postHeader : 'Original Post';
       };
       
-    
-
-
+  
+      useEffect(() => {
+        const email = localStorage.getItem('userEmail');
+        console.log('Retrieved userEmail:', email); // This should output the userEmail if successfully retrieved
+        if (email) {
+          setUserEmail(email);
+        }
+      }, []);
+      
 
   useEffect(() => {
+    const email = localStorage.getItem('userEmail'); // Retrieve the userEmail from localStorage
+     if (email) {
+       setUserEmail(email);
+     }
     fetchPosts();
   }, [visiblePosts]);
 
@@ -52,12 +69,23 @@ const ForumPosts = () => {
   };
   
 
+  
+  
 
+  
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // Determine if the post is a response based on whether respondingToPostID is set
-    const isResponse = respondingToPostID !== null;
+    const payload = { 
+      postHeader,
+      postParagraph,
+      userEmail: userEmail || "defaultEmail@example.com", // Fallback for debugging
+      parentPostID: respondingToPostID !== null ? respondingToPostID : undefined,
+      postType: respondingToPostID !== null
+    };
+  
+    console.log('Submitting:', payload); // Debugging
   
     try {
       const response = await fetch('http://localhost:5004/api/posts', {
@@ -65,26 +93,80 @@ const ForumPosts = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          postHeader,
-          postParagraph,
-          // Include parentPostID only if isResponse is true
-          parentPostID: isResponse ? respondingToPostID : undefined,
-          postType: isResponse // This will be true for responses, false otherwise
-        }),
+        body: JSON.stringify(payload),
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      // Resetting state after successful post submission
       setPostHeader('');
       setPostParagraph('');
-      setRespondingToPostID(null); // Reset respondingToPostID after submitting
-      fetchPosts(); // Refresh posts list
+      setRespondingToPostID(null);
+      fetchPosts(); // Refresh the posts list
     } catch (error) {
       console.error("Could not create post: ", error);
     }
   };
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const showMorePosts = () => {
     setVisiblePosts(prevVisiblePosts => prevVisiblePosts + 5); // Show 5 more posts
@@ -113,6 +195,8 @@ const ForumPosts = () => {
    
         <div>
         <h2 className="forumPosts-title">Community Forum</h2>
+        <p>You are logged in as: {userEmail}</p>
+        <p>{}</p>
         </div>
         <div>
             <p></p>
@@ -215,3 +299,4 @@ const ForumPosts = () => {
 };
 
 export default ForumPosts;
+

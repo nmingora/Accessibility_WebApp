@@ -38,12 +38,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-
-
-
-
-
-
 //____________________________________________________________________//
 
 //                          post a new post                              //
@@ -54,12 +48,10 @@ router.post('/', async (req, res) => {
   try {
     const { postHeader, postParagraph, parentPostID, postType, userEmail } = req.body;
 
-    // Determine the userEmail based on the request, defaulting to "publicUser@tempdefault.com" if not provided or not "siteAdmin"
-    const effectiveUserEmail = userEmail === "siteAdmin" ? "siteAdmin" : "publicUser@tempdefault.com";
-
+    // Use the provided userEmail directly, ensure validation/security checks as necessary
     const newPost = new Post({
       postID: generatePostID(),
-      userEmail: effectiveUserEmail, // Use the determined userEmail
+      userEmail, // Use the provided userEmail
       postHeader,
       postParagraph,
       postType,
@@ -72,7 +64,6 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-
 
 
 
@@ -122,3 +113,4 @@ router.delete('/:id', async (req, res) => {
 
 
 module.exports = router;
+
