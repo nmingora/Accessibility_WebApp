@@ -43,13 +43,11 @@ app.use(bodyParser.json());
 // --------------------------- Base Route and Routes --------------------------------------------//
 
 //setup serving front-end code
-app.use(express.static(path.join(__dirname, '..', 'client', 'udchat', 'build')));
-
+app.use(express.static(path.join(__dirname, '../client/udchat/build')));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'client', 'udchat', 'build', 'index.html'));
-  });
-  
+  res.sendFile(path.join(__dirname, '../client/udchat/build/index.html'));
+});
 
 //install router at /api/uptown <-----> ROUTER ROUTER ROUTER ROUTER
 app.use('/api/uptown', router);

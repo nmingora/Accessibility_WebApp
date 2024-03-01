@@ -1,6 +1,25 @@
 {
+  "name": "udchat-fullstack",
+  "version": "1.0.0",
+  "description": "A full-stack application with React frontend and Express backend",
+  "main": "server/index.js",
+  "scripts": {
+    "postinstall": "npm run build",
+    "start": "node server/index.js",
+    "build": "npm run build --prefix client/udchat",
+    "install-client": "npm install --prefix client/udchat"
+  },
   "dependencies": {
-    "bootstrap": "^5.3.2",
-    "react": "^18.2.0"
-  }
+    "express": "^4.17.1",
+    "cors": "^2.8.5",
+    "react-scripts": "5.0.1",
+    "dotenv": "^16.0.0"
+    
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "author": "",
+  "license": "ISC"
 }
+
