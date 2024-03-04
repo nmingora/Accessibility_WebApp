@@ -42,20 +42,13 @@ app.use(bodyParser.json());
 
 // --------------------------- Base Route and Routes --------------------------------------------//
 
-//setup serving front-end code
-app.use(express.static(path.join(__dirname, '../client/udchat/build')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/udchat/build/index.html'));
-});
 
 //install router at /api/uptown <-----> ROUTER ROUTER ROUTER ROUTER
 app.use('/api/uptown', router);
 
 
-app.listen(PORT, () => {
-    console.log(`Server listening on ${PORT}`);
-});
+
 
 
 
@@ -322,6 +315,44 @@ async function findUserByUsername(username) {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+// ------------------------- KEEP THIS AS LAST -> MUST BE AFTER ENDPOINTS ------------------------------- //
+
+
+//setup serving front-end code
+app.use(express.static(path.join(__dirname, '../client/udchat/build')));
+
+
+// Finally, the catch-all handler to serve your React app
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/udchat/build/index.html'));
+  });
+
+app.listen(PORT, () => {
+    console.log(`Server listening on ${PORT}`);
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
