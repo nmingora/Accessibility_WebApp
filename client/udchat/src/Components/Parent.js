@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from './Layout';
+import { BASE_URL } from '../config';  // Importing from the src directory
 
 const Parent = () => {
   const [username, setUsername] = useState('');
@@ -49,7 +50,7 @@ const toggleSidebar = () => {
 const handleLogin = async (event) => {
   event.preventDefault();
   try {
-    const response = await fetch('http://localhost:3005/api/uptown/login', {
+    const response = await fetch(`${BASE_URL}/api/uptown/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

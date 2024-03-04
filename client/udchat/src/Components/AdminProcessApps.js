@@ -2,7 +2,7 @@ import React, { useState, useRef,} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from './Layout'
 import './AdminProcessApps.css'
-
+import { BASE_URL } from '../config';  // Importing from the src directory
 
 function AdminProcessApps() {
     const navigate = useNavigate();
@@ -11,8 +11,7 @@ function AdminProcessApps() {
       navigate("/Admin");
     }
 
-    // install the api fetch to base URL 
-    const BASE_URL = 'http://localhost:3005';
+
 
 
 

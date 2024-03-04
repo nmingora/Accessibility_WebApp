@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from "react";
 import Layout from './Layout';
 import "./SignUp.css";
-
+import { BASE_URL } from '../config';  // Importing from the src directory
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -84,7 +84,7 @@ const Signup = () => {
         notes
       };
       try {
-        const response = await fetch("http://localhost:3005/api/uptown/SignUp", {
+        const response = await fetch(`${BASE_URL}/api/uptown/SignUp`, {
           method: "POST",
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(applicationData)
