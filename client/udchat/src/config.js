@@ -4,6 +4,6 @@
 
 // Determine the base URL dynamically
 // For local development, it might be localhost; for production, it's the VM's external IP or domain
-const BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3005';
+const BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://34.124.118.227';
 export { BASE_URL };
 
