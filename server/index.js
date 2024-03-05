@@ -2,7 +2,8 @@
 const express = require("express");
 const cors = require('cors');
 const path = require("path");
-const PORT = process.env.PORT || 3005;
+//const PORT = process.env.PORT || 3005;
+const PORT = 3005;
 const app = express();
 const router = express.Router();
 const bodyParser = require('body-parser');
