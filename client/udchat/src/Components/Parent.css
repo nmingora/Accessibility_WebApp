@@ -1,0 +1,70 @@
+/* styles.css */
+
+.parent-login-container {
+    background-color: #f7f7f7; /* Light gray background color */
+    border-radius: 10px; /* Rounded corners */
+    border: 2px solid #ccc; /* Border color */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+    padding: 100px; /* Add padding to create space around the content */
+  }
+  
+  .parent-login-title {
+    font-family: Arial, sans-serif; /* Set font family to Arial */
+    font-size: 36px; /* Increase font size to 36px */
+    color: #426b1f; /* Change text color to black */
+    margin-top: 40px; /* Add margin to the top to lower the text */
+    margin-bottom: 20px; /* Add margin to the bottom for spacing */
+    text-align: center; /* Center-align the text */
+  }
+
+  .parent-login-description{
+    font-family: Arial, sans-serif; /* Set font family to Arial */
+    color: black;
+    text-align: center;
+  }
+  
+  
+  .login-form {
+    /* Add styles for the login form */
+  }
+  
+  .login-input {
+    width: 100%;
+    padding: 10px;
+     margin: 10px 0; /* Space between inputs */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .login-button-container {
+    text-align: center;
+  }
+  
+  .login-button {
+    text-align: center;
+    width: 150px;
+  }
+  
+  .logout-button {
+    /* Add styles for the logout button */
+  }
+  
+  .forum-button {
+    /* Add styles for the forum button */
+  }
+  
+  .login-message {
+    /* Add styles for the login message */
+    color: red;
+  }
+
+  .username-css{
+    color:black;
+
+  }
+
+  .password-css{
+    color:black;
+  }
+  
