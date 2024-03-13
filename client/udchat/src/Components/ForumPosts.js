@@ -25,13 +25,7 @@ const ForumPosts = () => {
         setRespondingToPostID(prev => prev === parentPostID ? null : parentPostID);
     };
 
-    
   
-    
-    
-  
-      
-    
     
     const findParentPostHeader = (parentPostID) => {
         const parentPost = posts.find(post => post.postID === parentPostID);
