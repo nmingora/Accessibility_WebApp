@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './ForumPosts.css'; // Make sure the path is correct
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../config';  // Importing from the src directory
+
 
 const ForumPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -23,13 +25,7 @@ const ForumPosts = () => {
         setRespondingToPostID(prev => prev === parentPostID ? null : parentPostID);
     };
 
-    
   
-    
-    
-  
-      
-    
     
     const findParentPostHeader = (parentPostID) => {
         const parentPost = posts.find(post => post.postID === parentPostID);
@@ -57,7 +53,7 @@ const ForumPosts = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(`http://localhost:5004/api/posts?page=${currentPage}&limit=${postsPerPage}`);
+      const response = await fetch(`${BASE_URL}/api/posts?page=${currentPage}&limit=${postsPerPage}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -88,7 +84,7 @@ const ForumPosts = () => {
     console.log('Submitting:', payload); // Debugging
   
     try {
-      const response = await fetch('http://localhost:5004/api/posts', {
+      const response = await fetch(`${BASE_URL}/api/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
