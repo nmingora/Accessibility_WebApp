@@ -13,6 +13,7 @@ const bodyParser = require('body-parser');
 // Add mongoose import from indexMongo.js
 const mongoose = require('mongoose');
 const postsRouter = require('./routes/posts');
+const pdfWaiversRouter = require('./routes/pdfWaivers');
 
 app.use(cors());
 app.use(express.json());
@@ -28,6 +29,7 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected..."))
   .catch(err => console.log(err));
 app.use('/api/posts', postsRouter);
+app.use('/api/pdfWaivers', pdfWaiversRouter);
 
 // Production mode
 if(process.env.NODE_ENV === 'production') {  
