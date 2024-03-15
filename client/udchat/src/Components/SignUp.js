@@ -3,6 +3,7 @@ import { useState } from "react";
 import Layout from './Layout';
 import "./SignUp.css";
 import { BASE_URL } from '../config';  // Importing from the src directory
+import { useDropzone } from 'react-dropzone';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState('');
+  const [file, setFile] = useState(null);
 
   const [fName, setFirstName] = useState('');
   const [lName, setLastName] = useState('');
@@ -18,6 +20,10 @@ const Signup = () => {
   const [contact, setPhoneNumber] = useState('');
   const [addr, setAddress] = useState('');
   const [notes, setNotes] = useState('');
+
+  const handleFileChange = (acceptedFiles) => {
+    setFile(acceptedFiles[0]);
+  };
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
@@ -71,44 +77,78 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // if (validateInputs()) {
+    //   const applicationData = {
+    //     fName,
+    //     lName,
+    //     username,
+    //     pass,
+    //     email,
+    //     contact,
+    //     DOB,
+    //     addr,
+    //     notes
+    //   };
+    //   try {
+    //     const response = await fetch(`${BASE_URL}/api/uptown/SignUp`, {
+    //       method: "POST",
+    //       headers: { 'Content-Type': 'application/json' },
+    //       body: JSON.stringify(applicationData)
+    //     });
+
+    //     console.log(applicationData);
+  
+    //     if (!response.ok) {
+    //       console.error("Server returned an error:", response.status, response.statusText);
+    //       // if (data.message) {
+    //       //   setSignupSuccess(true);
+    //       //   setConfirmationMessage("Sign up successful! Please await confirmation from.");
+    //       // } else {
+    //       //   console.log("Response does not contain a message");
+    //       // }
+    //     } else {
+    //       setSignupSuccess(true);
+    //       setConfirmationMessage("Sign up successful! Please await confirmation from.");
+    //       //const data = await response.json();
+    //       console.log("h1")
+    //       alert("Sign up successful! Please await confirmation from.");
+    //     }
+    //   } catch (err) {
+    //     console.error("Error:", err);
+    //   }
+    // }
     if (validateInputs()) {
-      const applicationData = {
-        fName,
-        lName,
-        username,
-        pass,
-        email,
-        contact,
-        DOB,
-        addr,
-        notes
-      };
+      const formData = new FormData();
+      formData.append('fName', fName);
+      formData.append('lName', lName);
+      formData.append('username', username);
+      formData.append('pass', pass);
+      formData.append('email', email);
+      formData.append('contact', contact);
+      formData.append('DOB', DOB);
+      formData.append('addr', addr);
+      formData.append('notes', notes);
+      formData.append('form', file);
+  
       try {
         const response = await fetch(`${BASE_URL}/api/uptown/SignUp`, {
           method: "POST",
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(applicationData)
+          body: formData,
         });
-
-        console.log(applicationData);
   
         if (!response.ok) {
           console.error("Server returned an error:", response.status, response.statusText);
-          // if (data.message) {
-          //   setSignupSuccess(true);
-          //   setConfirmationMessage("Sign up successful! Please await confirmation from.");
-          // } else {
-          //   console.log("Response does not contain a message");
-          // }
         } else {
           setSignupSuccess(true);
+          const result = await response.json();
           setConfirmationMessage("Sign up successful! Please await confirmation from.");
-          //const data = await response.json();
-          console.log("h1")
+          console.log("Signup successful", result);
           alert("Sign up successful! Please await confirmation from.");
         }
       } catch (err) {
         console.error("Error:", err);
+        setSignupSuccess(false);
+        setConfirmationMessage("An error occurred during sign up.");
       }
     }
   };
@@ -165,6 +205,12 @@ const Signup = () => {
         <div className="inputContainer">
           <label>Notes:</label>
           <textarea className="notes" value={notes} onChange={handleNotesChange} placeholder="Notes"></textarea>
+        </div>
+        {/* File input for PDF upload */}
+        <div className="inputContainer">
+          <label>Upload File:</label>
+          {/* <input type="file" onChange={handleFileChange} accept="application/pdf" /> */}
+          <input type="file" onChange={(e) => setFile(e.target.files[0])} />
         </div>
         <div>
           <button type="submit" className="cartButton">Sign Up</button>
