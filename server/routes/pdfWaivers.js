@@ -25,6 +25,21 @@ router.post('/upload', upload.single('pdfData'), async (req, res) => {
   });
   
 
+// GET endpoint to retrieve all PDF waivers
+router.get('/getAll', async (req, res) => {
+    try {
+      // Find all documents in the PdfWaiver collection
+      const pdfWaivers = await PdfWaiver.find({});
+  
+    
+  
+      res.status(200).json(pdfWaivers);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+  
+
 
 
 
