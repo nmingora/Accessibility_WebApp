@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ForumPosts.css'; // Make sure the path is correct
 import { useNavigate } from 'react-router-dom';
+import Layout from './Layout'
 import { BASE_URL } from '../config';  // Importing from the src directory
 
 
@@ -25,13 +26,7 @@ const ForumPosts = () => {
         setRespondingToPostID(prev => prev === parentPostID ? null : parentPostID);
     };
 
-    
   
-    
-    
-  
-      
-    
     
     const findParentPostHeader = (parentPostID) => {
         const parentPost = posts.find(post => post.postID === parentPostID);
@@ -118,55 +113,6 @@ const ForumPosts = () => {
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -191,112 +137,115 @@ const ForumPosts = () => {
 
 
   return (
-    <div className="forumPosts-container">
-    <div className="forumPosts-postsList">
-      <p>this is the forum posts page. Run node indexMongo.js to start Mongodb server to load forums</p>
-   
-        <div>
-        <h2 className="forumPosts-title">Community Forum</h2>
-        <p>You are logged in as: {userEmail}</p>
-        <p>{}</p>
+    <Layout>
+      <div className="forumPosts-container">
+      <div className="forumPosts-postsList">
+        <p>this is the forum posts page. Run node indexMongo.js to start Mongodb server to load forums</p>
+    
+          <div>
+          <h2 className="forumPosts-title">Community Forum</h2>
+          <p>You are logged in as: {userEmail}</p>
+          <p>{}</p>
+          </div>
+          <div>
+              <p></p>
+          <button type="button" onClick={toParent}>Back to Parent Page</button>
+          <p></p>
+          </div>
+
+
+
+          
+          
+          
+          
+          <ul className="forumPosts-ul">
+            {posts.map(post => {
+              if (!post.postType) { // This is a top-level post
+                return (
+                  <li key={post.postID} className="forumPosts-post">
+                    {/* Post content */}
+                    <h2 className="forumPosts-h2">{post.postHeader}</h2>
+                    <small className="forumPosts-small">Posted by: {post.userEmail}</small>
+                    <div></div>
+                    <small>Posted on: {post.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
+                    <p>{post.postParagraph}</p>
+                    {/* ... other post details ... */}
+              
+                    {/* Render the response button */}
+                    {!post.postType && (
+                      <button 
+                        style={{ backgroundColor: respondingToPostID === post.postID ? 'green' : 'initial' }} 
+                        onClick={() => handleResponse(post.postID)}>
+                        Respond
+                      </button>
+                    )}
+
+                    {/* Render responses here */}
+                    {posts.filter(response => response.parentPostID === post.postID).map(response => (
+                      <div key={response.postID} className="forumPosts-response">
+                        {/* Response content */}
+                        <small>Response to: {post.postHeader}</small>
+                        <div></div>
+                        <form className="forumPosts-createPostForm" onSubmit={handleSubmit}></form>
+                        <div></div>
+                        <small>Posted by: {response.userEmail}</small>
+                        <div></div>
+                        <small>Posted on: {response.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
+                        
+                        <p>{response.postParagraph}</p>
+                        {/* ... other response details ... */}
+                      </div>
+                    ))}
+                  </li>
+                );
+              }
+              // If it's a response post, don't render it here as it will be nested inside its parent post
+              return null;
+            })}
+          </ul>
+        
+          
+
+          
+
+          
+          <div className="pagination">
+            <button onClick={goToPrevPage} disabled={currentPage === 1}>Previous</button>
+            <button onClick={goToNextPage}>Next</button>
+          </div>
+
         </div>
-        <div>
-            <p></p>
-        <button type="button" onClick={toParent}>Back to Parent Page</button>
-        <p></p>
-        </div>
+        <form className="createPostForm" onSubmit={handleSubmit}>
+          <p>
 
 
-
+          </p>
+        <h2  className="ForumMaka">Create New Post</h2>
+          <div className="formField">
+            <input
+              type="text"
+              placeholder="Post Header"
+              value={postHeader}
+              onChange={(e) => setPostHeader(e.target.value)}
+              required
+            />
+          </div>
+          <div className="formField">
+            <textarea
+              placeholder="Post Paragraph"
+              value={postParagraph}
+              onChange={(e) => setPostParagraph(e.target.value)}
+              required
+            ></textarea>
+          </div>
+          <button type="submit" className="submitButton">Submit</button>
+        </form>
         
         
-        
-        
-        <ul className="forumPosts-ul">
-          {posts.map(post => {
-            if (!post.postType) { // This is a top-level post
-              return (
-                <li key={post.postID} className="forumPosts-post">
-                  {/* Post content */}
-                  <h2 className="forumPosts-h2">{post.postHeader}</h2>
-                  <small className="forumPosts-small">Posted by: {post.userEmail}</small>
-                  <div></div>
-                  <small>Posted on: {post.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
-                  <p>{post.postParagraph}</p>
-                  {/* ... other post details ... */}
-            
-                  {/* Render the response button */}
-                  {!post.postType && (
-                    <button 
-                      style={{ backgroundColor: respondingToPostID === post.postID ? 'green' : 'initial' }} 
-                      onClick={() => handleResponse(post.postID)}>
-                      Respond
-                    </button>
-                  )}
-
-                  {/* Render responses here */}
-                  {posts.filter(response => response.parentPostID === post.postID).map(response => (
-                     <div key={response.postID} className="forumPosts-response">
-                      {/* Response content */}
-                      <small>Response to: {post.postHeader}</small>
-                      <div></div>
-                      <form className="forumPosts-createPostForm" onSubmit={handleSubmit}></form>
-                      <div></div>
-                      <small>Posted by: {response.userEmail}</small>
-                      <div></div>
-                      <small>Posted on: {response.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
-                      
-                      <p>{response.postParagraph}</p>
-                      {/* ... other response details ... */}
-                    </div>
-                  ))}
-                </li>
-              );
-            }
-            // If it's a response post, don't render it here as it will be nested inside its parent post
-            return null;
-          })}
-        </ul>
-      
-        
-
-        
-
-         
-         <div className="pagination">
-          <button onClick={goToPrevPage} disabled={currentPage === 1}>Previous</button>
-          <button onClick={goToNextPage}>Next</button>
-        </div>
-
       </div>
-      <form className="createPostForm" onSubmit={handleSubmit}>
-        <p>
 
-
-        </p>
-      <h2  className="ForumMaka">Create New Post</h2>
-        <div className="formField">
-          <input
-            type="text"
-            placeholder="Post Header"
-            value={postHeader}
-            onChange={(e) => setPostHeader(e.target.value)}
-            required
-          />
-        </div>
-        <div className="formField">
-          <textarea
-            placeholder="Post Paragraph"
-            value={postParagraph}
-            onChange={(e) => setPostParagraph(e.target.value)}
-            required
-          ></textarea>
-        </div>
-        <button type="submit" className="submitButton">Submit</button>
-      </form>
-      
-      
-    </div>
+    </Layout>
   );
 };
 
