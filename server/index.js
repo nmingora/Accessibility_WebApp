@@ -256,62 +256,62 @@ router.get('/admin/applications', async (req, res) => {
 // ENDPOINT TO RETRIEVE THE USER ID OF THE PARENT WHO'S PROFILE WAS APPROVED BY THE ADMIN
 
 router.post('/accept-application', async (req, res) => {
-    // try {
-    //     const { id } = req.body;
-
-    //     // call function to update the status of the application
-    //     await setApplicationStatus(id, 'approved');
-    //     // call function to create the parent's account
-    //     await createParent(id);
-
-
-
-    // } catch (error) {
-    //     console.error('Failed to retrieve application ID: ', error);
-    // }
-
     try {
         const { id } = req.body;
-        const application = await getApplication(id);
-        if (application) {
-            await createParent(application);
-            await setApplicationStatus(id, 'approved');
-            res.send('Application accepted and parent created');
-        } else {
-            res.status(404).send('Application not found');
-        }
+
+        // call function to update the status of the application
+        await setApplicationStatus(id, 'approved');
+        // call function to create the parent's account
+        await createParent(id);
+
+
+
     } catch (error) {
-        console.error('Failed to accept application: ', error);
-        res.status(500).send('Error accepting application');
+        console.error('Failed to retrieve application ID: ', error);
     }
+
+    // try {
+    //     const { id } = req.body;
+    //     const application = await getApplication(id);
+    //     if (application) {
+    //         await createParent(application);
+    //         await setApplicationStatus(id, 'approved');
+    //         res.send('Application accepted and parent created');
+    //     } else {
+    //         res.status(404).send('Application not found');
+    //     }
+    // } catch (error) {
+    //     console.error('Failed to accept application: ', error);
+    //     res.status(500).send('Error accepting application');
+    // }
 
 });
 
 // ENDPOINT TO RETRIEVE THE USER ID OF THE PARENT WHOS PROFILE WAS REJECTED BY THE ADMIN
 router.put('/reject-application', async (req, res) => {
-    // try {
-    //     const { id } = req.body;
-
-    //     await setApplicationStatus(id, 'rejected');
-    // } catch (error) {
-    //     console.error("Failed to retrieve the rejected application's id, here's why: ", error);
-    // }
     try {
         const { id } = req.body;
-        const application = await getApplication(id);
-        if (application) {
-            if (application.fileName) {
-                await deleteFile(application.fileName);
-            }
-            await setApplicationStatus(id, 'rejected');
-            res.send('Application rejected');
-        } else {
-            res.status(404).send('Application not found');
-        }
+
+        await setApplicationStatus(id, 'rejected');
     } catch (error) {
-        console.error("Failed to reject application: ", error);
-        res.status(500).send('Error rejecting application');
+        console.error("Failed to retrieve the rejected application's id, here's why: ", error);
     }
+    // try {
+    //     const { id } = req.body;
+    //     const application = await getApplication(id);
+    //     if (application) {
+    //         if (application.fileName) {
+    //             await deleteFile(application.fileName);
+    //         }
+    //         await setApplicationStatus(id, 'rejected');
+    //         res.send('Application rejected');
+    //     } else {
+    //         res.status(404).send('Application not found');
+    //     }
+    // } catch (error) {
+    //     console.error("Failed to reject application: ", error);
+    //     res.status(500).send('Error rejecting application');
+    // }
 });
 
 // Route to handle child account setup
@@ -408,8 +408,8 @@ async function createParent(id) {
 
     // Now to INSERT the new data into the Parent table with the correct tables
     try {
-        const insertQuery = 'INSERT INTO Parent (username, pass, fName, lName, email, DOB, contact, addr, pdfFileName) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        values = [accountData.username, accountData.pass, accountData.fName, accountData.lName, accountData.email, accountData.DOB, accountData.contact, accountData.add, accountData.fileName];
+        const insertQuery = 'INSERT INTO Parent (username, pass, fName, lName, email, DOB, contact, addr) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        values = [accountData.username, accountData.pass, accountData.fName, accountData.lName, accountData.email, accountData.DOB, accountData.contact, accountData.addr];
         const insertResult = await connection.query(insertQuery, values);
 
         console.log("Insertion result", insertResult);

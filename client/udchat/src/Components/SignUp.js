@@ -1,9 +1,8 @@
 import React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from './Layout';
 import "./SignUp.css";
 import { BASE_URL } from '../config';  // Importing from the src directory
-import { useDropzone } from 'react-dropzone';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -20,10 +19,6 @@ const Signup = () => {
   const [contact, setPhoneNumber] = useState('');
   const [addr, setAddress] = useState('');
   const [notes, setNotes] = useState('');
-
-  const handleFileChange = (acceptedFiles) => {
-    setFile(acceptedFiles[0]);
-  };
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
@@ -67,56 +62,17 @@ const Signup = () => {
 
   const validateInputs = () => {
     const validPasswords = pass === confirmPassword;
-    const validEmail = email.includes("@")&&(email.includes(".com")||email.includes(".ca"));
-   // const validPhoneNumber = /^[0-9]{10}&/.test(phoneNumber);
+    const validEmail = email.includes("@") && (email.includes(".com") || email.includes(".ca"));
+    // const validPhoneNumber = /^[0-9]{10}&/.test(phoneNumber);
 
     console.log(validEmail, validPasswords);
 
-    return validPasswords&&validEmail;
+    return validPasswords && validEmail;
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (validateInputs()) {
-    //   const applicationData = {
-    //     fName,
-    //     lName,
-    //     username,
-    //     pass,
-    //     email,
-    //     contact,
-    //     DOB,
-    //     addr,
-    //     notes
-    //   };
-    //   try {
-    //     const response = await fetch(`${BASE_URL}/api/uptown/SignUp`, {
-    //       method: "POST",
-    //       headers: { 'Content-Type': 'application/json' },
-    //       body: JSON.stringify(applicationData)
-    //     });
 
-    //     console.log(applicationData);
-  
-    //     if (!response.ok) {
-    //       console.error("Server returned an error:", response.status, response.statusText);
-    //       // if (data.message) {
-    //       //   setSignupSuccess(true);
-    //       //   setConfirmationMessage("Sign up successful! Please await confirmation from.");
-    //       // } else {
-    //       //   console.log("Response does not contain a message");
-    //       // }
-    //     } else {
-    //       setSignupSuccess(true);
-    //       setConfirmationMessage("Sign up successful! Please await confirmation from.");
-    //       //const data = await response.json();
-    //       console.log("h1")
-    //       alert("Sign up successful! Please await confirmation from.");
-    //     }
-    //   } catch (err) {
-    //     console.error("Error:", err);
-    //   }
-    // }
     if (validateInputs()) {
       const formData = new FormData();
       formData.append('fName', fName);
@@ -129,13 +85,13 @@ const Signup = () => {
       formData.append('addr', addr);
       formData.append('notes', notes);
       formData.append('form', file);
-  
+
       try {
         const response = await fetch(`${BASE_URL}/api/uptown/SignUp`, {
           method: "POST",
           body: formData,
         });
-  
+
         if (!response.ok) {
           console.error("Server returned an error:", response.status, response.statusText);
         } else {
@@ -144,6 +100,19 @@ const Signup = () => {
           setConfirmationMessage("Sign up successful! Please await confirmation from.");
           console.log("Signup successful", result);
           alert("Sign up successful! Please await confirmation from.");
+
+          // Reset form fields
+          setFirstName('');
+          setLastName('');
+          setCreateUsername('');
+          setPassword('');
+          setConfirmPassword('');
+          setEmail('');
+          setPhoneNumber('');
+          setDob('');
+          setAddress('');
+          setNotes('');
+          setFile(null);
         }
       } catch (err) {
         console.error("Error:", err);
@@ -152,12 +121,12 @@ const Signup = () => {
       }
     }
   };
-  
+
 
   return (
     <Layout>
       {/* Display confirmation message if sign up was successful */}
-      {signupSuccess && <div className="confirmationMessage">{alert("Sign up successful! Please await confirmation from.")}</div>}
+      {signupSuccess && <div className="confirmationMessage">Sign up successful! Please await confirmation from.</div>}
 
       {/* Display error message if password and confirm password do not match */}
       {confirmPassword && !pass && <div className="error">Passwords do not match</div>}
@@ -209,7 +178,6 @@ const Signup = () => {
         {/* File input for PDF upload */}
         <div className="inputContainer">
           <label>Upload File:</label>
-          {/* <input type="file" onChange={handleFileChange} accept="application/pdf" /> */}
           <input type="file" onChange={(e) => setFile(e.target.files[0])} />
         </div>
         <div>
