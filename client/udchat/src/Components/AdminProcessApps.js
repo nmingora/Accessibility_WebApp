@@ -1,4 +1,4 @@
-import React, { useState, useRef,} from 'react';
+import React, { useState, useRef, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from './Layout'
 import './AdminProcessApps.css'
@@ -15,13 +15,100 @@ function AdminProcessApps() {
 
 
 
-    
-    // ----------------------------- DATA RETRIEVAL FUNCTIONALITY -----------------------------------
+    // ---------------------------- DATA SEARCHING, SORTING, AND SETTING --------------------------------------
 
     // whenn called setApplications(data) will take an array and pass it to the applications variable. NICE!
     const[applications, setApplications] = useState([]);
 
+    // when called setTempApps(data), will make a temp list called tempApps
+    const[tempApps, setTempApps] = useState([]);
+
+    // Refs for search input fields
+    const searchNameField = useRef(null);
+    const searchEmailField = useRef(null);
+    const searchDependentName = useRef(null);
+
+    // state hooks for sorting and visibility options
+    const [visibilityOption, setVisibilityOption] = useState('all');
+    const [sortTerm, setSortTerm] = useState('name');
+    const [sortDirection, setSortDirection] = useState('ascending');
+
+
+    // Handler for visibility option change
+    const handleVisibilityChange = (event) => {
+      setVisibilityOption(event.target.value);
+      searchAndSort();
+    }
+
+    // handler for sort term option change
+    const handleSortTermChange = (event) => {
+      setSortTerm(event.target.value);
+      searchAndSort();
+    }
+
+    // handler for sorting direction option change
+    const handleSortingDirChange = (event) => {
+      setSortDirection(event.target.value);
+      searchAndSort();
+    }
+
+    useEffect(() => {
+      searchAndSort();
+  }, [applications, visibilityOption, sortTerm, sortDirection]);
+
+
+
+
+
+    // ---------------- DISPLAY DATA PROCESSING [SORT AND SEARCH VISIBILITY] --------------------------
+
+    const searchAndSort = () => {
+      // First, filter applications based on name and email search criteria
+      let filteredApps = applications.filter(app => {
+        const nameMatch = searchNameField.current.value ?
+            app.fName.toLowerCase().includes(searchNameField.current.value.toLowerCase()) : true;
+        const emailMatch = searchEmailField.current.value ?
+            app.email.toLowerCase().includes(searchEmailField.current.value.toLowerCase()) : true;
     
+        return nameMatch && emailMatch;
+      });
+    
+      // Then, further filter by visibility if not set to 'all'
+      if (visibilityOption !== 'all') {
+        filteredApps = filteredApps.filter(app => app.status.toLowerCase() === visibilityOption.toLowerCase());
+      }
+    
+      // Sort the filtered list
+      filteredApps.sort((a, b) => {
+        let compareA = a[sortTermMapping[sortTerm]], compareB = b[sortTermMapping[sortTerm]];
+        if (sortTerm === 'date') {
+            compareA = new Date(a.DOB);
+            compareB = new Date(b.DOB);
+        } else {
+            compareA = (compareA || "").toString().toLowerCase();
+            compareB = (compareB || "").toString().toLowerCase();
+        }
+        // Adjust sorting logic to account for ascending/descending
+        const sortMultiplier = sortDirection === 'ascending' ? 1 : -1;
+        return (compareA > compareB ? 1 : compareA < compareB ? -1 : 0) * sortMultiplier;
+      });
+    
+      // Finally, update the state to reflect the sorted and filtered applications
+      setTempApps(filteredApps);
+    };
+    
+    
+    // Mapping from dropdown value to actual data fields
+    const sortTermMapping = {
+      'name': 'fName', // Will sort by first name for name sorting. This is easier honestly. 
+      'email': 'email',
+      'date': 'DOB', // Mapping "date" to "DOB"
+    };
+    
+
+
+    
+    // ----------------------------- DATA RETRIEVAL FUNCTIONALITY --------------------------------------------
 
     const fetchData = async () => {
       try {
@@ -31,6 +118,7 @@ function AdminProcessApps() {
           }
         const data = await response.json();
         setApplications(data);
+        setTempApps(data);
         console.log("Raw data:",data)
       } catch (error) {
         alert('there was an error retrieving the applications');
@@ -38,86 +126,7 @@ function AdminProcessApps() {
       }
 
     }
-
-
-
-    // ---------------------------- SEARCHING TERMS ------------------------------------------
-
-    const searchNameField = useRef(null);
-    const searchEmailField = useRef(null);
-    const searchDependentName = useRef(null);
-
     
-    // -----------------------------    SORTING VISIBILITY    ----------------------------------
-
-    const [visibilityOption, setVisibilityOption] = useState('');
-
-    // function to handle the change in sorting algorithm
-    const handleVisibilityChange = (event) => {
-      const { value } = event.target;
-
-      if (value === 'pending') {
-        setVisibilityPending();
-      } else if (value === 'approved') {
-        setVisibilityApproved();
-      } else if (value === 'denied') {
-        setVisibilityDenied();
-      } else if (value === 'all') {
-        setVisibilityAll();
-      }
-      setVisibilityOption();
-    }
-
-    const setVisibilityPending = () => {
-      // Insert the sorting feature to only display the status selected -> this is called be default when clicked but can also be called when user clicks sort
-    }
-    const setVisibilityApproved = () => {
-      // insert the sorting feature to only display the status selected
-    }
-    const setVisibilityDenied = () => {
-      // insert the sorting featurem to only display the status selected
-    }
-    const setVisibilityAll = () => {
-      // insert the sorting feature to only display the status selected
-    }
-
-
-    // ------------------------------ SORTING BY VALUE ----------------------------------------
-
-    const [sortTerm, setSortTerm] = useState('');
-
-    const handleSortTermChange = (event) => {
-      const { value } = event.target;
-
-      if (value === 'name') {
-
-      } else if (value === 'email') {
-
-      } else if (value === 'date') {
-
-      } else if (value === 'dependentName') {
-
-      }
-  
-      setSortTerm();
-    }
-  
-
-    // ------------------------------ SORTING DIRECTION -------------------------------------- * NEED TO COMPLETE******
-    const [sortDirection, setSortDirection] = useState('');
-
-    const handleSortingDirChange = (event) => {
-      const { value } = event.target;
-
-      if (value === 'ascending') {
-
-      } else if (value === 'descending') {
-
-      }
-
-      //setSortDirection();
-    
-    }
 
     // ------------------------------ ACCEPT APPLICATION --------------------------------------
 
@@ -198,7 +207,7 @@ function AdminProcessApps() {
 
 
 
-    //------------------------------ GLOWING BUTTONS --------------------------------------
+    //------------------------------ GLOWING BUTTONS ---------------------------------------------------------------
 
     // ref to store the timer
     const buttonPressTimer = useRef(null);
@@ -247,7 +256,8 @@ function AdminProcessApps() {
 
 
     // test to view the applications being sent to the UI. Kind cool. 
-    console.log('Global data: ', applications)
+    console.log('Global master data: ', applications);
+    console.log('Global temp data', tempApps);
 
     // --------------------------- UI VIEW AND WEB APP ------------------------------------------
 
@@ -278,7 +288,7 @@ function AdminProcessApps() {
             <select onChange = {handleVisibilityChange} value={visibilityOption} placeholder="Sort Visibility">
               <option value="pending">Pending</option>
               <option value="approved">Approved</option>
-              <option value="denied">Denied</option>
+              <option value="rejected">Rejected</option>
               <option value="all">Any Status</option>
             </select>
         
@@ -287,7 +297,6 @@ function AdminProcessApps() {
               <option value='name'>Name</option>
               <option value='email'>Email</option>
               <option value='date'>Date</option>
-              <option value='dependentName'>Dependent's Name</option>
             </select>
 
             {/** Sorting Direction */}
@@ -305,16 +314,16 @@ function AdminProcessApps() {
 
         {/** VIEW THE APPLICATIONS HERE */}
         <div className='applicationView'>
-        {applications.map((application) => (
-          <div key={application.appID}>
-            <p>First Name: {application.fName}</p>
-            <p>Last Name: {application.lName}</p>
-            <p>Email: {application.email}</p>  
-            <p>Status: {application.status}</p> 
+        {tempApps.map((tempApp) => (
+          <div key={tempApp.appID}>
+            <p>First Name: {tempApp.fName}</p>
+            <p>Last Name: {tempApp.lName}</p>
+            <p>Email: {tempApp.email}</p>  
+            <p>Status: {tempApp.status}</p> 
             <div className="buttonContainer">
               <button
                 className="acceptButton"
-                onMouseDown={(e) => handleMouseDown(application.appID, e)}  
+                onMouseDown={(e) => handleMouseDown(tempApp.appID, e)}  
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp} // Cancel on mouse leave    
               >
@@ -322,7 +331,7 @@ function AdminProcessApps() {
               </button>
               <button
                 className="rejectButton"
-                onMouseDown={(e) => handleMouseDownReject(application.appID, e)}  
+                onMouseDown={(e) => handleMouseDownReject(tempApp.appID, e)}  
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp} // Cancel on mouse leave    
               >
