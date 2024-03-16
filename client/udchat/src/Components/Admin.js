@@ -21,6 +21,9 @@ const AdminLogin = ({ onClose }) => {
     navigate('/ForumPostsAd');
   }
 
+  const toAdminWaivers = () => {
+    navigate('/AdWaiversTerminal');
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -66,6 +69,7 @@ const AdminLogin = ({ onClose }) => {
         <button type="button" onClick={goToNews}>Update Newsletter</button>
         <button type="button" onClick={toForumPostsAd}>View Community Chat</button>
         <button type="button" onClick={navigateToApplications}>Process Applications</button>
+        <button type="button" onClick={toAdminWaivers}>Shared Waiver and Documents Terminal</button>
         <button onClick={handleLogout}>Log Out</button>
       </div>
     );
