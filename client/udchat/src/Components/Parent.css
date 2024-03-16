@@ -23,11 +23,6 @@
     text-align: center;
   }
   
-  
-  .login-form {
-    /* Add styles for the login form */
-  }
-  
   .login-input {
     width: 100%;
     padding: 10px;
@@ -44,14 +39,6 @@
   .login-button {
     text-align: center;
     width: 150px;
-  }
-  
-  .logout-button {
-    /* Add styles for the logout button */
-  }
-  
-  .forum-button {
-    /* Add styles for the forum button */
   }
   
   .login-message {

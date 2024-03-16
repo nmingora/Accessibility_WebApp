@@ -52,7 +52,7 @@
 
 .student-button, .admin-button, .parent-button {
   background: #c5be1e; /* Student */
-  margin: 10px; /* Space around buttons */
+  width: 300px;
 }
 
 .admin-button {
@@ -62,6 +62,7 @@
 .parent-button {
   background: #fa00ff; /* Parent */
 }
+
 
 .error-message {
   color: red;
