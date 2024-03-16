@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require('cors');
 const path = require("path");
 
-//const PORT = process.env.PORT || 3005;
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/applicationForms';
 const PORT = 3005;
 const app = express();
 const router = express.Router();
@@ -25,9 +25,6 @@ const Grid = require('gridfs-stream');
 const stream = require('stream');
 const { MongoClient, GridFSBucket } = require('mongodb');
 const GridFsStream = require('gridfs-stream');
-
-// MongoDB URI
-const mongoURI = 'mongodb://localhost:27017/applicationForms';
 
 // Create mongo connection
 const conn = MongoClient.connect(mongoURI);
