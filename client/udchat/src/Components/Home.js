@@ -77,8 +77,11 @@ function Home() {
         <div className="section-title">About Us</div>
         <div className="section-content">Welcome to Uptown! Join our interactive and intuitive server, where you have the ability to chat with friends, check news updates, keep up-to-date with events and way more!</div>
         <div className="section-title">Contact Us!</div>
-        <p>Please contact our fearless leader, Ivey Hartman, at: <a href="mailto:ihartmancheer@gmail.com">ihartmancheer@gmail.com</a></p>
-        <p>Find us on Facebook at <a href="https://www.facebook.com/FamilyConnectionsCheer">Family Connections Cheer</a></p>
+        <p>Email Us At: <a href="mailto:: ongoinglivinglearning@gmail.com">ongoinglivinglearning@gmail.com</a></p>
+        <p>Our Address: 8685 Rockglen Rd. Arkona ON, N0M 1B0</p>
+        <p><a href="https://www.facebook.com/cheer.2023?mibextid=PzaGJu">Cheer Group Facebook</a></p>
+        <p><a href="https://www.facebook.com/familyconnectionscheer?mibextid=ZbWKwL">Cheer Connections Facebook</a></p>
+        <p><a href="https://www.facebook.com/people/Roxys-Mini-Golf-and-Cheer-Canteen/100057044577232/?mibextid=ZbWKwL">Cheer Works Facebook</a></p>
 
         
         <div className="section-title">Newsletter</div>

@@ -14,6 +14,8 @@ import StudentName from './StudentName.js';
 import StudentPortal from './StudentPortal.js';
 import StudentGame from './StudentGame1.js';
 import ForumPostsAd from './ForumPostsAd.js';
+import AdWaiversTerminal from './adWaiverTerminal.js';
+import ViewPDFs from './ViewPDFs';
 
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
         <Route path="/AdminProcessApps" element={<AdminProcessApps/>}/>
         <Route path="/ForumPosts" element={<ForumPosts/>}/>
         <Route path="/ForumPostsAd" element={<ForumPostsAd/>}/>
+        <Route path="/AdWaiversTerminal" element={<AdWaiversTerminal/>}/>
+        <Route path="/ViewPDFs" element={<ViewPDFs/>}/>
         
       </Routes>
     </Router>
