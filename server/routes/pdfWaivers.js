@@ -40,6 +40,40 @@ router.get('/getAll', async (req, res) => {
   });
   
 
+  // Express route to serve a PDF from MongoDB
+
+
+
+  router.get('/pdfs/:id', async (req, res) => {
+    console.log('Received request for PDF with ID:', req.params.id); // Log the requested ID
+    try {
+      const id = req.params.id;
+      console.log('Attempting to find waiver with ID:', id); // Log before attempting to find
+      const waiver = await PdfWaiver.findById(id);
+  
+      if (!waiver) {
+        console.log('No waiver found for ID:', id); // Log if no waiver found
+        return res.status(404).send('Waiver not found');
+      }
+  
+      console.log('Waiver found. Preparing to send response for ID:', id); // Log after waiver is found
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `inline; filename="${waiver.pdfName}"`);
+      
+      console.log('Headers set, sending PDF data for ID:', id); // Log before sending the response
+      res.send(waiver.pdfData);
+    } catch (error) {
+      console.error('Error fetching PDF with ID:', req.params.id, error); // Log error details
+      res.status(500).send('Server Error');
+    }
+  });
+  
+
+
+
+
+
+
 
 
 

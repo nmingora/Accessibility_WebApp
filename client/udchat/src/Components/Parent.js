@@ -85,6 +85,11 @@ const handleLogout = () => {
 
 
 
+const toViewPDFs = () => {
+  console.log('Setting userEmail in localStorage:', username);
+localStorage.setItem('userEmail', username);
+navigate('/ViewPDFs');
+}
 
 
 
@@ -135,6 +140,7 @@ navigate('/ForumPosts');
           <>
             <button className="logout-button" onClick={handleLogout}>Logout</button>
             <button className="forum-button" onClick={toForumPosts}>Go to Community Forum!</button>
+            <button className="forum-button" onClick={toViewPDFs}>View Parent Documents</button>
           </>
         )}
         {loginMessage && <p className="login-message">{loginMessage}</p>}

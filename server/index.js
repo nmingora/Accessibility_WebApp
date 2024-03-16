@@ -2,7 +2,8 @@
 const express = require("express");
 const cors = require('cors');
 const path = require("path");
-
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/applicationForms';
 const PORT = 3005;
 const app = express();
@@ -342,17 +343,26 @@ router.post('/login', async (req, res) => {
     try {
         const user = await findUserByUsername(username);
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
-        // Assuming passwords are stored in plain text (which is not recommended for production)
-        if (user.pass !== password) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
+        //does the provided password match 
+        const match = await bcrypt.compare(password,user.pass);
+        
+        if(match){
+            //username, first name, last name, role etc.
+            const userData  = {};
+            //create JWT tokens
+            const aToken = generateAccessToken(userData);
+            const rToken = jwt.sign(userData,process.env.REFRESH_TOKEN_SECRET,{expiresIn:"2h"});
+            //hash refresh token and store
+            const hashedToken = await bcrypt.hash(rToken,salt);
 
-        // Login successful
-        res.json({ message: 'You are logged in', fName: user.fName, lName: user.lName });
+            //return access, refresh, and  user data
+
+            res.json({ message: 'You are logged in',accessToken:aToken,refreshToken:rToken,userData:userData });
+        }
+        else return res.status(401).json({message: 'Invalid credentials!'});
+        
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).send('Error during login');
@@ -405,8 +415,9 @@ async function createParent(id) {
 
     // Now to INSERT the new data into the Parent table with the correct tables
     try {
+        const hashedPassword = await bcrypt.hash(accountData.pass,salt);
         const insertQuery = 'INSERT INTO Parent (username, pass, fName, lName, email, DOB, contact, addr) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        values = [accountData.username, accountData.pass, accountData.fName, accountData.lName, accountData.email, accountData.DOB, accountData.contact, accountData.addr];
+        values = [accountData.username, hashedPassword, accountData.fName, accountData.lName, accountData.email, accountData.DOB, accountData.contact, accountData.addr];
         const insertResult = await connection.query(insertQuery, values);
 
         console.log("Insertion result", insertResult);
@@ -462,7 +473,7 @@ async function findUserByUsername(username) {
     const connection = await initializeDatabase();
 
     try {
-        const query = 'SELECT * FROM Parent WHERE username = ?';
+        const query = 'SELECT username, pass FROM Parent WHERE username = ?';
         const [rows] = await connection.execute(query, [username]);
 
         if (rows.length > 0) {
@@ -480,7 +491,96 @@ async function findUserByUsername(username) {
     }
 }
 
+// --------------------------- JWT Endpoints, Middleware, and Functions -------------------------------------//
+router.post("/token", async (req,res)=>{
+    const rToken = req.body.token;
+    const username = req.body.username;
+    
+    if(rToken==null) return res.sendStatus(401);
 
+    //retrieve refreshToken stored for that username
+    const document = await RefreshTokens.findOne({username:username});
+    
+    hasToken = bcrypt.compare(rToken,document.refreshToken);
+
+    //check if RefreshTokens has the given refreshToken
+    if(!hasToken) return res.sendStatus(403);
+
+    jwt.verify(rToken,process.env.REFRESH_TOKEN_SECRET,(err,user)=>{
+        if(err) return res.sendStatus(403);
+
+        const aToken = generateAccessToken(
+            {
+                username:user.username,
+                email:user.email,
+                password:user.password,
+                isAdmin:user.isAdmin,
+                disabled:user.disabled
+            }
+        );
+        res.send({accessToken:aToken});
+    });
+});
+
+//creates an access token
+//user = user data
+function generateAccessToken(user){
+    return jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:"900s"})
+}
+
+async function deleteRefreshToken(username,rToken){
+
+    //delete refresh token from database if present
+    const result = await RefreshTokens.deleteOne({username:username,refreshToken:rToken});
+    return result;
+}
+
+//middleware for JWT user authentication
+function authenticateToken(req,res,next){
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if(token==null) return res.sendStatus(401);
+    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
+        if(err) return  res.sendStatus(403).json({message:"GTFO"});
+        next();
+    });
+}
+
+//admin middleware JWT authentication
+function  authenticateAdminToken(){
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if(token==null) return res.sendStatus(401);
+    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
+
+        if(err) return  res.sendStatus(403).json({message:"GTFO"});
+        //if user role  (specified in access token) is not admin, GTFO
+        if(user.role!=="admin") return res.sendStatus(403).json({message:"GTFO"});
+
+        next();
+    });
+    
+}
+
+//retrieve data from JWT
+function getPayload(token){
+    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
+        if(err){
+            return null;
+        }
+        return user;
+    });
+}
+
+function inputSanitization(input){
+    const disallowedCharacters = ['"',"'","\\","(",")","{","}","/",",",".","%","&","^",";",":"];
+    for(char in disallowedCharacters){
+        if(input.contains(char)) return false;
+    }
+    return true;
+}
 // ------------------------- KEEP THIS AS LAST -> MUST BE AFTER ENDPOINTS ------------------------------- //
 
 
