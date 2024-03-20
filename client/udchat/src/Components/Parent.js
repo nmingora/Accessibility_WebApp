@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from './Layout';
 import { BASE_URL } from '../config';  // Importing from the src directory
@@ -11,10 +11,10 @@ const Parent = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Add a state to track login status
 
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loggedIn);
-  }, []);
+  // useEffect(() => {
+  //   const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  //   setIsLoggedIn(loggedIn);
+  // }, []);
 
 
 const navigate = useNavigate();
@@ -62,7 +62,7 @@ const handleLogin = async (event) => {
     if (response.ok) {
       setLoginMessage(`You are logged in as ${data.fName} ${data.lName}`);
       setIsLoggedIn(true); // Set login status to true
-      localStorage.setItem('isLoggedIn', 'true'); // Store login state in localStorage
+      //localStorage.setItem('isLoggedIn', 'true'); // Store login state in localStorage
     } else {
       setLoginMessage(data.message || 'Login failed');
     }
@@ -76,7 +76,7 @@ const handleLogout = () => {
   setLoginMessage('');
   setUsername('');
   setPassword('');
-  localStorage.removeItem('isLoggedIn'); // Remove login state from localStorage
+ // localStorage.removeItem('isLoggedIn'); // Remove login state from localStorage
   navigate('/Parent'); // Redirect to login page or another appropriate page
 };
 
@@ -85,19 +85,16 @@ const handleLogout = () => {
 
 
 
-const toViewPDFs = () => {
-  console.log('Setting userEmail in localStorage:', username);
-localStorage.setItem('userEmail', username);
-navigate('/ViewPDFs');
-}
-
-
-
+// const toViewPDFs = () => {
+//   console.log('Setting userEmail in localStorage:', username);
+// localStorage.setItem('userEmail', username);
+// navigate('/ViewPDFs');
+// }
 
   
 const toForumPosts = () => {
   console.log('Setting userEmail in localStorage:', username);
-localStorage.setItem('userEmail', username);
+//localStorage.setItem('userEmail', username);
 navigate('/ForumPosts');
 }
   
@@ -140,7 +137,6 @@ navigate('/ForumPosts');
           <>
             <button className="logout-button" onClick={handleLogout}>Logout</button>
             <button className="forum-button" onClick={toForumPosts}>Go to Community Forum!</button>
-            <button className="forum-button" onClick={toViewPDFs}>View Parent Documents</button>
           </>
         )}
         {loginMessage && <p className="login-message">{loginMessage}</p>}
@@ -148,25 +144,6 @@ navigate('/ForumPosts');
     </Layout>
   );
 };
-
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  
-
 export default Parent;
 
 
