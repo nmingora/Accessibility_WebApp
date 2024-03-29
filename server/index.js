@@ -1,14 +1,17 @@
-
+require('dotenv').config({path:"../.env"});
 const express = require("express");
 const cors = require('cors');
 const path = require("path");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const mongoURI = process.env.MONGO_uri || 'mongodb+srv://gmore25:nTEoLJ6t!e@cluster0.ims4oyx.mongodb.net/';
+const mongoURI = process.env.MONGO_uri;
+
 const PORT = 3005;
 const app = express();
 const router = express.Router();
 const bodyParser = require('body-parser');
+
+const salt = bcrypt.genSaltSync(10);
 
 
 // Add mongoose import from indexMongo.js
@@ -34,13 +37,12 @@ const conn = MongoClient.connect(mongoURI);
 let bucket;
 
 conn.then(client => {
-    console.log('MongoDB Connected...');
-
     // Init stream
     const db = client.db('applicationForms');
     bucket = new GridFSBucket(db, {
         bucketName: 'uploads'
     });
+    console.log('MongoDB Connected...');
 });
 
 // Multer setup for file handling
@@ -75,11 +77,10 @@ router.get('/file/:filename', async (req, res) => {
 
 
 
-
-
-const uri = process.env.MONGODB_URI || "mongodb+srv://madisonjlo88:MongoPassword@cluster0.corysq5.mongodb.net/userForum?retryWrites=true&w=majority";
+//process.env.MONGODB_uri
+const uri = "mongodb+srv://madisonjlo88:MongoPassword@cluster0.corysq5.mongodb.net/userForum?retryWrites=true&w=majority";
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB connected..."))
+  .then(() => console.log(`MongoDB connected...`))
   .catch(err => console.log(err));
 app.use('/api/posts', postsRouter);
 app.use('/api/pdfWaivers', pdfWaiversRouter);
@@ -350,7 +351,12 @@ router.post('/login', async (req, res) => {
         
         if(match){
             //username, first name, last name, role etc.
-            const userData  = {};
+            const userData  = {
+                username:user.username,
+                email:user.email,
+                isAdmin:user.isAdmin,
+                disabled:user.disabled
+            };
             //create JWT tokens
             const aToken = generateAccessToken(userData);
             const rToken = jwt.sign(userData,process.env.REFRESH_TOKEN_SECRET,{expiresIn:"2h"});
@@ -492,9 +498,28 @@ async function findUserByUsername(username) {
 }
 
 // --------------------------- JWT Endpoints, Middleware, and Functions -------------------------------------//
+
+//retrieve payload from jwt and return it
+router.post("/payload", async (req,res)=>{
+
+    const aToken = req.body.token;
+
+    const secret = process.env.ACCESS_TOKEN_SECRET;
+
+    if(aToken==nul) return res.sendStatus(401);
+
+    userData = jwt.getPayload(aToken);
+    res.send(userData);
+});
+
+//verify refresh token given, return new access token
 router.post("/token", async (req,res)=>{
+
     const rToken = req.body.token;
     const username = req.body.username;
+
+    const secret = process.env.REFRESH_TOKEN_SECRET;
+    console.log(secret);
     
     if(rToken==null) return res.sendStatus(401);
 
@@ -506,14 +531,13 @@ router.post("/token", async (req,res)=>{
     //check if RefreshTokens has the given refreshToken
     if(!hasToken) return res.sendStatus(403);
 
-    jwt.verify(rToken,process.env.REFRESH_TOKEN_SECRET,(err,user)=>{
+    jwt.verify(rToken,secret,(err,user)=>{
         if(err) return res.sendStatus(403);
 
         const aToken = generateAccessToken(
             {
                 username:user.username,
                 email:user.email,
-                password:user.password,
                 isAdmin:user.isAdmin,
                 disabled:user.disabled
             }
@@ -528,6 +552,7 @@ function generateAccessToken(user){
     return jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:"900s"})
 }
 
+//delete refresh token from database
 async function deleteRefreshToken(username,rToken){
 
     //delete refresh token from database if present

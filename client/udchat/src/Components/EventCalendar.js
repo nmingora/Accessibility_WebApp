@@ -14,8 +14,8 @@ function EventCalendar(){
     const [events,setEvents] = useState([]);
     const [selectedEvent,setSelectedEvent] = useState();
     const [showModal,setShowModal] = useState(false);
-    const [calendarID,setCalendarID] = useState("te8173120@gmail.com");
-    const [apiKey,setAPIKey] = useState("AIzaSyCWUgthgaEYpsm603nlpmDFavCuPDcI-4I");
+    const [calendarID,setCalendarID] = useState(process.env.REACT_APP_CALENDAR_ID);
+    const [apiKey,setAPIKey] = useState(process.env.REACT_APP_API_KEY);
     
 
     const locales = {"en-US":require("date-fns/locale/en-US")}
