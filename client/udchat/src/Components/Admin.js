@@ -62,6 +62,7 @@ const AdminLogin = ({ onClose }) => {
   // If the user is logged in, show the logged-in message and logout button
   if (loggedInUser) {
     return (
+      <Layout>
       <div className="logged-in-container">
         <div className="logged-in-message">
           You are now logged in as {loggedInUser}
@@ -72,6 +73,7 @@ const AdminLogin = ({ onClose }) => {
         <button type="button" onClick={toAdminWaivers}>Shared Waiver and Documents Terminal</button>
         <button onClick={handleLogout}>Log Out</button>
       </div>
+      </Layout>
     );
   }
   
