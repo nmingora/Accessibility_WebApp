@@ -222,11 +222,11 @@ const [pdfWaivers, setPdfWaivers] = useState([]); // State to store the fetched 
         <div style={{ marginBottom: '20px' }}>
         <h2 style={{ color: 'black', fontWeight: 'bold' }}>Cheer Application Forms</h2>
         <ul>
-          <li><a href="https://docs.google.com/document/d/1GbLAj8M7l4bvNb1Ljiis60jjp2myPwsi30-r5S9IxLU/edit?usp=drive_link" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Photo / Video Consent Form</a></li>
+          <li><a href="https://docs.google.com/document/d/1GbLAj8M7l4bvNb1Ljiis60jjp2myPwsi30-r5S9IxLU/edit?usp=sharing" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Photo / Video Consent Form</a></li>
           <li><a href="https://docs.google.com/document/d/1gL0ngKTv1L_JatlsQtNxpR8Km7WSkyxMvqJ4axz5ngY/edit?usp=sharing" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Emergency Contact Form</a></li>
-          <li><a href="https://docs.google.com/document/d/1YaYnbaQxPrdH0l1WNjBPEHsOrMVtw75J3lffd_Jt418/edit?usp=sharing" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Participant Profile</a></li>
-          <li><a href="https://drive.google.com/file/d/1tfAvM3N1_vVPeQNnJPSCZzcPpypDeoye/view?usp=drive_link" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Rules & Guidelines</a></li>
-          <li><a href="https://docs.google.com/document/d/1HK3m-dMIRXlUC_f0Mvy02WiULBoLTThw9saVUwg-tJY/edit?usp=drive_link" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Code of Conduct</a></li>
+          <li><a href="https://docs.google.com/document/d/1GbLAj8M7l4bvNb1Ljiis60jjp2myPwsi30-r5S9IxLU/edit?usp=sharing" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Participant Profile</a></li>
+          <li><a href="https://drive.google.com/file/d/1tfAvM3N1_vVPeQNnJPSCZzcPpypDeoye/view?usp=sharing" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Rules & Guidelines</a></li>
+          <li><a href="https://docs.google.com/document/d/1HK3m-dMIRXlUC_f0Mvy02WiULBoLTThw9saVUwg-tJY/edit?usp=sharing" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Code of Conduct</a></li>
         </ul>
       </div>
       <div>
