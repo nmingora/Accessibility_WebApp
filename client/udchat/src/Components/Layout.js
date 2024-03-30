@@ -13,6 +13,9 @@ function Layout({ children }) {
     const navigateParentPortal = () => navigate('/Parent');
     const navigateStudentPortal = () => navigate('/StudentName');
     const navigateMyProfile = () => navigate('/MyProfile');
+    const navigateGallery = () => navigate('/Gallery');
+
+    // unused
     const navigateNews = () => navigate('/News');
     const navigateForumPosts =() => navigate('/ForumPosts');
 
@@ -27,6 +30,7 @@ function Layout({ children }) {
         {/* Navigation Links */}
         <div className="nav-links">
           <a href="#" onClick={navigateHome}>Home</a>
+          <a href="#" onClick={navigateGallery}>Gallery</a>
           <a href="#" onClick={navigateLogin}>Log In</a>
           <a href="#" onClick={navigateParentPortal}>Parent Portal</a>
           <a href="#" onClick={navigateAdminPortal}>Admin Portal</a>

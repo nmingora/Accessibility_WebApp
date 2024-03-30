@@ -3,32 +3,14 @@ import { useNavigate} from 'react-router-dom';
 import './Home.css'; // Importing the CSS file
 import logoImage from '../Images/logo_noName.png'; // Importing the logo image
 import Layout from './Layout';
+import EventCalendar from './EventCalendar';
 import CustomPdfViewer from './CustomPdfViewer';
+import styles from './Newsletter.module.css';
+import './EventCalendar.css'; // import calendar styling sheet
 
 function Home() {
   
-    // ----------------------------------------NAVIGATION FUNCTIONS----------------------------------------
     
-    const navigate = useNavigate();
-    const navigateLogin = () => {
-        navigate('/Login');
-    }
-    const navigateSignUp = () => {
-        navigate('/SignUp');
-    }
-    const navigateAdminPortal = () => {
-        navigate('/Admin');
-    }
-    const navigateParentPortal = () => {
-        navigate('/Parent');
-    }
-    const navigateMyProfile = () => {
-        navigate('/MyProfile');
-    }
-    const navigateStudentPortal = () => {
-      navigate('/StudentName');
-    }
-  
 
    
     // ----------------------------------------SIDEBAR FUNCTIONALITY--------------------------------------
@@ -85,11 +67,20 @@ function Home() {
 
         
         <div className="section-title">Newsletter</div>
-        {viewPdf ? (
-          <CustomPdfViewer fileUrl={viewPdf} />
-        ) : (
-          <div className="rectangle">Newsletter not available</div>
-        )}
+        <div className={viewPdf ? styles.newsletterPane : `${styles.newsletterPane} ${styles.rectangle}`}>
+          {viewPdf ? (
+            <CustomPdfViewer fileUrl={viewPdf} />
+          ) : "Newsletter not available"}
+        </div>
+
+
+        <div className="section-title">Calendar</div>
+        <div className="calendarContainer">
+          <EventCalendar>
+
+          </EventCalendar>
+        </div>
+
         <div className="section-title">Updates</div>
         <div className="section-content">No updates at this time</div>
       </div>
