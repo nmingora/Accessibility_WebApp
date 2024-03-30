@@ -3,11 +3,48 @@ import React, { useState, useEffect } from 'react';
 import './adWaiverTerminal.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Layout from './Layout';
+
 
 
 
 
 const AdWaiversTerminal = () => {
+
+
+  
+  const navigateLogin = () => {
+      navigate('/Login');
+  }
+  const navigateSignUp = () => {
+      navigate('/SignUp');
+  }
+  const navigateAdminPortal = () => {
+      navigate('/Admin');
+  }
+  const navigateParentPortal = () => {
+      navigate('/Parent');
+  }
+  const navigateMyProfile = () => {
+      navigate('/MyProfile');
+  }
+  const navigateStudentPortal = () => {
+    navigate('/StudentName');
+  
+  }
+  // ----------------------------------------SIDEBAR FUNCTIONALITY--------------------------------
+const [isSidebarOpen, setSidebarOpen] = useState(false);
+const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+};
+
+
+
+
+
+
+
+
 const navigate = useNavigate();
 const [isModalOpen, setIsModalOpen] = useState(false);
 const [pdfWaivers, setPdfWaivers] = useState([]); // State to store the fetched documents
@@ -43,6 +80,38 @@ const [pdfWaivers, setPdfWaivers] = useState([]); // State to store the fetched 
 
 
 
+  const handleDownloadPdf = async (pdfId) => {
+    try {
+      // Make a GET request to fetch the PDF
+      const response = await axios.get(`/api/pdfWaivers/pdfs/${pdfId}`, { responseType: 'blob' });
+      // Create a new Blob object using the response data
+      const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+      // Generate a URL for the Blob object
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      // Create a temporary link element and trigger the download
+      const downloadLink = document.createElement('a');
+      downloadLink.href = pdfUrl;
+      downloadLink.setAttribute('download', `downloaded_pdf_${pdfId}.pdf`); // You can customize the download file name
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    } catch (error) {
+      console.error('Error downloading the PDF:', error);
+      alert('Failed to download the PDF. Please try again.');
+    }
+  };
+  
+
+
+  
+
+
+
+
+
+
+
+
 
   const handlePdfNameChange = (e) => {
     setPdfName(e.target.value);
@@ -65,6 +134,19 @@ const [pdfWaivers, setPdfWaivers] = useState([]); // State to store the fetched 
   
 
 
+  const handleDeletePdf = async (pdfId) => {
+    try {
+      const response = await axios.delete(`/api/pdfWaivers/delete/${pdfId}`);
+      if (response.status === 200) {
+        alert('Waiver deleted successfully');
+        // Filter out the deleted waiver from the pdfWaivers state
+        setPdfWaivers(pdfWaivers.filter(waiver => waiver._id !== pdfId));
+      }
+    } catch (error) {
+      console.error('Error deleting the waiver:', error);
+      alert('Failed to delete the waiver. Please try again.');
+    }
+  };
   
   
 
@@ -129,47 +211,67 @@ const [pdfWaivers, setPdfWaivers] = useState([]); // State to store the fetched 
 
 
   return (
+    <Layout>
     <div className="container">
-      <h1 className ="bigTitle">Shared Documents</h1>
+      <p></p>
+      <p></p>
+      <h2 style={{ color: 'black', fontWeight: 'bold', fontSize: '30px', textAlign: 'center' }}>Document Sharing Portal</h2>
+
+      <button className = "share-document-button" type="button" onClick={toAdmin}>Back to Admin Page</button>
+        {/* Cheer Application Forms Section */}
+        <div style={{ marginBottom: '20px' }}>
+        <h2 style={{ color: 'black', fontWeight: 'bold' }}>Cheer Application Forms</h2>
+        <ul>
+          <li><a href="https://docs.google.com/document/d/1GbLAj8M7l4bvNb1Ljiis60jjp2myPwsi30-r5S9IxLU/edit?usp=drive_link" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Photo / Video Consent Form</a></li>
+          <li><a href="https://docs.google.com/document/d/1gL0ngKTv1L_JatlsQtNxpR8Km7WSkyxMvqJ4axz5ngY/edit?usp=sharing" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Emergency Contact Form</a></li>
+          <li><a href="https://docs.google.com/document/d/1YaYnbaQxPrdH0l1WNjBPEHsOrMVtw75J3lffd_Jt418/edit?usp=sharing" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Participant Profile</a></li>
+          <li><a href="https://drive.google.com/file/d/1tfAvM3N1_vVPeQNnJPSCZzcPpypDeoye/view?usp=drive_link" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Rules & Guidelines</a></li>
+          <li><a href="https://docs.google.com/document/d/1HK3m-dMIRXlUC_f0Mvy02WiULBoLTThw9saVUwg-tJY/edit?usp=drive_link" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#007bff' }}>Code of Conduct</a></li>
+        </ul>
+      </div>
       <div>
         <p></p>
-        <button type="button" onClick={toAdmin}>Back to Admin Page</button>
+        
         <p></p>
         </div>
 
-
+        <h2 style={{ color: 'black', fontWeight: 'bold' }}>Other Documents</h2>
+        <button className = "share-document-button" onClick={() => setIsModalOpen(true)}>Share a New Document</button>
         <div className="document-list">
         {pdfWaivers.map((waiver, index) => (
+          
+          
           <div className="document-item" key={index}>
-            <strong>PDF Name:</strong> {waiver.pdfName}<br />
-            <strong>PDF Type:</strong> {waiver.pdfType}, <strong>Shared By:</strong> {waiver.uploadedBy}<br />
-            <button onClick={() => handleDisplayPdf(waiver._id)}>Display PDF</button>
+            <strong className="bold-and-big" >PDF Name:</strong> {waiver.pdfName}<br />
+            <strong className="bold-and-big" >PDF Type:</strong> {waiver.pdfType}, <strong>Shared By:</strong> {waiver.uploadedBy}<br />
+          
+            // In your map function where you render each PDF waiver
+            <button className = "share-document-button" onClick={() => handleDownloadPdf(waiver._id)}>Download PDF</button>
 
+
+
+
+
+
+            <button className = "share-document-button" onClick={() => handleDeletePdf(waiver._id)} style={{ marginLeft: '10px' }}>Delete</button>
           </div>
         ))}
+
       </div>
 
     
-      <div className="pdf-viewer">
-        {viewPdf ? (
-          <iframe src={viewPdf} title="PDF Viewer" width="100%" height="500px"></iframe>
-        ) : (
-          <div className="rectangle">Select a PDF to view</div>
-        )}
-      </div>
-    
-    
-    
-  
-  
-  
-  
-  
-  
-  
-  
       
-      
+    
+    
+    
+  
+  
+  
+  
+  
+  
+  
+  
       
       
       
@@ -177,19 +279,22 @@ const [pdfWaivers, setPdfWaivers] = useState([]); // State to store the fetched 
      
       <div className="button-group">
       <div>
-      <button onClick={() => setIsModalOpen(true)}>Share a New Document</button>
+      
 
 
       {isModalOpen && (
   <div className="modal-overlay">
     <div className="modal-content">
+    <h2>Upload New PDF!</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
+        
           <label htmlFor="pdfName">PDF Name:</label>
           <input type="text" id="pdfName" value={pdfName} onChange={handlePdfNameChange} required />
         </div>
 
         <div className="form-group">
+          
           <label>PDF Type:</label>
           <label><input type="radio" name="pdfType" value="Newsletter" checked={pdfType === 'Newsletter'} onChange={handlePdfTypeChange} /> Newsletter</label>
           <label><input type="radio" name="pdfType" value="Consent Form" checked={pdfType === 'Consent Form'} onChange={handlePdfTypeChange} /> Consent Form</label>
@@ -206,9 +311,9 @@ const [pdfWaivers, setPdfWaivers] = useState([]); // State to store the fetched 
           <input type="file" id="pdfFile" onChange={handlePdfFileChange} required />
         </div>
         
-        <button type="submit">Upload PDF</button>
+        <button className = "share-document-button" type="submit">Upload PDF</button>
       </form>
-      <button onClick={() => setIsModalOpen(false)}>Cancel</button>
+      <button className = "share-document-button" onClick={() => setIsModalOpen(false)}>Cancel</button>
     </div>
     
     
@@ -240,38 +345,20 @@ const [pdfWaivers, setPdfWaivers] = useState([]); // State to store the fetched 
 
       
       
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
     </div>
       
+<p></p>
 
+<p>
 
-
-
-
-
-
-        <button>EDIT SHARED DOCUMENTS</button>
-        <button>VIEW RETURNED DOCUMENTS</button>
+</p>
+<p></p>
+       
       </div>
     </div>
+    </Layout>
   );
+  
 };
 
 

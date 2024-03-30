@@ -1,3 +1,4 @@
+
 // routes/pdfWaivers.js
 const express = require('express');
 const router = express.Router();
@@ -72,7 +73,20 @@ router.get('/getAll', async (req, res) => {
 
 
 
-
+  router.delete('/delete/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      const deletedPdfWaiver = await PdfWaiver.findByIdAndDelete(id);
+  
+      if (!deletedPdfWaiver) {
+        return res.status(404).json({ message: 'Waiver not found' });
+      }
+  
+      res.status(200).json({ message: 'Waiver deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
 
 
 
