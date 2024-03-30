@@ -15,7 +15,7 @@ import StudentPortal from './StudentPortal.js';
 import StudentGame from './StudentGame1.js';
 import ForumPostsAd from './ForumPostsAd.js';
 import AdWaiversTerminal from './adWaiverTerminal.js';
-import ViewPDFs from './ViewPDFs';
+import ViewPDFs from './ViewPDFs.js';
 
 
 function App() {

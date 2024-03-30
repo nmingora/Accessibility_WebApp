@@ -4,11 +4,13 @@ const cors = require('cors');
 const path = require("path");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/applicationForms';
+require('dotenv').config();
+const mongoURI = process.env.MONGO_uri || 'mongodb+srv://gmore25:nTEoLJ6t!e@cluster0.ims4oyx.mongodb.net/';
 const PORT = 3005;
 const app = express();
 const router = express.Router();
 const bodyParser = require('body-parser');
+const salt = bcrypt.genSaltSync(10);
 
 
 // Add mongoose import from indexMongo.js
@@ -340,6 +342,8 @@ router.post('/setup-child-account', (req, res) => {
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
+    console.log(req.body);
+
     try {
         const user = await findUserByUsername(username);
 
@@ -347,6 +351,9 @@ router.post('/login', async (req, res) => {
 
         //does the provided password match 
         const match = await bcrypt.compare(password,user.pass);
+
+        console.log(user);
+        console.log("Password match:", match);
         
         if(match){
             //username, first name, last name, role etc.
@@ -415,9 +422,11 @@ async function createParent(id) {
 
     // Now to INSERT the new data into the Parent table with the correct tables
     try {
-        const hashedPassword = await bcrypt.hash(accountData.pass,salt);
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(accountData.pass, saltRounds);
         const insertQuery = 'INSERT INTO Parent (username, pass, fName, lName, email, DOB, contact, addr) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         values = [accountData.username, hashedPassword, accountData.fName, accountData.lName, accountData.email, accountData.DOB, accountData.contact, accountData.addr];
+        //values = [accountData.username, accountData.pass, accountData.fName, accountData.lName, accountData.email, accountData.DOB, accountData.contact, accountData.addr];
         const insertResult = await connection.query(insertQuery, values);
 
         console.log("Insertion result", insertResult);
