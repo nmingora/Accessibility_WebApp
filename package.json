@@ -10,10 +10,19 @@
     "install-client": "npm install --prefix client/udchat"
   },
   "dependencies": {
+    "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "browserify-zlib": "^0.2.0",
     "cors": "^2.8.5",
+    "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "express": "^4.17.1",
-    "react-scripts": "5.0.1"
+    "gapi-script": "^1.2.0",
+    "https-browserify": "^1.0.0",
+    "react-big-calendar": "^1.11.3",
+    "react-scripts": "5.0.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0"
   },
   "engines": {
     "node": "20.x"
