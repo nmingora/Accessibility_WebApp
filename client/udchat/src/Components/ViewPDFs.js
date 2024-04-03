@@ -101,7 +101,7 @@ const toggleSidebar = () => {
     <Layout>
 
     <div className="pdf-container">
-      <h1>Available PDFs</h1>
+      <p1 className= "community-header">Available PDFs</p1>
       <div style={{ marginBottom: '20px' }}>
         <h2 style={{ color: 'black', fontWeight: 'bold' }}>Cheer Application Forms</h2>
         <ul>
@@ -122,7 +122,7 @@ const toggleSidebar = () => {
           <p><strong>Name:</strong> {waiver.pdfName}</p>
           <p><strong>Type:</strong> {waiver.pdfType}</p>
           <p><strong>Uploaded By:</strong> {waiver.uploadedBy}</p>
-          <button className = "share-document-button" onClick={() => handleDownloadPdf(waiver._id)}>Download PDF</button>
+          <button className = "community-button" onClick={() => handleDownloadPdf(waiver._id)}>Download PDF</button>
           
           
         </div>
