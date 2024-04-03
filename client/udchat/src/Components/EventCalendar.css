@@ -1,0 +1,52 @@
+/* EventCalendar.css - Customize the overall look of the calendar */
+.rbc-calendar {
+  font-family: 'Arial', sans-serif; /* Change the font family as needed */
+  color: #333; /* Default text color */
+}
+
+/* Customize the month and year labels in the toolbar */
+.rbc-toolbar-label {
+  color: grey; /* Change the month and year font color to grey */
+  font-size: 1.25rem; /* Adjust the size as needed */
+}
+
+/* Enhance the look of the buttons in the toolbar */
+.rbc-btn {
+  border: none;
+  background-color: transparent;
+  color: #333;
+  font-size: 1rem;
+  padding: 5px 10px;
+  margin: 0 2px;
+  border-radius: 4px;
+}
+
+.rbc-btn:hover {
+  background-color: #f0f0f0;
+}
+
+/* Style the days of the week */
+.rbc-header {
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Style the current day */
+.rbc-today {
+  background-color: #e3f2fd;
+}
+
+/* Adjust event styles */
+.rbc-event {
+  background-color: #1976d2;
+  color: white;
+  border-radius: 4px;
+  padding: 2px 5px;
+  border: none;
+}
+
+.rbc-event:hover {
+  opacity: 0.85;
+}
