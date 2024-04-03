@@ -149,7 +149,7 @@ const ForumPosts = () => {
           </div>
           <div>
               <p></p>
-          <button type="button" onClick={toParent}>Back to Parent Page</button>
+          <button className = "community-button" type="button" onClick={toParent}>Back to Parent Page</button>
           <p></p>
           </div>
 
@@ -174,7 +174,7 @@ const ForumPosts = () => {
               
                     {/* Render the response button */}
                     {!post.postType && (
-                      <button 
+                      <button className = "community-button"
                         style={{ backgroundColor: respondingToPostID === post.postID ? 'green' : 'initial' }} 
                         onClick={() => handleResponse(post.postID)}>
                         Respond
@@ -211,7 +211,7 @@ const ForumPosts = () => {
 
           
           <div className="pagination">
-            <button onClick={goToPrevPage} disabled={currentPage === 1}>Previous</button>
+            <button  onClick={goToPrevPage} disabled={currentPage === 1}>Previous</button>
             <button onClick={goToNextPage}>Next</button>
           </div>
 
@@ -239,7 +239,7 @@ const ForumPosts = () => {
               required
             ></textarea>
           </div>
-          <button type="submit" className="submitButton">Submit</button>
+          <button className = "community-button" type="submit" >Submit</button>
         </form>
         
         

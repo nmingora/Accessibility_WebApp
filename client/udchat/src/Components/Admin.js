@@ -67,11 +67,11 @@ const AdminLogin = ({ onClose }) => {
         <div className="logged-in-message">
           You are now logged in as {loggedInUser}
         </div>
-        <button type="button" onClick={goToNews}>Update Newsletter</button>
-        <button type="button" onClick={toForumPostsAd}>View Community Chat</button>
-        <button type="button" onClick={navigateToApplications}>Process Applications</button>
-        <button type="button" onClick={toAdminWaivers}>Shared Waiver and Documents Terminal</button>
-        <button onClick={handleLogout}>Log Out</button>
+        <button className = "community-button" type="button" onClick={goToNews}>Update Newsletter</button>
+        <button className = "community-button" type="button" onClick={toForumPostsAd}>View Community Chat</button>
+        <button className = "community-button" type="button" onClick={navigateToApplications}>Process Applications</button>
+        <button className = "community-button" type="button" onClick={toAdminWaivers}>Shared Waiver and Documents Terminal</button>
+        <button className = "community-button" onClick={handleLogout}>Log Out</button>
       </div>
       </Layout>
     );
