@@ -1,4 +1,24 @@
 /* Prefix every class with "forumPosts-" to ensure specificity */
+.community-button {
+  font-family: Inter;
+  font-style: normal;
+  background-color: #8A9A5B; /* Mossy green background */
+  color: white; /* White text */
+  padding: 10px 20px; /* Padding around text */
+  margin: 10px 0; /* Adds space between buttons */
+  border: none; /* No border */
+  border-radius: 5px; /* Slightly rounded edges */
+  text-align: center; /* Center text within button */
+  display: block; /* Display as a block to fill the container width */
+  font-size: 16px; /* Size of the text */
+  cursor: pointer; /* Change mouse cursor on hover */
+  transition: background-color 0.3s; /* Smooth background color transition */
+  text-decoration: none; /* Remove underline from links if buttons are <a> tags */
+  width: 80%; /* Width of button, adjust as needed */
+  box-sizing: border-box; /* Include padding and border in the element's total width an
+}
+
+
 .forumPosts-container {
     padding: 20px;
     background-color: #f0f0f0; /* Light grey background */
@@ -6,14 +26,15 @@
   }
   
   .forumPosts-title {
-    color: #5823f5; /* Darker grey for the title text */
+    color: #da8f80; /* Darker grey for the title text */
     margin-bottom: 10px;
     font-weight: bold;
     font-size: 64px
   }
 
+  
   .ForumMaka{
-    color: #5823f5; /* Darker grey for the title text */
+    color: #c9716c; /* Darker grey for the title text */
     margin-bottom: 10px; 
     font-weight: bold;
     font-size: 44px
@@ -114,4 +135,5 @@
     color: black;
     margin-top: 10px;
   }
+  
   
