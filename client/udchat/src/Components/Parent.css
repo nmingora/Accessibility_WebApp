@@ -57,5 +57,68 @@
 
   .welcome-text{
     color:black;
+    font-family: Inter;
+    font-style: normal;
+    text-align: center; /* Center text within button */
   }
+  
+
+  
+  
+  .community-button {
+    font-family: Inter;
+    font-style: normal;
+    background-color: #8A9A5B; /* Mossy green background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding around text */
+    margin: 10px 0; /* Adds space between buttons */
+    border: none; /* No border */
+    border-radius: 5px; /* Slightly rounded edges */
+    text-align: center; /* Center text within button */
+    display: block; /* Display as a block to fill the container width */
+    font-size: 16px; /* Size of the text */
+    cursor: pointer; /* Change mouse cursor on hover */
+    transition: background-color 0.3s; /* Smooth background color transition */
+    text-decoration: none; /* Remove underline from links if buttons are <a> tags */
+    width: 80%; /* Width of button, adjust as needed */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  }
+  
+  .community-button:hover {
+    background-color: #768948; /* Darker mossy green on hover */
+  }
+  
+  /* Style the container to align the buttons properly */
+  .centered-button-container {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    justify-content: center; /* Center buttons vertically if the container has a specific height */
+    width: 100%; /* Full width of the parent */
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
   
