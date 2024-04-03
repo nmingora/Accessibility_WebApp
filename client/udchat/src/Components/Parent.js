@@ -98,6 +98,13 @@ navigate('/ForumPosts');
 }
   
 
+const toViewPDFs = () => {
+  console.log('Setting userEmail in localStorage:', username);
+//localStorage.setItem('userEmail', username);
+navigate('/ViewPDFs');
+}
+  
+
 return (
   <Layout>
     <div className="parent-login-container">
@@ -137,8 +144,11 @@ return (
         <>
           <h3 className="welcome-text">Welcome Parent! Feel Free To Use The Community Forum!</h3>
           {/* Add your sidebar toggle button here */}
-          <button className="logout-button" onClick={handleLogout}>Logout</button>
-          <button className="forum-button" onClick={toForumPosts}>Go to Community Forum!</button>
+          <div class="centered-button-container">
+          <button className="community-button" onClick={handleLogout}>Logout</button>
+          <button className="community-button" onClick={toForumPosts}>Go to Community Forum!</button>
+          <button className="community-button" onClick={toViewPDFs}>See Community Documents</button>
+          </div>
         </>
       )}
       {loginMessage && <p className="login-message">{"loginMessage"}</p>}
