@@ -35,7 +35,7 @@ function Layout({ children }) {
           <a href="#" onClick={navigateParentPortal}>Parent Portal</a>
           <a href="#" onClick={navigateAdminPortal}>Admin Portal</a>
           <a href="#" onClick={navigateStudentPortal}>Student Portal</a>
-          <a href="#" onClick={navigateMyProfile}>My Profile</a>
+
         </div>
 
         {/* Sign Up Button */}

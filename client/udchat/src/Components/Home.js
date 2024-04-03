@@ -82,7 +82,11 @@ function Home() {
         </div>
 
         <div className="section-title">Updates</div>
-        <div className="section-content">No updates at this time</div>
+        <div className="section-content">
+          LITTLE TIMMOTHY IS BEING PICKED UP FROM CAMP TODAY AT 5PM. PLEASE ENSURE HE GETS WHERE NE NEEDS TO BE. 
+
+          JANICE IS PICKING UP EVERYONE UP FOR THE POTLOCK AGAIN TODAY. 
+        </div>
       </div>
         </Layout>
       );
