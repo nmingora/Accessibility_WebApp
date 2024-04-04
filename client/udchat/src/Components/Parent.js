@@ -163,6 +163,3 @@ return (
 );
 }
 export default Parent;
-
-
-

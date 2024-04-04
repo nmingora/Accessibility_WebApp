@@ -131,22 +131,5 @@ const toggleSidebar = () => {
     </Layout>
   );
 };
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  
-
 
 export default ViewPDFs;
