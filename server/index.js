@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require("path");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-require('dotenv').config({path:"../.env"});
+require('dotenv').config({ path: "../.env" });
 const mongoURI = process.env.MONGO_uri;
 const PORT = 3005;
 const app = express();
@@ -17,6 +17,7 @@ const salt = bcrypt.genSaltSync(10);
 const mongoose = require('mongoose');
 const postsRouter = require('./routes/posts');
 const pdfWaiversRouter = require('./routes/pdfWaivers');
+
 //--------------------------- Moongoose Connection ---------------------------//
 
 app.use(cors());
@@ -81,19 +82,19 @@ router.get('/file/:filename', async (req, res) => {
 
 const uri = process.env.MONGODB_URI || "mongodb+srv://madisonjlo88:MongoPassword@cluster0.corysq5.mongodb.net/userForum?retryWrites=true&w=majority";
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB connected..."))
-  .catch(err => console.log(err));
+    .then(() => console.log("MongoDB connected..."))
+    .catch(err => console.log(err));
 app.use('/api/posts', postsRouter);
 app.use('/api/pdfWaivers', pdfWaiversRouter);
 
 // Production mode
-if(process.env.NODE_ENV === 'production') {  
-    app.use(express.static(path.join(__dirname, 'client/build')));  
-    app.get('*', (req, res) => {    
-      res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')); // Relative path
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')); // Relative path
     });
-  }
-  
+}
+
 
 
 
@@ -315,26 +316,29 @@ router.put('/reject-application', async (req, res) => {
 });
 
 // Route to handle child account setup
-router.post('/setup-child-account', (req, res) => {
-    const { parentEmail, childName, childPassword } = req.body;
-    const parentQuery = `SELECT * FROM Parents WHERE email = ?`;
-    pool.execute(parentQuery, [parentEmail], (parentError, parentResults) => {
-        if (parentError) {
-            console.error('Error finding parent:', parentError);
-            return res.status(500).send('Internal server error');
+// Express route to add a child for a logged-in parent
+router.post('/addChild', async (req, res) => {
+    const { username, childInfo } = req.body;
+
+    try {
+        const parent = await findParentByUsername(username);
+        if (!parent) {
+            return res.status(404).json({ message: 'Parent not found' });
         }
-        if (parentResults.length === 0) {
-            return res.status(404).send('Parent not found');
+
+        // Check if parent ID was retrieved successfully
+        if (!parent.userID) {
+            return res.status(400).json({ message: 'Unable to find parent ID' });
         }
-        const studentQuery = `INSERT INTO Camper (name, password) VALUES (?, ?)`;
-        pool.query(studentQuery, [childName, childPassword], (studentError, studentResults) => {
-            if (studentError) {
-                console.error('Error setting up child account:', studentError);
-                return res.status(500).send('Internal server error');
-            }
-            res.status(201).send('Child account setup completed successfully');
-        });
-    });
+
+        const insertResult = await addChildToDatabase(childInfo, parent.userID);
+        console.log("Insertion result", insertResult);
+        console.log("Child account created successfully with ID:");
+        res.json({ message: 'Child added successfully' });
+    } catch (error) {
+        console.error('Error adding child:', error);
+        res.status(500).send('Error adding child');
+    }
 });
 
 
@@ -350,26 +354,26 @@ router.post('/login', async (req, res) => {
         if (!user) return res.status(404).json({ message: 'User not found' });
 
         //does the provided password match 
-        const match = await bcrypt.compare(password,user.pass);
+        const match = await bcrypt.compare(password, user.pass);
 
         console.log(user);
         console.log("Password match:", match);
-        
-        if(match){
+
+        if (match) {
             //username, first name, last name, role etc.
-            const userData  = {};
+            const userData = {};
             //create JWT tokens
             const aToken = generateAccessToken(userData);
-            const rToken = jwt.sign(userData,process.env.REFRESH_TOKEN_SECRET,{expiresIn:"2h"});
+            const rToken = jwt.sign(userData, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "2h" });
             //hash refresh token and store
-            const hashedToken = await bcrypt.hash(rToken,salt);
+            const hashedToken = await bcrypt.hash(rToken, salt);
 
             //return access, refresh, and  user data
 
-            res.json({ message: 'You are logged in',accessToken:aToken,refreshToken:rToken,userData:userData });
+            res.json({ message: 'You are logged in', accessToken: aToken, refreshToken: rToken, userData: userData });
         }
-        else return res.status(401).json({message: 'Invalid credentials!'});
-        
+        else return res.status(401).json({ message: 'Invalid credentials!' });
+
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).send('Error during login');
@@ -501,95 +505,157 @@ async function findUserByUsername(username) {
 }
 
 // --------------------------- JWT Endpoints, Middleware, and Functions -------------------------------------//
-router.post("/token", async (req,res)=>{
+router.post("/token", async (req, res) => {
     const rToken = req.body.token;
     const username = req.body.username;
-    
-    if(rToken==null) return res.sendStatus(401);
+
+    if (rToken == null) return res.sendStatus(401);
 
     //retrieve refreshToken stored for that username
-    const document = await RefreshTokens.findOne({username:username});
-    
-    hasToken = bcrypt.compare(rToken,document.refreshToken);
+    const document = await RefreshTokens.findOne({ username: username });
+
+    hasToken = bcrypt.compare(rToken, document.refreshToken);
 
     //check if RefreshTokens has the given refreshToken
-    if(!hasToken) return res.sendStatus(403);
+    if (!hasToken) return res.sendStatus(403);
 
-    jwt.verify(rToken,process.env.REFRESH_TOKEN_SECRET,(err,user)=>{
-        if(err) return res.sendStatus(403);
+    jwt.verify(rToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403);
 
         const aToken = generateAccessToken(
             {
-                username:user.username,
-                email:user.email,
-                password:user.password,
-                isAdmin:user.isAdmin,
-                disabled:user.disabled
+                username: user.username,
+                email: user.email,
+                password: user.password,
+                isAdmin: user.isAdmin,
+                disabled: user.disabled
             }
         );
-        res.send({accessToken:aToken});
+        res.send({ accessToken: aToken });
     });
 });
 
 //creates an access token
 //user = user data
-function generateAccessToken(user){
-    return jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:"900s"})
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "900s" })
 }
 
-async function deleteRefreshToken(username,rToken){
+async function deleteRefreshToken(username, rToken) {
 
     //delete refresh token from database if present
-    const result = await RefreshTokens.deleteOne({username:username,refreshToken:rToken});
+    const result = await RefreshTokens.deleteOne({ username: username, refreshToken: rToken });
     return result;
 }
 
 //middleware for JWT user authentication
-function authenticateToken(req,res,next){
+function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(" ")[1];
 
-    if(token==null) return res.sendStatus(401);
-    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
-        if(err) return  res.sendStatus(403).json({message:"GTFO"});
+    if (token == null) return res.sendStatus(401);
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403).json({ message: "GTFO" });
         next();
     });
 }
 
 //admin middleware JWT authentication
-function  authenticateAdminToken(){
+function authenticateAdminToken() {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(" ")[1];
 
-    if(token==null) return res.sendStatus(401);
-    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
+    if (token == null) return res.sendStatus(401);
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
 
-        if(err) return  res.sendStatus(403).json({message:"GTFO"});
+        if (err) return res.sendStatus(403).json({ message: "GTFO" });
         //if user role  (specified in access token) is not admin, GTFO
-        if(user.role!=="admin") return res.sendStatus(403).json({message:"GTFO"});
+        if (user.role !== "admin") return res.sendStatus(403).json({ message: "GTFO" });
 
         next();
     });
-    
+
 }
 
 //retrieve data from JWT
-function getPayload(token){
-    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
-        if(err){
+function getPayload(token) {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) {
             return null;
         }
         return user;
     });
 }
 
-function inputSanitization(input){
-    const disallowedCharacters = ['"',"'","\\","(",")","{","}","/",",",".","%","&","^",";",":"];
-    for(char in disallowedCharacters){
-        if(input.contains(char)) return false;
+function inputSanitization(input) {
+    const disallowedCharacters = ['"', "'", "\\", "(", ")", "{", "}", "/", ",", ".", "%", "&", "^", ";", ":"];
+    for (char in disallowedCharacters) {
+        if (input.contains(char)) return false;
     }
     return true;
 }
+
+async function findParentByUsername(username) {
+    const connection = await initializeDatabase();
+
+    try {
+        // Query to select the ID as well
+        const query = 'SELECT userID FROM Parent WHERE username = ?';
+        const [rows] = await connection.execute(query, [username]);
+
+        if (rows.length > 0) {
+            return rows[0]; // Return the first matching parent with ID
+        } else {
+            return null; // No parent found
+        }
+    } catch (error) {
+        console.error('Query error:', error);
+        throw error;
+    } finally {
+        if (connection) {
+            await connection.end();
+        }
+    }
+}
+
+// Function to add a child to the database
+async function addChildToDatabase(childInfo, parentId) {
+    const connection = await initializeDatabase();
+
+    try {
+        console.log('childInfo', childInfo); // Log to check what data is being received
+
+        // Extract child info with default values to avoid null
+        const specialPassword = (childInfo.specialPassword || []).join(',');
+        const firstName = childInfo.fName;
+        const lastName = childInfo.lName;
+        const dob = childInfo.DOB;
+
+        if (!firstName || !lastName || !dob) {
+            console.error('Missing child information:', { firstName, lastName, dob });
+            return; // Exit the function if essential information is missing
+        }
+
+        const insertQuery = 'INSERT INTO Camper (specialPassword, fName, lName, DOB, parentID) VALUES (?, ?, ?, ?, ?)';
+        const values = [specialPassword, firstName, lastName, dob, parentId];
+        console.log("Running query:", insertQuery);
+        console.log("With values:", values);
+        const insertResult = await connection.query(insertQuery, values);
+
+        console.log("Insertion result", insertResult);
+        console.log("Child account created successfully.");
+    } catch (error) {
+        console.error("Failed to INSERT the new Child object into the Camper table, here's why: ", error);
+    } finally {
+        if (connection) {
+            await connection.end();
+        }
+    }
+}
+
+
+
+
 // ------------------------- KEEP THIS AS LAST -> MUST BE AFTER ENDPOINTS ------------------------------- //
 
 

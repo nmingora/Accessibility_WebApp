@@ -97,6 +97,11 @@ const toForumPosts = () => {
 //localStorage.setItem('userEmail', username);
 navigate('/ForumPosts');
 }
+
+const toAddChildPage = () => {
+  console.log('going to child add page')
+  navigate('/addChildPage');
+}
   
 
     return (
@@ -137,6 +142,7 @@ navigate('/ForumPosts');
           <>
             <button className="logout-button" onClick={handleLogout}>Logout</button>
             <button className="forum-button" onClick={toForumPosts}>Go to Community Forum!</button>
+            <button className="addChild-button" onClick={toAddChildPage}>Join your child</button>
           </>
         )}
         {loginMessage && <p className="login-message">{loginMessage}</p>}
