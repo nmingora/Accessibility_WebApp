@@ -153,7 +153,7 @@ return (
           <button className="community-button" onClick={handleLogout}>Logout</button>
           <button className="community-button" onClick={toForumPosts}>Go to Community Forum!</button>
           <button className="community-button" onClick={toViewPDFs}>See Community Documents</button>
-          <button className="addChild-button" onClick={toAddChildPage}>Join your child</button>
+          <button className="community-button" onClick={toAddChildPage}>Join your child</button>
           </div>
         </>
       )}

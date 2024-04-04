@@ -32,7 +32,7 @@ function App() {
         <Route path="/StudentName" element={<StudentName/>}/>
         <Route path="/News" element={<News/>}/>
         <Route path="/addChildPage" element={<ChildPage/>}/>
-        <Route path="/StudentPassword" element={<StudentPassword/>}/>
+        <Route path="/StudentPassword/:childId" element={<StudentPassword/>}/>
         <Route path="/StudentPortal" element={<StudentPortal />}/>
         <Route path="/StudentGame1" element={<StudentGame />}/>
         <Route path="/AdminProcessApps" element={<AdminProcessApps/>}/>

@@ -16,34 +16,47 @@ import image12 from '../Components/icons/image12.jpeg';
 import image13 from '../Components/icons/image13.jpeg';
 import image14 from '../Components/icons/image14.jpeg';
 
-import React, { useState } from 'react';
-import Layout from './Layout';
-import './StudentPassword.css'; // Import the CSS for student login
+// StudentPassword.js
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword, signout } from 'firebase/auth';
-import { auth } from '../firebaseConfig'; // Import Firebase authentication instance
+import { BASE_URL } from '../config';  // Importing from the src directory
+import Layout from './Layout';
+
+// Import other necessary modules and components
 
 const StudentLogin = () => {
-    const navigate = useNavigate();
-    const navigateToStudentPortal = () => {
-        navigate('/StudentPortal');
-    };
-
+    const { childId } = useParams(); // Get childId from URL
+    console.log("Child ID:", childId);
+    const [child, setChild] = useState(null);
     const [selectedImages, setSelectedImages] = useState([]);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    const handleSignIn = async () => {
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            console.log('Signed in as:', user.email);
-            navigateToStudentPortal();
-        } catch (error) {
-            setError(error.message);
+    const navigateToStudentPortal = () => {
+        if (child && child.fName) {
+            console.log("Navigating with child's name:", child.fName);
+            navigate('/StudentPortal', { state: { studentName: child.fName } });
+        } else {
+            console.error("Child data not loaded. Cannot navigate.");
         }
     };
+
+    useEffect(() => {
+        const fetchChild = async () => {
+            const response = await fetch(`${BASE_URL}/api/uptown/child/${childId}`);
+            if (response.ok) {
+                const data = await response.json();
+                setChild(data);
+                console.log("Fetched child data:", data);
+            } else {
+                // Handle errors here
+                console.error('Failed to fetch child data');
+            }
+        };
+
+        fetchChild();
+    }, [childId]);
 
     const handleImageSelect = (imageID) => {
         // Toggle image selection
@@ -58,38 +71,30 @@ const StudentLogin = () => {
 
     const handleSubmit = async () => {
         try {
-            // Send selectedImages array to backend for validation/authentication
-            console.log('Selected Images:', selectedImages);
+            // Ensure child data is loaded
+            if (!child) {
+                setError('Child data is not loaded.');
+                return;
+            }
     
-            // Mock user patterns (replace with actual patterns from database)
-            const userPatterns = {
-                'student1': [1, 2, 3, 4],
-                'student2': [5, 6, 7, 8],
-                // Add more users and their patterns as needed
-            };
-    
-            // Mock current user (replace with actual user)
-            const currentUser = 'student1';
-    
-            // Check if selected images match the user's pattern
-            const isMatch = JSON.stringify(selectedImages) === JSON.stringify(userPatterns[currentUser]);
+            // Assuming 'child' state holds the fetched child data
+            const isMatch = JSON.stringify(selectedImages.sort()) === JSON.stringify(child.specialPassword.split(',').map(Number).sort());
     
             if (isMatch) {
                 console.log('Authentication successful!');
-                // Redirect user to student portal or perform further actions
                 navigateToStudentPortal();
             } else {
-                console.log('Authentication failed. Please try again.');
-                // Clear selected images and allow user to retry
                 setSelectedImages([]);
+                alert('Authentication failed. Please try again.');
             }
         } catch (error) {
             console.error('Error:', error);
-            // Handle any errors that occur during authentication/validation
-            setError('An error occurred. Please try again.');
+            alert('An error occurred. Please try again.');
             setSelectedImages([]);
         }
-    };    
+    };
+    
+
 
     return (
         <Layout>

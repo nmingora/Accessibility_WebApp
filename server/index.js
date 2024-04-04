@@ -341,6 +341,31 @@ router.post('/addChild', async (req, res) => {
     }
 });
 
+router.get('/child', async (req, res) => {
+    try {
+        const children = await getAllChildren();
+        res.json(children);
+    }
+    catch (error) {
+        console.error('Failed to fetch children:', error);
+        res.status(500).send('Error fetching children');
+    }
+});
+
+router.get('/child/:childId', async (req, res) => {
+    const childId = req.params.childId;
+    
+    // Fetch child data from the database using childId
+    const childData = await getChildById(childId);
+
+    if (childData) {
+        res.json(childData);
+    } else {
+        res.status(404).send('Child not found');
+    }
+
+})
+
 
 //------------------------------Retrieve Parent Username and password_____________________________________
 router.post('/login', async (req, res) => {
@@ -382,6 +407,40 @@ router.post('/login', async (req, res) => {
 
 
 // -------------------------------- Backend Functions ------------------------------------------//
+
+//get all child names
+async function getAllChildren() {
+    const connection = await initializeDatabase();
+    const query = 'SELECT camperID, fName, lName FROM Camper'; // Adjust fields as necessary
+    const [children] = await connection.query(query); 
+    await connection.end();
+    return children.map(child => ({
+        id: child.camperID,
+        name: `${child.fName} ${child.lName}`,
+    }));
+}
+
+async function getChildById(childId) {
+    const connection = await initializeDatabase();  
+
+    try {
+        const query = 'SELECT * FROM Camper WHERE camperID = ?';
+        const [rows] = await connection.query(query, [childId]);
+
+        if (rows.length > 0) {
+            return rows[0];  // Return the first row (the child data)
+        } else {
+            return null;  // No child found with that ID
+        }
+    } catch (error) {
+        console.error('Error querying the database:', error);
+        throw error;  // Rethrow or handle as necessary
+    } finally {
+        if (connection) {
+            await connection.end();
+        }
+    }
+}
 
 
 // function to get all the applications from the database
@@ -671,23 +730,5 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
 });
-
-
-//SIGN UP OLD FUNCIIONALITY
-// const { fName, lName, username, pass, email, contact, DOB, addr, notes } = req.body;
-//         console.log(req.body)
-//         const insertData = [fName, lName, username, pass, email, contact, DOB, addr, notes, 1, 'Pending', new Date()];
-
-//         console.log('heree2') //debug
-
-//         const sql = 'INSERT INTO Application (fName,lName,username,pass,email,contact,DOB,addr,notes,reviewingAdmin, status, dateApplied) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-//         connection.query(sql, insertData, (err, result) => {
-//             if (err) {
-//                 console.error('Error adding user:', error);
-//                 res.status(500).json({ error: 'An error occurred while adding user.' });
-//             } else {
-//                 res.json({ message: 'Application successfully submitted! An admin will contact you.' });
-//             }
-//         });
 
 
