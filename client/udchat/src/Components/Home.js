@@ -58,6 +58,8 @@ function Home() {
         <div className="home-page-container">
         <div className="section-title">About Us</div>
         <div className="section-content">Welcome to Uptown! Join our interactive and intuitive server, where you have the ability to chat with friends, check news updates, keep up-to-date with events and way more!</div>
+        <div className="donations-title">Donations</div>
+        <div className='donations'> <p>Donate Here:<a href="https://www.canadahelps.org/en/pages/olli-cheer/">https://www.canadahelps.org/en/pages/olli-cheer/</a></p></div>
         <div className="section-title">Contact Us!</div>
         <p>Email Us At: <a href="mailto:: ongoinglivinglearning@gmail.com">ongoinglivinglearning@gmail.com</a></p>
         <p>Our Address: 8685 Rockglen Rd. Arkona ON, N0M 1B0</p>
