@@ -3,7 +3,7 @@
   font-family: Inter;
   font-style: normal;
   background-color: #8A9A5B; /* Mossy green background */
-  color: white; /* White text */
+  color: rgba(0, 0, 0, 0); /* White text */
   padding: 10px 20px; /* Padding around text */
   margin: 10px 0; /* Adds space between buttons */
   border: none; /* No border */
@@ -42,7 +42,7 @@
   }
   
   .forumPosts-post {
-    background-color: white;
+    background-color: rgb(252, 255, 255);
     border: 1px solid #ccc; /* Light grey outline */
     padding: 10px;
     margin-bottom: 10px;
@@ -88,7 +88,7 @@
     padding: 8px;
     margin: 8px 0;
     display: inline-block;
-    border: 1px solid #ccc;
+    border: 1px solid rgb(2, 88, 24);
     border-radius: 4px;
     box-sizing: border-box;
     min-width: 400px; /* The minimum width of the input field */

@@ -140,7 +140,7 @@ const ForumPosts = () => {
     <Layout>
       <div className="forumPosts-container">
       <div className="forumPosts-postsList">
-        <p>this is the forum posts page. Run node indexMongo.js to start Mongodb server to load forums</p>
+        
     
           <div>
           <h2 className="forumPosts-title">Community Forum</h2>
@@ -168,14 +168,14 @@ const ForumPosts = () => {
                     <h2 className="forumPosts-h2">{post.postHeader}</h2>
                     <small className="forumPosts-small">Posted by: {post.userEmail}</small>
                     <div></div>
-                    <small>Posted on: {post.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
+                    <small className="forumPosts-small">Posted on: {post.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
                     <p>{post.postParagraph}</p>
                     {/* ... other post details ... */}
               
                     {/* Render the response button */}
                     {!post.postType && (
                       <button className = "community-button"
-                        style={{ backgroundColor: respondingToPostID === post.postID ? 'green' : 'initial' }} 
+                        style={{ backgroundColor: respondingToPostID === post.postID ? 'green' : 'blue' }} 
                         onClick={() => handleResponse(post.postID)}>
                         Respond
                       </button>
@@ -189,9 +189,9 @@ const ForumPosts = () => {
                         <div></div>
                         <form className="forumPosts-createPostForm" onSubmit={handleSubmit}></form>
                         <div></div>
-                        <small>Posted by: {response.userEmail}</small>
+                        <small className="forumPosts-small">Posted by: {response.userEmail}</small>
                         <div></div>
-                        <small>Posted on: {response.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
+                        <small className="forumPosts-small">Posted on: {response.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
                         
                         <p>{response.postParagraph}</p>
                         {/* ... other response details ... */}

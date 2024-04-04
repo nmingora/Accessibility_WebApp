@@ -157,7 +157,7 @@ const ForumPostsAd = () => {
           <div>
           <h2 className="forumPosts-title">Community Forum</h2>
           <h2 className="forumPosts-title">Admin Terminal</h2>
-          <p>this is the forum posts page. Run node indexMongo.js to start Mongodb server to load forums</p>
+          
           
           </div>
           <div>
@@ -183,9 +183,9 @@ const ForumPostsAd = () => {
                     <h2 className="forumPosts-h2">{post.postHeader}</h2>
                     <small className="forumPosts-small">Posted by: {post.userEmail}</small>
                     <div></div>
-                    <small>Posted on: {post.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
+                    <small className="forumPosts-small">Posted on: {post.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
                     <p>{post.postParagraph}</p>
-                    <button onClick={() => deletePost(post._id)} style={{color: 'red'}}>Delete</button>
+                    <button className = "community-button"onClick={() => deletePost(post._id)}>Delete</button>
 
 
                     
@@ -193,8 +193,8 @@ const ForumPostsAd = () => {
               
                 
                     {!post.postType && (
-                      <button 
-                        style={{ backgroundColor: respondingToPostID === post.postID ? 'green' : 'initial' }} 
+                      <button className = "community-button"
+                        style={{ backgroundColor: respondingToPostID === post.postID ? 'green' : 'blue' }} 
                         onClick={() => handleResponse(post.postID)}>
                         Respond
                       </button>
@@ -212,12 +212,12 @@ const ForumPostsAd = () => {
                         <small>Response to: {post.postHeader}</small>
                         <div></div>
                         <h2 className="forumPosts-h2">{response.postHeader}</h2>
-                        <small>Posted by: {response.userEmail}</small>
+                        <small className="forumPosts-small">Posted by: {response.userEmail}</small>
                         <div></div>
-                        <small>Posted on: {response.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
+                        <small className="forumPosts-small">Posted on: {response.createdAt ? new Date(post.createdAt).toLocaleString() : "Date unavailable"}</small>
                         
                         <p>{response.postParagraph}</p>
-                        <button onClick={() => deletePost(response._id)} style={{color: 'red'}}>Delete</button>
+                        <button className = "community-button" onClick={() => deletePost(response._id)} >Delete</button>
 
 
           
