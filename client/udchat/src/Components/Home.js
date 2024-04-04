@@ -7,6 +7,7 @@ import EventCalendar from './EventCalendar';
 import CustomPdfViewer from './CustomPdfViewer';
 import styles from './Newsletter.module.css';
 import './EventCalendar.css'; // import calendar styling sheet
+import axios from 'axios'; // Import axios for making HTTP requests
 
 function Home() {
   
@@ -28,12 +29,27 @@ function Home() {
 
   const [viewPdf, setViewPdf] = useState(null);
 
+
+  // Function to fetch the latest AdminNews PDF from the backend
+  const fetchLatestAdminNews = async () => {
+    try {
+        // Assuming there's an endpoint to get the latest AdminNews PDF
+        const response = await axios.get('/api/pdfWaivers/latestAdminNews', { responseType: 'blob' });
+        const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        setViewPdf(pdfUrl);
+    } catch (error) {
+        console.error('Failed to fetch latest AdminNews PDF:', error);
+    }
+};
+
   // Fetch the PDF URL from localStorage when the component mounts
   useEffect(() => {
-    const savedPdf = localStorage.getItem('savedPdf');
-    if (savedPdf) {
-      setViewPdf(savedPdf);
-    }
+    fetchLatestAdminNews();
+    
+    
+    
+    
   }, []);
 
 
@@ -69,11 +85,16 @@ function Home() {
 
         
         <div className="section-title">Newsletter</div>
-        <div className={viewPdf ? styles.newsletterPane : `${styles.newsletterPane} ${styles.rectangle}`}>
-          {viewPdf ? (
-            <CustomPdfViewer fileUrl={viewPdf} />
-          ) : "Newsletter not available"}
-        </div>
+                <div className={viewPdf ? styles.newsletterPane : `${styles.newsletterPane} ${styles.rectangle}`}>
+                    {viewPdf ? (
+                        <CustomPdfViewer fileUrl={viewPdf} />
+                    ) : "Newsletter not available"}
+                </div> 
+      
+        
+        
+        
+        
 
 
         <div className="section-title">Calendar</div>
