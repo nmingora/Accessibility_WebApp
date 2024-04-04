@@ -60,7 +60,6 @@ const handleLogin = async (event) => {
     });
     const data = await response.json();
     if (response.ok) {
-      setLoginMessage(`You are logged in as ${data.fName} ${data.lName}`);
       setIsLoggedIn(true); // Set login status to true
       //localStorage.setItem('isLoggedIn', 'true'); // Store login state in localStorage
     } else {
@@ -97,6 +96,13 @@ const toForumPosts = () => {
 //localStorage.setItem('userEmail', username);
 navigate('/ForumPosts');
 }
+  
+
+const toViewPDFs = () => {
+  console.log('Setting userEmail in localStorage:', username);
+//localStorage.setItem('userEmail', username);
+navigate('/ViewPDFs');
+}
 
 const toAddChildPage = () => {
   console.log('going to child add page')
@@ -104,13 +110,13 @@ const toAddChildPage = () => {
 }
   
 
-    return (
-      <Layout>
-      <div className="parent-login-container">
-        <h2 className="parent-login-title">Parent Login</h2>
-        <h3 className="parent-login-description">Welcome Parent! Please Log In To View The Parent Dashboard!</h3>
-    
-        {!isLoggedIn ? (
+return (
+  <Layout>
+    <div className="parent-login-container">
+      {!isLoggedIn ? (
+        <>
+          <h2 className="parent-login-title">Parent Login</h2>
+          <h3 className="parent-login-description">Welcome Parent! Please Log In To View The Parent Dashboard!</h3>
           <form className="login-form" onSubmit={handleLogin}>
             <div>
               <label className="username-css">Username:</label>
@@ -135,21 +141,27 @@ const toAddChildPage = () => {
               />
             </div>
             <div className="login-button-container">
-            <button className="login-button" type="submit">Login</button>
+              <button className="login-button" type="submit">Login</button>
             </div>
           </form>
-        ) : (
-          <>
-            <button className="logout-button" onClick={handleLogout}>Logout</button>
-            <button className="forum-button" onClick={toForumPosts}>Go to Community Forum!</button>
-            <button className="addChild-button" onClick={toAddChildPage}>Join your child</button>
-          </>
-        )}
-        {loginMessage && <p className="login-message">{loginMessage}</p>}
-      </div>
-    </Layout>
-  );
-};
+        </>
+      ) : (
+        <>
+          <h3 className="welcome-text">Welcome Parent! Feel Free To Use The Community Forum!</h3>
+          {/* Add your sidebar toggle button here */}
+          <div class="centered-button-container">
+          <button className="community-button" onClick={handleLogout}>Logout</button>
+          <button className="community-button" onClick={toForumPosts}>Go to Community Forum!</button>
+          <button className="community-button" onClick={toViewPDFs}>See Community Documents</button>
+          <button className="addChild-button" onClick={toAddChildPage}>Join your child</button>
+          </div>
+        </>
+      )}
+      {loginMessage && <p className="login-message">{"loginMessage"}</p>}
+    </div>
+  </Layout>
+);
+}
 export default Parent;
 
 

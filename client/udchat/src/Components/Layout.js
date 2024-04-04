@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Layout.css'; // Import the CSS file
@@ -14,44 +13,45 @@ function Layout({ children }) {
     const navigateStudentPortal = () => navigate('/StudentName');
     const navigateMyProfile = () => navigate('/MyProfile');
     const navigateGallery = () => navigate('/Gallery');
+    const navigateAboutUs = () => navigate('/AboutUs');
 
     // unused
     const navigateNews = () => navigate('/News');
     const navigateForumPosts =() => navigate('/ForumPosts');
 
+    return (
+        <div className="container">
+            {/* Header */}
+            <div className="header">
+                {/* UPTOWN */}
+                <div className="logo">UPTOWN</div>
 
-  return (
-    <div className="container">
-      {/* Header */}
-      <div className="header">
-        {/* UPTOWN */}
-        <div className="logo">UPTOWN</div>
+                {/* Navigation Links */}
+                <div className="nav-links">
+                    <a href="#" onClick={navigateHome}>Home</a>
+                    <a href="#" onClick={navigateAboutUs}>About Us</a>
+                    <a href="#" onClick={navigateGallery}>Gallery</a>
+                    <a href="#" onClick={navigateLogin}>Log In</a>
+                    <a href="#" onClick={navigateParentPortal}>Parent Portal</a>
+                    <a href="#" onClick={navigateAdminPortal}>Admin Portal</a>
+                    <a href="#" onClick={navigateStudentPortal}>Student Portal</a>
+                </div>
 
-        {/* Navigation Links */}
-        <div className="nav-links">
-          <a href="#" onClick={navigateHome}>Home</a>
-          <a href="#" onClick={navigateGallery}>Gallery</a>
-          <a href="#" onClick={navigateLogin}>Log In</a>
-          <a href="#" onClick={navigateParentPortal}>Parent Portal</a>
-          <a href="#" onClick={navigateAdminPortal}>Admin Portal</a>
-          <a href="#" onClick={navigateStudentPortal}>Student Portal</a>
-          <a href="#" onClick={navigateMyProfile}>My Profile</a>
+                {/* Sign Up Button */}
+                <div className="cartButtonStyle">
+                    <a href="#" className="buttonTextStyle" onClick={navigateSignUp}>
+                        Sign Up
+                    </a>
+                </div>
+            </div>
+
+            <main className="main-content">
+                {children} {/* This is where the specific page content will go */}
+            </main>
         </div>
-
-        {/* Sign Up Button */}
-        <div className="cartButtonStyle">
-          <a href="#" className="buttonTextStyle" onClick={navigateSignUp}>
-            Sign Up
-          </a>
-        </div>
-      </div>
-
-      <main className="main-content">
-        {children} {/* This is where the specific page content will go */}
-      </main>
-    </div>
-  );
+    );
 }
 
 export default Layout;
+
 

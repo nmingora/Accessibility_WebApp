@@ -1,55 +1,70 @@
-// News.js
 import React, { useEffect, useState } from 'react';
+import axios from 'axios'; // Make sure to install axios with 'npm install axios' if not already installed
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./News.css";
 import CustomPdfViewer from './CustomPdfViewer';
 import { useNavigate } from 'react-router-dom';
 
 const News = () => {
-  const [pdfFile, setPDFFile] = useState(null);
   const [viewPdf, setViewPdf] = useState(null);
-  const [showAlert, setShowAlert] = useState(false); // State to control the alert visibility
+  const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
 
-  // Load PDF from localStorage when the component mounts
-  useEffect(() => {
-    const savedPdf = localStorage.getItem('savedPdf');
-    if (savedPdf) {
-      setViewPdf(savedPdf);
-      setPDFFile(savedPdf); // Assuming you want to keep the file for other operations
+  const fileType = ['application/pdf'];
+
+  // Function to fetch the latest AdminNews PDF from the backend
+  const fetchLatestAdminNews = async () => {
+    try {
+      // Assuming there's an endpoint to get the latest AdminNews PDF
+      const response = await axios.get('/api/pdfWaivers/latestAdminNews', { responseType: 'blob' });
+      const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      setViewPdf(pdfUrl);
+    } catch (error) {
+      console.error('Failed to fetch latest AdminNews PDF:', error);
     }
+  };
+
+  useEffect(() => {
+    fetchLatestAdminNews();
   }, []);
 
-  const fileType = ['application/pdf'];
-  const handleChange = (e) => {
-    let selectedFile = e.target.files[0];
+  const handleChange = async (e) => {
+    const selectedFile = e.target.files[0];
     if (selectedFile && fileType.includes(selectedFile.type)) {
-      let reader = new FileReader();
-      reader.readAsDataURL(selectedFile);
-      reader.onload = (e) => {
-        localStorage.setItem('savedPdf', e.target.result); // Save the PDF data to localStorage
-        setPDFFile(e.target.result);
-        setViewPdf(e.target.result);
-        alert(`This PDF is uploaded: ${selectedFile.name}`); // Add this line to show the alert
-      };
+      const formData = new FormData();
+      formData.append('pdfData', selectedFile);
+      formData.append('pdfType', 'AdminNews'); // This is set automatically on the backend, but included here for clarity
+      formData.append('uploadedBy', 'Admin'); // Adjust accordingly
+      formData.append('pdfName', selectedFile.name);
+
+      try {
+        await axios.post('/api/pdfWaivers/uploadAdminNews', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        alert(`This PDF is uploaded: ${selectedFile.name}`);
+        setShowAlert(true);
+        fetchLatestAdminNews(); // Refresh the displayed PDF
+      } catch (error) {
+        console.error('Error uploading PDF:', error);
+        alert('Failed to upload PDF');
+      }
     } else {
       console.log("Please select a PDF file.");
-      setPDFFile(null);
-      setViewPdf(null);
-      localStorage.removeItem('savedPdf'); // Clear the saved PDF if the new file is invalid
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowAlert(true); // Show the alert on form submission
+    // This might be redundant if the upload is handled on file selection
   };
 
   const returnToAdmin = () => {
-    navigate('/Admin'); // Adjust this to your desired route
+    navigate('/Admin');
   };
 
-  // Corrected coolAlert function implementation
   const CoolAlert = ({ onClose }) => {
     const message = 'NICE! Your pdf is now uploaded - Check out the home screen to view this masterpiece!';
     return (
@@ -74,8 +89,7 @@ const News = () => {
       <h2>Preview Newsletter</h2>
       
       <div className="pdf-container">
-        {viewPdf && <CustomPdfViewer fileUrl={viewPdf} />}
-        {!viewPdf && <>No PDF selected</>}
+        {viewPdf ? <CustomPdfViewer fileUrl={viewPdf} /> : <>No PDF selected</>}
       </div>
     </div>
   );
