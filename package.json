@@ -16,6 +16,9 @@
     "cors": "^2.8.5",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
+    "cors": "^2.8.5",
+    "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
     "express": "^4.17.1",
     "gapi-script": "^1.2.0",
     "https-browserify": "^1.0.0",
@@ -23,6 +26,9 @@
     "react-scripts": "5.0.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0"
+    "jsonwebtoken": "^9.0.2",
+    "react-big-calendar": "^1.11.2",
+    "react-scripts": "5.0.1"
   },
   "engines": {
     "node": "20.x"
@@ -30,3 +36,4 @@
   "author": "",
   "license": "ISC"
 }
+
