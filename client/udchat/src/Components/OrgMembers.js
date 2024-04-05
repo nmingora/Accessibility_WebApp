@@ -44,7 +44,7 @@ const ParentsList = () => {
                 <ul className="parents-list">
                     {parents.map((parent) => (
                         <li key={parent.userID} className="parent-item">
-                            <span className="parent-name">{parent.username}</span>
+                            <span className="parent-name">Parents: {parent.fName} {parent.lName}</span>
                             <span className="children-names">
                                 Children: {parent.childrenNames ? parent.childrenNames.split(',').join(', ') : 'No children'}
                             </span>
