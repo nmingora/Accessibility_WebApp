@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const crypto = require('crypto');// for id generation bc i don't want packages
 
+
 // Post Model
 const Post = require('../models/Post');
 

@@ -2,17 +2,18 @@ import React,{ useState }  from 'react';
 
 function EventSignUpWindow({event}){
     const [enableRSVP,setEnableRSVP] = useState(false);
-    const calendarID="te8173120@gmail.com";
-    const apiKey = "AIzaSyCWUgthgaEYpsm603nlpmDFavCuPDcI-4I"
+    const [calendarID,setCalendarID] = useState(process.env.REACT_APP_CALENDAR_ID);
+    const [apiKey,setAPIKey] = useState(process.env.REACT_APP_API_KEY);
 
     const registerParent = async () => {
         //google API call to add parent to event attendance
         try{
-            const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarID}/events/${event.id}?key=${apiKey}`,
-            {
-                method:'PUT',
-                headers:{'Content-Type':'application/json'},
-                body:JSON.stringify({attendees:[{email:"geoff.easton21@gmail.com"}]})
+            const newAttendeeEmail = "";
+
+            const url = `https://www.googleapis.com/calendar/v3/calendars/${calendarID}/events/${event.id}?key=${apiKey}`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
             });
 
             if(response.ok){
@@ -21,6 +22,30 @@ function EventSignUpWindow({event}){
             else{
                 alert(`Error signing user up for ${event.title}. Please contact Admin.`)
             }
+
+            const event = await response.json();
+            if (event && event.attendees) {
+              event.attendees.push({ email: newAttendeeEmail });
+            } else {
+              event.attendees = [{ email: newAttendeeEmail }];
+            }
+
+            const updateResponse = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(event)
+            });
+            
+            if (!updateResponse.ok) {
+                alert("Failed to update event!")
+                return;
+            }
+            else{
+                alert("Successfully RSVP'ed event")
+            }
+
 
         }catch(err){
             console.log(err);
@@ -33,7 +58,7 @@ function EventSignUpWindow({event}){
     }
 
     return <div>
-        <h2>{event.title}</h2>
+        <h2 style={{ color: 'black' }}>{event.title}</h2>
         <p>{`Date: ${formatDates(event.start,true)} - ${formatDates(event.end)}`}</p>
         <p>{(event.location)?`Location: ${event.location}`:""}</p>
         <p>{event.desc}</p>

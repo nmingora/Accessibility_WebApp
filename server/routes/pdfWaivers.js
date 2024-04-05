@@ -31,7 +31,7 @@ router.get('/getAll', async (req, res) => {
     try {
       // Find all documents in the PdfWaiver collection
       const pdfWaivers = await PdfWaiver.find({});
-  
+
     
   
       res.status(200).json(pdfWaivers);
@@ -68,7 +68,7 @@ router.get('/getAll', async (req, res) => {
       res.status(500).send('Server Error');
     }
   });
-  
+
 
 
 
@@ -145,6 +145,6 @@ router.get('/latestAdminNews', async (req, res) => {
 
 
 
-
+  
 
 module.exports = router;
