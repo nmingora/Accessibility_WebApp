@@ -1,3 +1,4 @@
+
 import React, {useState,useEffect} from 'react';
 import {Calendar,dateFnsLocalizer} from "react-big-calendar";
 import Modal from './Modal';
@@ -7,7 +8,6 @@ import parseISO from "date-fns/parseISO";
 import startOfWeek from "date-fns/startOfWeek";
 import getDay from "date-fns/getDay";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { gapi } from "gapi-script";
 import "./EventCalendar.css";
 
 
@@ -30,6 +30,8 @@ function EventCalendar(){
 
     const getEvents = async () => {
         try{
+            console.log("Calendar ID: ",calendarID);
+            console.log("API key: ",apiKey);
             const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarID}/events?key=${apiKey}`);
             
             if(!response.ok){
@@ -47,6 +49,7 @@ function EventCalendar(){
                     end: new Date(ev.end[Object.keys(ev.end)[0]]), 
                     location: ev.location,
                     desc: ev.description,
+                    attendees: ev.attendees,
                     }
                 )
             );

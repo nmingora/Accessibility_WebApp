@@ -25,7 +25,7 @@
     "react-big-calendar": "^1.11.3",
     "react-scripts": "5.0.1",
     "stream-browserify": "^3.0.0",
-    "stream-http": "^3.2.0"
+    "stream-http": "^3.2.0",
     "jsonwebtoken": "^9.0.2",
     "react-big-calendar": "^1.11.2",
     "react-scripts": "5.0.1"

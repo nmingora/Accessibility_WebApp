@@ -24,6 +24,5 @@ function getMyIp() {
 
 const BASE_URL = getMyIp() || 'http://localhost:3005';
 
-s
 //const BASE_URL = process.env.REACT_APP_BACKEND_APP || 'http://localhost:3005';
 export { BASE_URL };

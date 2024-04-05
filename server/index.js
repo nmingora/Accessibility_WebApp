@@ -1,5 +1,3 @@
-export {authenticateToken,refreshAccessToken}
-
 require('dotenv').config({path:"../.env"});
 const express = require("express");
 const cors = require('cors');
@@ -767,8 +765,3 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
 });
-
-
-
-
-export {authenticateToken,refreshAccessToken}
