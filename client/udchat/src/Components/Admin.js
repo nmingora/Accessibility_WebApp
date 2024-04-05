@@ -25,6 +25,10 @@ const AdminLogin = ({ onClose }) => {
     navigate('/AdWaiversTerminal');
   }
 
+  const toMembers = () => {
+    navigate('/OrgMembers')
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage(''); // Reset error message before login attempt
@@ -71,6 +75,7 @@ const AdminLogin = ({ onClose }) => {
         <button className = "community-button" type="button" onClick={toForumPostsAd}>View Community Chat</button>
         <button className = "community-button" type="button" onClick={navigateToApplications}>Process Applications</button>
         <button className = "community-button" type="button" onClick={toAdminWaivers}>Shared Waiver and Documents Terminal</button>
+        <button className = "community-button" type="button" onClick={toMembers}>See All Current Members</button>
         <button className = "community-button" onClick={handleLogout}>Log Out</button>
       </div>
       </Layout>

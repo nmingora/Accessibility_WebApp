@@ -18,6 +18,7 @@ import ViewPDFs from './ViewPDFs.js';
 import Gallery from './Gallery.js';
 import ChildPage from './addChildPage.js';
 import AboutUs from './AboutUs.js';
+import Members from './OrgMembers.js';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
         <Route path="/ForumPosts" element={<ForumPosts/>}/>
         <Route path="/ForumPostsAd" element={<ForumPostsAd/>}/>
         <Route path="/AdWaiversTerminal" element={<AdWaiversTerminal/>}/>
+        <Route path="/OrgMembers" element={<Members/>}/>
         <Route path="/ViewPDFs" element={<ViewPDFs/>}/>
         <Route path="/Gallery" element={<Gallery/>}/>
         <Route path="/AboutUs" element={<AboutUs/>}/>

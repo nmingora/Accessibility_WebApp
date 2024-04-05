@@ -364,8 +364,17 @@ router.get('/child/:childId', async (req, res) => {
         res.status(404).send('Child not found');
     }
 
-})
+});
 
+router.get('/members', async (req, res) => {
+    try {
+        const parents = await getParentsAndChildren();
+        res.json(parents);
+    } catch (error) {
+        console.error('Failed to fetch parents:', error);
+        res.status(500).send('Error fetching parents');
+    }
+});
 
 //------------------------------Retrieve Parent Username and password_____________________________________
 router.post('/login', async (req, res) => {
@@ -440,6 +449,18 @@ async function getChildById(childId) {
             await connection.end();
         }
     }
+}
+
+//get parents and their corresponding children
+async function getParentsAndChildren() {
+    const connection = await initializeDatabase();
+    const query = `
+        SELECT p.*, GROUP_CONCAT(c.fName) as childrenNames 
+        FROM Parent p 
+        LEFT JOIN Camper c ON p.userID = c.parentID 
+        GROUP BY p.userID`;
+    const [parents] = await connection.query(query);
+    return parents;
 }
 
 

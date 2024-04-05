@@ -1,0 +1,52 @@
+.parents-list-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #4a7c59; /* Dark green for the title */
+    text-align: center;
+}
+
+.parents-list {
+    list-style: none;
+    padding: 0;
+}
+
+.parent-item {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333; /* Dark text for visibility */
+}
+
+.parent-name {
+    font-weight: bold;
+    color: #333; /* Dark text for parent name */
+}
+
+.children-names {
+    margin-left: 10px;
+    flex-grow: 1;
+    color: #555; /* Slightly lighter text for children names */
+}
+
+.info-button {
+    background-color: #4a7c59;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.info-button:hover {
+    background-color: #3d7a4b;
+}
