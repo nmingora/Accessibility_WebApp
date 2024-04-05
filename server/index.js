@@ -18,6 +18,7 @@ const salt = bcrypt.genSaltSync(10);
 const mongoose = require('mongoose');
 const postsRouter = require('./routes/posts');
 const pdfWaiversRouter = require('./routes/pdfWaivers');
+const RefreshTokens = require('./models/refreshTokens.js');
 //--------------------------- Moongoose Connection ---------------------------//
 
 app.use(cors());
@@ -78,7 +79,7 @@ router.get('/file/:filename', async (req, res) => {
 
 
 //process.env.MONGODB_uri
-const uri = "mongodb+srv://madisonjlo88:MongoPassword@cluster0.corysq5.mongodb.net/userForum?retryWrites=true&w=majority";
+const uri = process.env.PDF_MONGO_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log(`MongoDB connected...`))
   .catch(err => console.log(err));
@@ -91,7 +92,7 @@ if(process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) => {    
       res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')); // Relative path
     });
-  }
+}
   
 
 
@@ -314,7 +315,11 @@ router.put('/reject-application', async (req, res) => {
 });
 
 // Route to handle child account setup
-router.post('/setup-child-account', (req, res) => {
+router.post('/setup-child-account',authenticateToken, (req, res) => {
+
+    const rToken = req.body.token;
+    const aToken = refreshAccessToken(rToken);
+
     const { parentEmail, childName, childPassword } = req.body;
     const parentQuery = `SELECT * FROM Parents WHERE email = ?`;
     pool.execute(parentQuery, [parentEmail], (parentError, parentResults) => {
@@ -353,15 +358,16 @@ router.post('/login', async (req, res) => {
             //username, first name, last name, role etc.
             const userData  = {
                 username:user.username,
-                email:user.email,
-                isAdmin:user.isAdmin,
-                disabled:user.disabled
+                fName: user.fName,
+                lName: user.lName,
+                email: user.email
             };
             //create JWT tokens
             const aToken = generateAccessToken(userData);
             const rToken = jwt.sign(userData,process.env.REFRESH_TOKEN_SECRET,{expiresIn:"2h"});
             //hash refresh token and store
             const hashedToken = await bcrypt.hash(rToken,salt);
+            const savedRefreshToken = new RefreshTokens({refreshToken:hashedToken});
 
             //return access, refresh, and  user data
 
@@ -479,7 +485,7 @@ async function findUserByUsername(username) {
     const connection = await initializeDatabase();
 
     try {
-        const query = 'SELECT username, pass FROM Parent WHERE username = ?';
+        const query = 'SELECT userID, username, fName, lName, email, pass FROM Parent WHERE username = ?';
         const [rows] = await connection.execute(query, [username]);
 
         if (rows.length > 0) {
@@ -499,40 +505,45 @@ async function findUserByUsername(username) {
 
 // --------------------------- JWT Endpoints, Middleware, and Functions -------------------------------------//
 
+router.post("/authenticate",authenticateToken,async(req,res)=>{});
+
 //retrieve payload from jwt and return it
-router.post("/payload", async (req,res)=>{
-
-    const aToken = req.body.token;
-
-    const secret = process.env.ACCESS_TOKEN_SECRET;
-
-    if(aToken==nul) return res.sendStatus(401);
-
-    userData = jwt.getPayload(aToken);
-    res.send(userData);
-});
+//get end point w/ access token attatched
 
 //verify refresh token given, return new access token
 router.post("/token", async (req,res)=>{
 
+    //ensure accessToken is tossed and replaced with result
     const rToken = req.body.token;
     const username = req.body.username;
 
-    const secret = process.env.REFRESH_TOKEN_SECRET;
-    console.log(secret);
-    
-    if(rToken==null) return res.sendStatus(401);
+    const result = await refreshAccessToken(rToken);
 
-    //retrieve refreshToken stored for that username
-    const document = await RefreshTokens.findOne({username:username});
+    if(result==1) return res.sendStatus(401);
     
+    else if(result==2) return res.sendStatus(403);
+
+    else{
+        res.send({accessToken:result});
+    }
+});
+
+async function refreshAccessToken(rToken){
+    //rToken - refresh token
+
+    database = mongoose.connection.useDb("RefreshTokens");
+    const secret = process.env.REFRESH_TOKEN_SECRET;
+
+    if(rToken == null) return 1;
+
+    const document = await RefreshTokens.findOne({username:username});
+
     hasToken = bcrypt.compare(rToken,document.refreshToken);
 
-    //check if RefreshTokens has the given refreshToken
-    if(!hasToken) return res.sendStatus(403);
+    if(!hasToken) return 2;
 
     jwt.verify(rToken,secret,(err,user)=>{
-        if(err) return res.sendStatus(403);
+        if(err) return 2;
 
         const aToken = generateAccessToken(
             {
@@ -542,9 +553,9 @@ router.post("/token", async (req,res)=>{
                 disabled:user.disabled
             }
         );
-        res.send({accessToken:aToken});
+        return aToken;
     });
-});
+}
 
 //creates an access token
 //user = user data
@@ -554,40 +565,25 @@ function generateAccessToken(user){
 
 //delete refresh token from database
 async function deleteRefreshToken(username,rToken){
-
+    database = mongoose.connection.useDb("RefreshTokens");
     //delete refresh token from database if present
     const result = await RefreshTokens.deleteOne({username:username,refreshToken:rToken});
     return result;
 }
 
 //middleware for JWT user authentication
-function authenticateToken(req,res,next){
+function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(" ")[1];
 
-    if(token==null) return res.sendStatus(401);
-    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
-        if(err) return  res.sendStatus(403).json({message:"GTFO"});
-        next();
-    });
-}
-
-//admin middleware JWT authentication
-function  authenticateAdminToken(){
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(" ")[1];
-
-    if(token==null) return res.sendStatus(401);
-    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
-
-        if(err) return  res.sendStatus(403).json({message:"GTFO"});
-        //if user role  (specified in access token) is not admin, GTFO
-        if(user.role!=="admin") return res.sendStatus(403).json({message:"GTFO"});
-
-        next();
-    });
+    if (token == null) return res.sendStatus(401);
     
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) return res.status(403).json({ message: "Forbidden" });
+        next();
+    });
 }
+
 
 //retrieve data from JWT
 function getPayload(token){
@@ -623,21 +619,5 @@ app.listen(PORT, () => {
 });
 
 
-//SIGN UP OLD FUNCIIONALITY
-// const { fName, lName, username, pass, email, contact, DOB, addr, notes } = req.body;
-//         console.log(req.body)
-//         const insertData = [fName, lName, username, pass, email, contact, DOB, addr, notes, 1, 'Pending', new Date()];
 
-//         console.log('heree2') //debug
-
-//         const sql = 'INSERT INTO Application (fName,lName,username,pass,email,contact,DOB,addr,notes,reviewingAdmin, status, dateApplied) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-//         connection.query(sql, insertData, (err, result) => {
-//             if (err) {
-//                 console.error('Error adding user:', error);
-//                 res.status(500).json({ error: 'An error occurred while adding user.' });
-//             } else {
-//                 res.json({ message: 'Application successfully submitted! An admin will contact you.' });
-//             }
-//         });
-
-
+export {authenticateToken,refreshAccessToken};

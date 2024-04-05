@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Layout from './Layout';
 import { BASE_URL } from '../config';  // Importing from the src directory
 import "./Parent.css";
+import EventCalendar from "./EventCalendar";
 
 const Parent = () => {
   const [username, setUsername] = useState('');
@@ -60,9 +61,11 @@ const handleLogin = async (event) => {
     });
     const data = await response.json();
     if (response.ok) {
-      setLoginMessage(`You are logged in as ${data.fName} ${data.lName}`);
+      setLoginMessage(`You are logged in as ${data.userData.fName} ${data.userData.lName}`);
       setIsLoggedIn(true); // Set login status to true
       localStorage.setItem('isLoggedIn', 'true'); // Store login state in localStorage
+      localStorage.setItem('accessToken',data.accessToken);
+      localStorage.setItem('refreshToken',data.refreshToken);
     } else {
       setLoginMessage(data.message || 'Login failed');
     }
@@ -77,6 +80,8 @@ const handleLogout = () => {
   setUsername('');
   setPassword('');
   localStorage.removeItem('isLoggedIn'); // Remove login state from localStorage
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
   navigate('/Parent'); // Redirect to login page or another appropriate page
 };
 
@@ -141,6 +146,7 @@ navigate('/ForumPosts');
             <button className="logout-button" onClick={handleLogout}>Logout</button>
             <button className="forum-button" onClick={toForumPosts}>Go to Community Forum!</button>
             <button className="forum-button" onClick={toViewPDFs}>View Parent Documents</button>
+            <EventCalendar/>
           </>
         )}
         {loginMessage && <p className="login-message">{loginMessage}</p>}
