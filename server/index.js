@@ -1,3 +1,5 @@
+export {authenticateToken,refreshAccessToken}
+
 require('dotenv').config({path:"../.env"});
 const express = require("express");
 const cors = require('cors');
@@ -81,18 +83,18 @@ router.get('/file/:filename', async (req, res) => {
 //process.env.MONGODB_uri
 const uri = process.env.PDF_MONGO_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log(`MongoDB connected...`))
-  .catch(err => console.log(err));
+    .then(() => console.log("MongoDB connected..."))
+    .catch(err => console.log(err));
 app.use('/api/posts', postsRouter);
 app.use('/api/pdfWaivers', pdfWaiversRouter);
 
 // Production mode
-if(process.env.NODE_ENV === 'production') {  
-    app.use(express.static(path.join(__dirname, 'client/build')));  
-    app.get('*', (req, res) => {    
-      res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')); // Relative path
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')); // Relative path
     });
-}
+  }
   
 
 
@@ -315,36 +317,71 @@ router.put('/reject-application', async (req, res) => {
 });
 
 // Route to handle child account setup
-router.post('/setup-child-account',authenticateToken, (req, res) => {
+// Express route to add a child for a logged-in parent
+router.post('/addChild', async (req, res) => {
+    const { username, childInfo } = req.body;
 
-    const rToken = req.body.token;
-    const aToken = refreshAccessToken(rToken);
+    try {
+        const parent = await findParentByUsername(username);
+        if (!parent) {
+            return res.status(404).json({ message: 'Parent not found' });
+        }
 
-    const { parentEmail, childName, childPassword } = req.body;
-    const parentQuery = `SELECT * FROM Parents WHERE email = ?`;
-    pool.execute(parentQuery, [parentEmail], (parentError, parentResults) => {
-        if (parentError) {
-            console.error('Error finding parent:', parentError);
-            return res.status(500).send('Internal server error');
+        // Check if parent ID was retrieved successfully
+        if (!parent.userID) {
+            return res.status(400).json({ message: 'Unable to find parent ID' });
         }
-        if (parentResults.length === 0) {
-            return res.status(404).send('Parent not found');
-        }
-        const studentQuery = `INSERT INTO Camper (name, password) VALUES (?, ?)`;
-        pool.query(studentQuery, [childName, childPassword], (studentError, studentResults) => {
-            if (studentError) {
-                console.error('Error setting up child account:', studentError);
-                return res.status(500).send('Internal server error');
-            }
-            res.status(201).send('Child account setup completed successfully');
-        });
-    });
+
+        const insertResult = await addChildToDatabase(childInfo, parent.userID);
+        console.log("Insertion result", insertResult);
+        console.log("Child account created successfully with ID:");
+        res.json({ message: 'Child added successfully' });
+    } catch (error) {
+        console.error('Error adding child:', error);
+        res.status(500).send('Error adding child');
+    }
 });
 
+router.get('/child', async (req, res) => {
+    try {
+        const children = await getAllChildren();
+        res.json(children);
+    }
+    catch (error) {
+        console.error('Failed to fetch children:', error);
+        res.status(500).send('Error fetching children');
+    }
+});
+
+router.get('/child/:childId', async (req, res) => {
+    const childId = req.params.childId;
+    
+    // Fetch child data from the database using childId
+    const childData = await getChildById(childId);
+
+    if (childData) {
+        res.json(childData);
+    } else {
+        res.status(404).send('Child not found');
+    }
+
+});
+
+router.get('/members', async (req, res) => {
+    try {
+        const parents = await getParentsAndChildren();
+        res.json(parents);
+    } catch (error) {
+        console.error('Failed to fetch parents:', error);
+        res.status(500).send('Error fetching parents');
+    }
+});
 
 //------------------------------Retrieve Parent Username and password_____________________________________
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
+
+    console.log(req.body);
 
     try {
         const user = await findUserByUsername(username);
@@ -352,9 +389,12 @@ router.post('/login', async (req, res) => {
         if (!user) return res.status(404).json({ message: 'User not found' });
 
         //does the provided password match 
-        const match = await bcrypt.compare(password,user.pass);
-        
-        if(match){
+        const match = await bcrypt.compare(password, user.pass);
+
+        console.log(user);
+        console.log("Password match:", match);
+
+        if (match) {
             //username, first name, last name, role etc.
             const userData  = {
                 username:user.username,
@@ -364,17 +404,17 @@ router.post('/login', async (req, res) => {
             };
             //create JWT tokens
             const aToken = generateAccessToken(userData);
-            const rToken = jwt.sign(userData,process.env.REFRESH_TOKEN_SECRET,{expiresIn:"2h"});
+            const rToken = jwt.sign(userData, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "2h" });
             //hash refresh token and store
             const hashedToken = await bcrypt.hash(rToken,salt);
             const savedRefreshToken = new RefreshTokens({refreshToken:hashedToken});
 
             //return access, refresh, and  user data
 
-            res.json({ message: 'You are logged in',accessToken:aToken,refreshToken:rToken,userData:userData });
+            res.json({ message: 'You are logged in', accessToken: aToken, refreshToken: rToken, userData: userData });
         }
-        else return res.status(401).json({message: 'Invalid credentials!'});
-        
+        else return res.status(401).json({ message: 'Invalid credentials!' });
+
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).send('Error during login');
@@ -383,6 +423,52 @@ router.post('/login', async (req, res) => {
 
 
 // -------------------------------- Backend Functions ------------------------------------------//
+
+//get all child names
+async function getAllChildren() {
+    const connection = await initializeDatabase();
+    const query = 'SELECT camperID, fName, lName FROM Camper'; // Adjust fields as necessary
+    const [children] = await connection.query(query); 
+    await connection.end();
+    return children.map(child => ({
+        id: child.camperID,
+        name: `${child.fName} ${child.lName}`,
+    }));
+}
+
+async function getChildById(childId) {
+    const connection = await initializeDatabase();  
+
+    try {
+        const query = 'SELECT * FROM Camper WHERE camperID = ?';
+        const [rows] = await connection.query(query, [childId]);
+
+        if (rows.length > 0) {
+            return rows[0];  // Return the first row (the child data)
+        } else {
+            return null;  // No child found with that ID
+        }
+    } catch (error) {
+        console.error('Error querying the database:', error);
+        throw error;  // Rethrow or handle as necessary
+    } finally {
+        if (connection) {
+            await connection.end();
+        }
+    }
+}
+
+//get parents and their corresponding children
+async function getParentsAndChildren() {
+    const connection = await initializeDatabase();
+    const query = `
+        SELECT p.*, GROUP_CONCAT(c.fName) as childrenNames 
+        FROM Parent p 
+        LEFT JOIN Camper c ON p.userID = c.parentID 
+        GROUP BY p.userID`;
+    const [parents] = await connection.query(query);
+    return parents;
+}
 
 
 // function to get all the applications from the database
@@ -427,9 +513,11 @@ async function createParent(id) {
 
     // Now to INSERT the new data into the Parent table with the correct tables
     try {
-        const hashedPassword = await bcrypt.hash(accountData.pass,salt);
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(accountData.pass, saltRounds);
         const insertQuery = 'INSERT INTO Parent (username, pass, fName, lName, email, DOB, contact, addr) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         values = [accountData.username, hashedPassword, accountData.fName, accountData.lName, accountData.email, accountData.DOB, accountData.contact, accountData.addr];
+        //values = [accountData.username, accountData.pass, accountData.fName, accountData.lName, accountData.email, accountData.DOB, accountData.contact, accountData.addr];
         const insertResult = await connection.query(insertQuery, values);
 
         console.log("Insertion result", insertResult);
@@ -559,15 +647,15 @@ async function refreshAccessToken(rToken){
 
 //creates an access token
 //user = user data
-function generateAccessToken(user){
-    return jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:"900s"})
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "900s" })
 }
 
 //delete refresh token from database
 async function deleteRefreshToken(username,rToken){
     database = mongoose.connection.useDb("RefreshTokens");
     //delete refresh token from database if present
-    const result = await RefreshTokens.deleteOne({username:username,refreshToken:rToken});
+    const result = await RefreshTokens.deleteOne({ username: username, refreshToken: rToken });
     return result;
 }
 
@@ -586,22 +674,84 @@ function authenticateToken(req, res, next) {
 
 
 //retrieve data from JWT
-function getPayload(token){
-    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
-        if(err){
+function getPayload(token) {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) {
             return null;
         }
         return user;
     });
 }
 
-function inputSanitization(input){
-    const disallowedCharacters = ['"',"'","\\","(",")","{","}","/",",",".","%","&","^",";",":"];
-    for(char in disallowedCharacters){
-        if(input.contains(char)) return false;
+function inputSanitization(input) {
+    const disallowedCharacters = ['"', "'", "\\", "(", ")", "{", "}", "/", ",", ".", "%", "&", "^", ";", ":"];
+    for (char in disallowedCharacters) {
+        if (input.contains(char)) return false;
     }
     return true;
 }
+
+async function findParentByUsername(username) {
+    const connection = await initializeDatabase();
+
+    try {
+        // Query to select the ID as well
+        const query = 'SELECT userID FROM Parent WHERE username = ?';
+        const [rows] = await connection.execute(query, [username]);
+
+        if (rows.length > 0) {
+            return rows[0]; // Return the first matching parent with ID
+        } else {
+            return null; // No parent found
+        }
+    } catch (error) {
+        console.error('Query error:', error);
+        throw error;
+    } finally {
+        if (connection) {
+            await connection.end();
+        }
+    }
+}
+
+// Function to add a child to the database
+async function addChildToDatabase(childInfo, parentId) {
+    const connection = await initializeDatabase();
+
+    try {
+        console.log('childInfo', childInfo); // Log to check what data is being received
+
+        // Extract child info with default values to avoid null
+        const specialPassword = (childInfo.specialPassword || []).join(',');
+        const firstName = childInfo.fName;
+        const lastName = childInfo.lName;
+        const dob = childInfo.DOB;
+
+        if (!firstName || !lastName || !dob) {
+            console.error('Missing child information:', { firstName, lastName, dob });
+            return; // Exit the function if essential information is missing
+        }
+
+        const insertQuery = 'INSERT INTO Camper (specialPassword, fName, lName, DOB, parentID) VALUES (?, ?, ?, ?, ?)';
+        const values = [specialPassword, firstName, lastName, dob, parentId];
+        console.log("Running query:", insertQuery);
+        console.log("With values:", values);
+        const insertResult = await connection.query(insertQuery, values);
+
+        console.log("Insertion result", insertResult);
+        console.log("Child account created successfully.");
+    } catch (error) {
+        console.error("Failed to INSERT the new Child object into the Camper table, here's why: ", error);
+    } finally {
+        if (connection) {
+            await connection.end();
+        }
+    }
+}
+
+
+
+
 // ------------------------- KEEP THIS AS LAST -> MUST BE AFTER ENDPOINTS ------------------------------- //
 
 
@@ -620,4 +770,5 @@ app.listen(PORT, () => {
 
 
 
-export {authenticateToken,refreshAccessToken};
+
+export {authenticateToken,refreshAccessToken}

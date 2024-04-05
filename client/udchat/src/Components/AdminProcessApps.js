@@ -253,6 +253,20 @@ function AdminProcessApps() {
   };
 
 
+  const downloadForm = async (tempApp) => {
+    if (tempApp.fileName) {
+      // Construct the file URL
+      const url = `${BASE_URL}/api/uptown/file/${tempApp.fileName}`;
+      
+      // Open the URL in a new tab
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+  
+
+
+
+
 
 
     // test to view the applications being sent to the UI. Kind cool. 
@@ -320,10 +334,23 @@ function AdminProcessApps() {
             <p>Last Name: {tempApp.lName}</p>
             <p>Email: {tempApp.email}</p>  
             <p>Status: {tempApp.status}</p> 
-            {tempApp.fileName && (
-              <a href={`${BASE_URL}/api/uptown/file/${tempApp.fileName}`} target="_blank" rel="noopener noreferrer" className="downloadLink">Download Form</a>
-            )}
+            
             <div className="buttonContainer">
+              {tempApp.fileName && (
+                <button
+                className="downloadFormButton"
+                onClick={() => downloadForm(tempApp)}
+              >
+                Download Form
+              </button>
+              )}
+              {!(tempApp.fileName) && (
+                <button
+                  onClick={() => alert("No Form Available to Download")}
+                >
+                  X -- EMPTY -- X
+                </button>
+              )}
               <button
                 className="acceptButton"
                 onMouseDown={(e) => handleMouseDown(tempApp.appID, e)}  

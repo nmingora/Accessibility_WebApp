@@ -25,6 +25,10 @@ const AdminLogin = ({ onClose }) => {
     navigate('/AdWaiversTerminal');
   }
 
+  const toMembers = () => {
+    navigate('/OrgMembers')
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage(''); // Reset error message before login attempt
@@ -62,16 +66,19 @@ const AdminLogin = ({ onClose }) => {
   // If the user is logged in, show the logged-in message and logout button
   if (loggedInUser) {
     return (
+      <Layout>
       <div className="logged-in-container">
         <div className="logged-in-message">
           You are now logged in as {loggedInUser}
         </div>
-        <button type="button" onClick={goToNews}>Update Newsletter</button>
-        <button type="button" onClick={toForumPostsAd}>View Community Chat</button>
-        <button type="button" onClick={navigateToApplications}>Process Applications</button>
-        <button type="button" onClick={toAdminWaivers}>Shared Waiver and Documents Terminal</button>
-        <button onClick={handleLogout}>Log Out</button>
+        <button className = "community-button" type="button" onClick={goToNews}>Update Newsletter</button>
+        <button className = "community-button" type="button" onClick={toForumPostsAd}>View Community Chat</button>
+        <button className = "community-button" type="button" onClick={navigateToApplications}>Process Applications</button>
+        <button className = "community-button" type="button" onClick={toAdminWaivers}>Shared Waiver and Documents Terminal</button>
+        <button className = "community-button" type="button" onClick={toMembers}>See All Current Members</button>
+        <button className = "community-button" onClick={handleLogout}>Log Out</button>
       </div>
+      </Layout>
     );
   }
   

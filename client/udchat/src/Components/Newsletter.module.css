@@ -1,0 +1,19 @@
+ /* Styles for the .newsletter-pane class, ensuring consistency in presentation */
+  .newsletterPane {
+    max-width: 60%;
+    margin: 0 auto;
+    height: 30vh;
+    background: #D9D9D9;
+    margin-top: 5%;
+
+    padding: 20px;
+    margin-bottom: 750px;
+  }
+  /* Adjusted styles for the .rectangle class, used when the newsletter is not available */
+.rectangle {
+    width: 50%; /* Maintains width at half of its container */
+    margin: 0 auto; /* Centers the rectangle */
+    height: 30vh; /* Sets the height based on the viewport height */
+    background: #D9D9D9; /* Light grey background */
+    margin-top: 5%; /* Adds a top margin for spacing */
+  }
