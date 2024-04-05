@@ -40,7 +40,7 @@ const ParentsList = () => {
     return (
         <Layout>
             <div className="parents-list-container">
-                <h1>Parents and Their Children</h1>
+                <h1>Current Members of Organization</h1>
                 <ul className="parents-list">
                     {parents.map((parent) => (
                         <li key={parent.userID} className="parent-item">
