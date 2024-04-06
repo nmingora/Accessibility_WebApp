@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from 'react';
 import Layout from './Layout'
-import { BASE_URL } from '../config';  // Importing from the src directory
+const BASE_URL = process.env.REACT_APP_BACKEND_APP;  // Importing from the src directory
 import './addChild.css';
 //import the images
 import image1 from '../Components/icons/image1.jpeg';

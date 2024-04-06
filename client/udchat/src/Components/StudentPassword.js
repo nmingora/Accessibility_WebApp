@@ -20,7 +20,7 @@ import image14 from '../Components/icons/image14.jpeg';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { BASE_URL } from '../config';  // Importing from the src directory
+const BASE_URL = process.env.REACT_APP_BACKEND_APP;  // Importing from the src directory
 import Layout from './Layout';
 
 // Import other necessary modules and components

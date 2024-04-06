@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from './Layout';
-import { BASE_URL } from '../config';  // Importing from the src directory
+const BASE_URL = process.env.REACT_APP_BACKEND_APP;  // Importing from the src directory
 import "./Parent.css";
 import EventCalendar from "./EventCalendar";
 
