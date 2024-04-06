@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from 'react';
 import Layout from './Layout'
-const BASE_URL = process.env.REACT_APP_BACKEND_APP;  // Importing from the src directory
 import './addChild.css';
 //import the images
 import image1 from '../Components/icons/image1.jpeg';
@@ -18,6 +17,8 @@ import image11 from '../Components/icons/image11.jpeg';
 import image12 from '../Components/icons/image12.jpeg';
 import image13 from '../Components/icons/image13.jpeg';
 import image14 from '../Components/icons/image14.jpeg';
+
+const BASE_URL = process.env.REACT_APP_BACKEND_APP;  // Importing from the src directory
 
 const AddChildForm = () => {
     const [username, setUsername] = useState('');
