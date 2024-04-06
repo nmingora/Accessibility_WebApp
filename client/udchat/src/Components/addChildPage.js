@@ -18,7 +18,7 @@ import image12 from '../Components/icons/image12.jpeg';
 import image13 from '../Components/icons/image13.jpeg';
 import image14 from '../Components/icons/image14.jpeg';
 
-const BASE_URL = process.env.REACT_APP_BACKEND_APP;  // Importing from the src directory
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;  // Importing from the src directory
 
 const AddChildForm = () => {
     const [username, setUsername] = useState('');

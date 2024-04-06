@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Layout from './Layout';
 import "./Parent.css";
 import EventCalendar from "./EventCalendar";
-const BASE_URL = process.env.REACT_APP_BACKEND_APP;  // Importing from the src directory
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;  // Importing from the src directory
 
 const Parent = () => {
   const [username, setUsername] = useState('');

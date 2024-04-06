@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './StudentName.css'; // Make sure this CSS file is linked correctly
 import Layout from './Layout';
-const BASE_URL = process.env.REACT_APP_BACKEND_APP;
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 const NameSelectionPage = () => {
   const [children, setChildren] = useState([]);
