@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from './Layout'
 import './AdminProcessApps.css'
-import { BASE_URL } from '../config';  // Importing from the src directory
+//const BASE_URL = process.env.REACT_APP_BACKEND_APP;  // Importing from the src directory
+const BASE_URL = process.env.REACT_APP_BACKEND_APP;
 
 function AdminProcessApps() {
   const navigate = useNavigate();

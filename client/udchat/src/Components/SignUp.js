@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from "react";
 import Layout from './Layout';
 import "./SignUp.css";
-import { BASE_URL } from '../config';  // Importing from the src directory
+const BASE_URL = process.env.REACT_APP_BACKEND_APP;  // Importing from the src directory
 
 const Signup = () => {
   const [email, setEmail] = useState('');

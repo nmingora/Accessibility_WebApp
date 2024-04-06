@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ForumPosts.css'; // Make sure the path is correct
 import { useNavigate } from 'react-router-dom';
 import Layout from './Layout'
-import { BASE_URL } from '../config';  // Importing from the src directory
+const BASE_URL = process.env.REACT_APP_BACKEND_APP;  // Importing from the src directory
 
 
 const ForumPosts = () => {
