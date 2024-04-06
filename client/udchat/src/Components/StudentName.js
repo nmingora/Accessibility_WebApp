@@ -9,7 +9,7 @@ const NameSelectionPage = () => {
 
   const fetchChildren = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/uptown/child`);
+      const response = await fetch(`/api/uptown/child`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

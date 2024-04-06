@@ -425,7 +425,7 @@ router.post('/login', async (req, res) => {
 //get all child names
 async function getAllChildren() {
     const connection = await initializeDatabase();
-    const query = 'SELECT camperID, fName, lName FROM Camper'; // Adjust fields as necessary
+    const query = 'SELECT camperID, fName, lName FROM Camper'; 
     const [children] = await connection.query(query); 
     await connection.end();
     return children.map(child => ({
