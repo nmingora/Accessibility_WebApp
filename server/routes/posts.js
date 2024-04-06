@@ -4,7 +4,7 @@ const crypto = require('crypto');// for id generation bc i don't want packages
 
 
 // Post Model
-const Post = require('../models/Post');
+const Post = require('../models/post.js');
 
 // Generate a unique postID with 4 alphanumeric characters
 function generatePostID() {
